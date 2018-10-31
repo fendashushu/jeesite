@@ -43,6 +43,11 @@
                 }
             })
         }
+
+        function search(){
+            var loginName = $("#nickname").val();
+            window.location.href="${ctx}/sys/user/net?loginName="+loginName;
+        }
     </script>
     <style type="text/css">
         .table-bordered th, .table-bordered td {
@@ -59,7 +64,8 @@
     <tbody><tr>
         <td height="22" colspan="12" class="ziti">查询会员：
             <input type="text" name="nickname" id="nickname">
-            <input name="submin" type="submit" class="button_blue" id="submin" value="查  询">
+            <input name="submin" type="submit" class="button_blue" id="submin" onclick="search()" style="margin-bottom: 10px;" value="查  询">
+            <input  class="button_blue" onclick="history.go(-1)" type="button" value="返回上一级" style="margin-bottom: 10px;">
         </td>
         <td style="background:#ffb3a7" align="center" class="ziti">银卡</td>
         <td style="background:#a4e2c6" align="center" class="ziti">金卡</td>
@@ -177,7 +183,7 @@
                 <td width="50%" colspan="2" align="center">
                     <table width="120" cellpadding="3" cellspacing="1" border="0" class="table table-striped table-bordered table-condensed tree_table" style="width: 20%;text-align: center !important;">
                         <tbody><tr>
-                            <td style="background: #d8d1d1;" colspan="4" align="center"><a href="register.php?nickname=ktf123&amp;tid=2">注册</a></td>
+                            <td style="background: #d8d1d1;" colspan="4" align="center"><a href="${ctx}/sys/user/form?store=${m1.loginName}&contact=${m1.loginName}&area=A">注册</a></td>
                         </tr>
                         <tr>
                             <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
@@ -205,8 +211,8 @@
                 <td width="50%" colspan="2" align="center">
                     <table width="120" cellpadding="3" cellspacing="1" border="0" class="table table-striped table-bordered table-condensed tree_table" style="width: 20%;text-align: center !important;">
                         <tbody><tr>
-                            <td class="statusa" font-color:black;" colspan="4" align="center">
-                            <font color="black"><a href="?ID=9072"><font color="black">${ma.loginName}</font></a></font>
+                            <td class="statusa" style="font-color:black;" colspan="4" align="center">
+                            <font color="black"><a href="${ctx}/sys/user/net?loginName=${ma.loginName}"><font color="black">${ma.loginName}</font></a></font>
                             </td>
                         </tr>
                         <tr>
@@ -244,7 +250,7 @@
                                         注册
                                     </c:when>
                                     <c:otherwise>
-                                        <a href="register.php?nickname=ktf123&amp;tid=2">注册</a>
+                                        <a href="${ctx}/sys/user/form?store=${m1.loginName}&contact=${m1.loginName}&area=B">注册</a>
                                     </c:otherwise>
                                 </c:choose>
 
@@ -312,7 +318,7 @@
                     </style>
                     <table width="120" cellpadding="3" cellspacing="1" border="0" class="table table-striped table-bordered table-condensed tree_table" style="width: 20%;text-align: center !important;">
                         <tbody><tr>
-                            <td class="statusb" colspan="4" align="center"><a href="?ID=9573"><font color="black">${mb.loginName}</font></a></td>
+                            <td class="statusb" colspan="4" align="center"><a href="${ctx}/sys/user/net?loginName=${mb.loginName}"><font color="black">${mb.loginName}</font></a></td>
                         </tr>
                         <tr>
                             <td class="backb" colspan="4" align="center">${mb.name}</td>
@@ -421,7 +427,7 @@
                     </style>
                     <table width="120" height="80" cellpadding="3" cellspacing="1" border="0" class="table table-striped table-bordered table-condensed tree_table" style="width: 33%;text-align: center !important;">
                         <tbody><tr>
-                            <td class="statusaa" colspan="4" align="center"><a href="?ID=9073"><font color="black">${maa.loginName}</font></a></td>
+                            <td class="statusaa" colspan="4" align="center"><a href="${ctx}/sys/user/net?loginName=${maa.loginName}"><font color="black">${maa.loginName}</font></a></td>
                         </tr>
                         <tr>
                             <td class="backaa" colspan="4" align="center">${maa.name}</td>
@@ -532,7 +538,7 @@
                     </style>
                     <table width="120" cellpadding="3" cellspacing="1" border="0" class="table table-striped table-bordered table-condensed tree_table" style="width: 33%;text-align: center !important;">
                         <tbody><tr>
-                            <td class="statusab" colspan="4" align="center"><a href="?ID=9074"><font color="black">${mab.loginName}</font></a></td>
+                            <td class="statusab" colspan="4" align="center"><a href="${ctx}/sys/user/net?loginName=${mab.loginName}"><font color="black">${mab.loginName}</font></a></td>
                         </tr>
                         <tr>
                             <td class="backab" colspan="4" align="center">${mab.name}</td>
@@ -635,7 +641,7 @@
                     </style>
                     <table width="120" cellpadding="3" cellspacing="1" border="0" class="table table-striped table-bordered table-condensed tree_table" style="width: 33%;text-align: center !important;">
                         <tbody><tr>
-                            <td class="statusba" colspan="4" align="center"><a href="?ID=9582"><font color="black">${mba.loginName}</font></a></td>
+                            <td class="statusba" colspan="4" align="center"><a href="${ctx}/sys/user/net?loginName=${mba.loginName}"><font color="black">${mba.loginName}</font></a></td>
                         </tr>
                         <tr>
                             <td class="backba" colspan="4" align="center">${mba.name}</td>
@@ -745,7 +751,7 @@
                     </style>
                     <table width="120" cellpadding="3" cellspacing="1" border="0" class="table table-striped table-bordered table-condensed tree_table" style="width: 33%;text-align: center !important;">
                         <tbody><tr>
-                            <td class="statusbb" colspan="4" align="center"><a href="?ID=9582"><font color="black">${mbb.loginName}</font></a></td>
+                            <td class="statusbb" colspan="4" align="center"><a href="${ctx}/sys/user/net?loginName=${mbb.loginName}"><font color="black">${mbb.loginName}</font></a></td>
                         </tr>
                         <tr>
                             <td class="backbb" colspan="4" align="center">${mbb.name}</td>

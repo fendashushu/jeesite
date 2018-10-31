@@ -70,6 +70,12 @@ public class UserController extends BaseController {
 	}
 
 	@RequiresPermissions("sys:user:view")
+	@RequestMapping(value = {"recommend"})
+	public String recommend(User user, Model model) {
+		return "modules/sys/userRecommend";
+	}
+
+	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
@@ -79,10 +85,13 @@ public class UserController extends BaseController {
 
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = {"net"})
-	public String net(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String net(HttpServletRequest request, HttpServletResponse response, Model model,String loginName) {
 		//Page<User> page = systemService.findUser(new Page<User>(request, response), user);
         //model.addAttribute("page", page);
         User user = UserUtils.getUser();
+        if(loginName != null && !"".equals(loginName)){
+            user = systemService.getUserByLoginName(loginName);
+        }
         List<Member> memberList = memberService.getMemberNet(user);
         Member m1 = null;
         Member ma = null;
@@ -96,8 +105,8 @@ public class UserController extends BaseController {
         //m1
         for (Member m:memberList) {
             if(m != null){
-                String loginName = m.getLoginName();
-                if(loginName.equals(parentName)){
+                String login = m.getLoginName();
+                if(login.equals(parentName)){
                     m1 = m;
                     break;
                 }
@@ -140,7 +149,7 @@ public class UserController extends BaseController {
             }
         }
         //mab
-        if("0".equals(ma.getMemberlevel())){
+        if(ma==null || ma.getMemberlevel() == null || "0".equals(ma.getMemberlevel())){
             mab = null;
         }else{
             for (Member m:memberList) {
@@ -168,7 +177,7 @@ public class UserController extends BaseController {
                     }
                 }
             }
-            if("0".equals(mb.getMemberlevel())){
+            if(mb==null || mb.getMemberlevel() == null || "0".equals(mb.getMemberlevel())){
                 mbb = null;
             }else{
                 for (Member m:memberList) {
@@ -185,10 +194,10 @@ public class UserController extends BaseController {
         model.addAttribute("m1",m1);
         model.addAttribute("ma",ma);
         model.addAttribute("mb",mb);
-        model.addAttribute("maa",null);
-        model.addAttribute("mab",null);
-        model.addAttribute("mba",null);
-        model.addAttribute("mbb",null);
+        model.addAttribute("maa",maa);
+        model.addAttribute("mab",mab);
+        model.addAttribute("mba",mba);
+        model.addAttribute("mbb",mbb);
         return "modules/sys/userNet";
 	}
 	
@@ -257,7 +266,7 @@ public class UserController extends BaseController {
 			//UserUtils.getCacheMap().clear();
 		}
 		addMessage(redirectAttributes, "保存用户'" + user.getLoginName() + "'成功");
-		return "redirect:" + adminPath + "/sys/user/list?repage";
+		return "redirect:" + adminPath + "/sys/user/form?repage";
 	}
 	
 	@RequiresPermissions("sys:user:edit")
