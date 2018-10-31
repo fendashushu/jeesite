@@ -37,6 +37,13 @@ public class MemberService extends CrudService<MemberDao, Member> {
 	public List<Member> getMemberNet(User user) {
 		return memberDao.getMemberNet(user);
 	}
+	public List<Member> getMemberRecommend(User user) {
+		return memberDao.getMemberRecommend(user);
+	}
+
+	public Member getMemberByLoginName(String loginName) {
+		return memberDao.getMemberByLoginName(loginName);
+	}
 
 	public Page<Member> findPage(Page<Member> page, Member member) {
 		return super.findPage(page, member);

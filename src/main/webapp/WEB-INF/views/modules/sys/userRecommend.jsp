@@ -23,14 +23,14 @@
 	<script type="text/javascript">
 		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'0'}},
 			callback:{onClick:function(event, treeId, treeNode){
-					var id = treeNode.id == '0' ? '' :treeNode.id;
-					$('#officeContent').attr("src","${ctx}/sys/user/list?office.id="+id+"&office.name="+treeNode.name);
+					//var id = treeNode.id == '0' ? '' :treeNode.id;
+					//$('#officeContent').attr("src","${ctx}/sys/user/list?office.id="+id+"&office.name="+treeNode.name);
 				}
 			}
 		};
 		
 		function refreshTree(){
-			$.getJSON("${ctx}/sys/office/treeData",function(data){
+			$.getJSON("${ctx}/sys/user/recommendData",function(data){
 				$.fn.zTree.init($("#ztree"), setting, data).expandAll(true);
 			});
 		}

@@ -83,6 +83,37 @@ public class UserController extends BaseController {
 		return "modules/sys/userList";
 	}
 
+    @ResponseBody
+    @RequestMapping(value = "recommendData")
+    public List<Map<String, Object>> recommendData(@RequestParam(required=false) String loginName) {
+        List<Map<String, Object>> mapList = Lists.newArrayList();
+        User user = UserUtils.getUser();
+        if(loginName != null && !"".equals(loginName)){
+            user = systemService.getUserByLoginName(loginName);
+        }
+        List<Member> memberList = memberService.getMemberRecommend(user);
+        for (int i=0; i<memberList.size(); i++){
+            Member member = memberList.get(i);
+            String memberLevel = member.getMemberlevel();
+            String text = "";
+            if("0".equals(memberLevel)){
+                text = "会员";
+            }else if("1".equals(memberLevel)){
+                text = "一级";
+            }else if("2".equals(memberLevel)){
+                text = "二级";
+            }else if("3".equals(memberLevel)){
+                text = "三级";
+            }
+            Map<String, Object> map = Maps.newHashMap();
+            map.put("id", member.getLoginName());
+            map.put("pId", member.getReferee());
+            map.put("name", member.getLoginName()+"["+text+"]");
+            mapList.add(map);
+        }
+        return mapList;
+    }
+
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = {"net"})
 	public String net(HttpServletRequest request, HttpServletResponse response, Model model,String loginName) {
@@ -218,6 +249,7 @@ public class UserController extends BaseController {
 		if (user.getOffice()==null || user.getOffice().getId()==null){
 			user.setOffice(UserUtils.getUser().getOffice());
 		}
+		user.setStore(UserUtils.getUser().getLoginName());
 		model.addAttribute("user", user);
 		model.addAttribute("allRoles", systemService.findAllRole());
 		return "modules/sys/userForm";
@@ -256,7 +288,8 @@ public class UserController extends BaseController {
         user.setStatus(1);
 		systemService.saveUser(user);
 		member.setUserid(user.getId());
-
+        Member member1 = memberService.getMemberByLoginName(member.getReferee());
+        member.setReferees(member1.getReferees()+","+member.getReferee());
 		member.setIsstore("0");
 		member.setActivate("0");
 		memberService.save(member);

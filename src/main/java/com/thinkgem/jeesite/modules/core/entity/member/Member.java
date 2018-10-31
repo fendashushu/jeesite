@@ -34,6 +34,7 @@ public class Member extends DataEntity<Member> {
     private String loginName;
 	private String name;
 	private String status;
+	private String referees;
 
 	public Member() {
 		super();
@@ -87,8 +88,17 @@ public class Member extends DataEntity<Member> {
 	public void setArea(String area) {
 		this.area = area;
 	}
-	
-	@Length(min=1, max=5, message="加盟资格；四个等级长度必须介于 1 和 5 之间")
+
+    @Length(min=1, max=5000, message="安置区域A/B长度必须介于 1 和 5000 之间")
+    public String getReferees() {
+        return referees;
+    }
+
+    public void setReferees(String referees) {
+        this.referees = referees;
+    }
+
+    @Length(min=1, max=5, message="加盟资格；四个等级长度必须介于 1 和 5 之间")
 	public String getMemberlevel() {
 		return memberlevel;
 	}

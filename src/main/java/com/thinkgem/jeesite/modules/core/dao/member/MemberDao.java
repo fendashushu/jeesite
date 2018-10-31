@@ -18,4 +18,6 @@ import java.util.List;
 @MyBatisDao
 public interface MemberDao extends CrudDao<Member> {
     public List<Member> getMemberNet(User user);
+    public List<Member> getMemberRecommend(User user);
+    public Member getMemberByLoginName(String loginName);
 }

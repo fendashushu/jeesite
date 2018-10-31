@@ -23,7 +23,7 @@
 		a.sex AS "sex",
 		a.address AS "address",
 		a.qq AS "qq",
-        a.login_name as loginName
+        a.login_name as loginName,
 		a.isstore AS "isstore",
 		a.activate AS "activate"
 	</sql>
@@ -85,6 +85,14 @@
              order by create_date) a,sys_user u
         where a.userId = u.id
     </select>
+
+    <select id="getMemberByLoginName" resultType="Member">
+        select * from sys_member where login_name = #{value} and del_flag='0'
+    </select>
+
+    <select id="getMemberRecommend" resultType="Member">
+        select m.*,u.name from sys_member m,sys_user u where m.userId = u.id and m.del_flag='0' and (m.referees like CONCAT('%', #{loginName}, '%') or m.login_name=#{loginName})
+    </select>
 	
 	<insert id="insert">
 		INSERT INTO sys_member(
@@ -110,7 +118,8 @@
 			qq,
 			isstore,
 			activate,
-            login_name
+            login_name,
+            referees
         ) VALUES (
 			#{id},
 			#{userid},
@@ -134,7 +143,8 @@
 			#{qq},
 			#{isstore},
 			#{activate},
-            #{loginName}
+            #{loginName},
+            #{referees}
         )
 	</insert>
 	
