@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.core.dao.member.MemberDao">
+    
+	<sql id="memberColumns">
+		a.id AS "id",
+		a.userid AS "userid",
+		a.store AS "store",
+		a.referee AS "referee",
+		a.contact AS "contact",
+		a.area AS "area",
+		a.memberlevel AS "memberlevel",
+		a.bank AS "bank",
+		a.bankno AS "bankno",
+		a.bankname AS "bankname",
+		a.idcard AS "idcard",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.sex AS "sex",
+		a.address AS "address",
+		a.qq AS "qq",
+        a.login_name as loginName
+		a.isstore AS "isstore",
+		a.activate AS "activate"
+	</sql>
+	
+	<sql id="memberJoins">
+	</sql>
+    
+	<select id="get" resultType="Member">
+		SELECT 
+			<include refid="memberColumns"/>
+		FROM sys_member a
+		<include refid="memberJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Member">
+		SELECT 
+			<include refid="memberColumns"/>
+		FROM sys_member a
+		<include refid="memberJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Member">
+		SELECT 
+			<include refid="memberColumns"/>
+		FROM sys_member a
+		<include refid="memberJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+    <!-- 查询下级用户 -->
+    <select id="getMemberNet" resultType="Member">
+        select a.*,u.name,u.status from
+            (select * from sys_member m where login_name=#{loginName} or Contact = #{loginName}
+             union
+             select * from sys_member where Contact in (
+                 select login_name from sys_member where Contact = #{loginName})
+             order by create_date) a,sys_user u
+        where a.userId = u.id
+    </select>
+	
+	<insert id="insert">
+		INSERT INTO sys_member(
+			id,
+			userid,
+			store,
+			referee,
+			contact,
+			area,
+			memberlevel,
+			bank,
+			bankno,
+			bankname,
+			idcard,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			sex,
+			address,
+			qq,
+			isstore,
+			activate,
+            login_name
+        ) VALUES (
+			#{id},
+			#{userid},
+			#{store},
+			#{referee},
+			#{contact},
+			#{area},
+			#{memberlevel},
+			#{bank},
+			#{bankno},
+			#{bankname},
+			#{idcard},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{sex},
+			#{address},
+			#{qq},
+			#{isstore},
+			#{activate},
+            #{loginName}
+        )
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_member SET 	
+			userid = #{userid},
+			store = #{store},
+			referee = #{referee},
+			contact = #{contact},
+			area = #{area},
+			memberlevel = #{memberlevel},
+			bank = #{bank},
+			bankno = #{bankno},
+			bankname = #{bankname},
+			idcard = #{idcard},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			sex = #{sex},
+			address = #{address},
+			qq = #{qq},
+			isstore = #{isstore},
+			activate = #{activate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE sys_member SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
