@@ -80,6 +80,7 @@
         <div class="control-group">
             <label class="control-label">安置区域:</label>
             <div class="controls">
+
                 <form:select path="area" class="input-xlarge" disabled="true">
                     <form:option value="A" label="A区"/>
                     <form:option value="B" label="B区"/>
