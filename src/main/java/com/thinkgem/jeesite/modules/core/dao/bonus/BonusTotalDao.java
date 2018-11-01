@@ -16,4 +16,7 @@ import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
 public interface BonusTotalDao extends CrudDao<BonusTotal> {
 
     public BonusTotal getBonusTotalByLoginName(String loginName);
+
+    public void updateBouns(BonusTotal bonusTotal);
+
 }

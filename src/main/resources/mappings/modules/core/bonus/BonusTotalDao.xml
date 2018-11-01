@@ -74,7 +74,7 @@
 		FROM bonus_total a
 		<include refid="bonusTotalJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and a.login_name = #{value}
+			a.del_flag = '0' and a.login_name = #{value}
 		</where>
 
 	</select>
@@ -129,6 +129,13 @@
 			update_date = #{updateDate},
 			remarks = #{remarks}
 		WHERE id = #{id}
+	</update>
+
+	<update id="updateBouns">
+		UPDATE bonus_total SET
+			bonus_total = #{bonusTotal},
+			bonus_current = #{bonusCurrent}
+		WHERE login_name = #{loginName}
 	</update>
 	
 	<update id="delete">
