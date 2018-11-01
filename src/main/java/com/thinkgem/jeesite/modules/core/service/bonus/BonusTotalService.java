@@ -8,8 +8,10 @@ import java.util.List;
 
 import com.thinkgem.jeesite.modules.core.dao.member.MemberDao;
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.entity.pv.PvTotal;
 import com.thinkgem.jeesite.modules.core.entity.setting.MemberSetting;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
+import com.thinkgem.jeesite.modules.core.service.pv.PvTotalService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
     private BonusTotalDao bonusTotalDao;
     @Autowired
     private MemberDao memberDao;
+    @Autowired
+    private PvTotalService pvTotalService;
 
 	public BonusTotal get(String id) {
 		return super.get(id);
@@ -69,14 +73,26 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         Integer zhitui3 = memberSetting.getZhitui3();
 
         String memberLevel = member.getMemberlevel();//注册会员级别
+
         String refree = member.getReferee();//推荐人编号
         Member refreeM = memberDao.getMemberByLoginName(refree);
         String refreeLevel = refreeM.getMemberlevel();//推荐人级别
+
+        String contact = member.getContact();//接点人编号
+        Member contactM = memberDao.getMemberByLoginName(contact);
+        String contactLevel = contactM.getMemberlevel();//接点人级别
+
         BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(refree);//推荐人奖金表
         BigDecimal bonus = zhitui(memberLevel,refreeLevel,pv1,pv2,pv3,zhitui1,zhitui2,zhitui3);
         bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(bonus));
         bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(bonus));
         bonusTotalDao.updateBouns(bonusTotal);
+
+
+        PvTotal pvTotal = new PvTotal();
+        pvTotal.setLoginName(refree);
+        pvTotal.setZhitui(bonus);
+        pvTotalService.save(pvTotal);
     }
 
     private BigDecimal zhitui(String memberLevel,String refreeLevel,Integer pv1,Integer pv2,Integer pv3,Integer zhitui1,Integer zhitui2,Integer zhitui3){
@@ -108,7 +124,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 }
             }
         }
-        bonus = bonus.multiply(new BigDecimal(95));
+        bonus = bonus.multiply(new BigDecimal(0.95));
         return  bonus;
     }
 }

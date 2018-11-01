@@ -6,6 +6,7 @@
     <meta name="decorator" content="default"/>
     <script type="text/javascript">
         $(document).ready(function() {
+            closeLoading();
             $("#inputForm").validate({
                 rules: {
                     loginName: {remote: "${ctx}/sys/user/checkLoginName?oldLoginName=" + encodeURIComponent('${user.loginName}')}
