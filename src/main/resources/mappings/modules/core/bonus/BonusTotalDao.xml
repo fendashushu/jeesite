@@ -66,7 +66,19 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
+
+	<select id="getBonusTotalByLoginName" resultType="BonusTotal">
+		SELECT
+			<include refid="bonusTotalColumns"/>
+		FROM bonus_total a
+		<include refid="bonusTotalJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and a.login_name = #{value}
+		</where>
+
+	</select>
+
 	<insert id="insert">
 		INSERT INTO bonus_total(
 			id,

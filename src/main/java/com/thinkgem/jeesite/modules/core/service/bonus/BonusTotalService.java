@@ -5,6 +5,10 @@ package com.thinkgem.jeesite.modules.core.service.bonus;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,10 @@ import com.thinkgem.jeesite.modules.core.dao.bonus.BonusTotalDao;
 @Service
 @Transactional(readOnly = true)
 public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
+    @Autowired
+    private SystemService systemService;
+    @Autowired
+    private BonusTotalDao bonusTotalDao;
 
 	public BonusTotal get(String id) {
 		return super.get(id);
@@ -43,5 +51,16 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
 	public void delete(BonusTotal bonusTotal) {
 		super.delete(bonusTotal);
 	}
-	
+
+	//注册会员后开始计算奖金
+    @Transactional(readOnly = false)
+    public void excuteBonus(User user, Member member){
+        //直推奖，推荐人
+        String memberLevel = member.getMemberlevel();//注册会员级别
+        String refree = member.getReferee();//推荐人编号
+        BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(refree);//推荐人奖金表
+        if(!"0".equals(memberLevel)){//普通会员不计算
+
+        }
+    }
 }

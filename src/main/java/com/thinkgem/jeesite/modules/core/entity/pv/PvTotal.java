@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import java.math.BigDecimal;
+
 /**
  * 积分汇总Entity
  * @author 李延明
@@ -16,13 +18,13 @@ public class PvTotal extends DataEntity<PvTotal> {
 	
 	private static final long serialVersionUID = 1L;
 	private String loginName;		// 会员编号
-	private String zhitui;		// 直推奖
-	private String hezuo;		// 合作奖
-	private String guanli;		// 管理奖
-	private String baodan;		// 报单奖
-	private String kaifa;		// 开发代理店铺奖
-	private String jinhuo;		// 店铺进货一盒12.5积分
-	private String total;		// 扣税后奖金总额
+	private BigDecimal zhitui;		// 直推奖
+	private BigDecimal hezuo;		// 合作奖
+	private BigDecimal guanli;		// 管理奖
+	private BigDecimal baodan;		// 报单奖
+	private BigDecimal kaifa;		// 开发代理店铺奖
+	private BigDecimal jinhuo;		// 店铺进货一盒12.5积分
+	private BigDecimal total;		// 扣税后奖金总额
 	
 	public PvTotal() {
 		super();
@@ -40,61 +42,60 @@ public class PvTotal extends DataEntity<PvTotal> {
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
 	}
-	
-	public String getZhitui() {
-		return zhitui;
-	}
 
-	public void setZhitui(String zhitui) {
-		this.zhitui = zhitui;
-	}
-	
-	public String getHezuo() {
-		return hezuo;
-	}
+    public BigDecimal getZhitui() {
+        return zhitui;
+    }
 
-	public void setHezuo(String hezuo) {
-		this.hezuo = hezuo;
-	}
-	
-	public String getGuanli() {
-		return guanli;
-	}
+    public void setZhitui(BigDecimal zhitui) {
+        this.zhitui = zhitui;
+    }
 
-	public void setGuanli(String guanli) {
-		this.guanli = guanli;
-	}
-	
-	public String getBaodan() {
-		return baodan;
-	}
+    public BigDecimal getHezuo() {
+        return hezuo;
+    }
 
-	public void setBaodan(String baodan) {
-		this.baodan = baodan;
-	}
-	
-	public String getKaifa() {
-		return kaifa;
-	}
+    public void setHezuo(BigDecimal hezuo) {
+        this.hezuo = hezuo;
+    }
 
-	public void setKaifa(String kaifa) {
-		this.kaifa = kaifa;
-	}
-	
-	public String getJinhuo() {
-		return jinhuo;
-	}
+    public BigDecimal getGuanli() {
+        return guanli;
+    }
 
-	public void setJinhuo(String jinhuo) {
-		this.jinhuo = jinhuo;
-	}
-	
-	public String getTotal() {
-		return total;
-	}
+    public void setGuanli(BigDecimal guanli) {
+        this.guanli = guanli;
+    }
 
-	public void setTotal(String total) {
-		this.total = total;
-	}
-	
+    public BigDecimal getBaodan() {
+        return baodan;
+    }
+
+    public void setBaodan(BigDecimal baodan) {
+        this.baodan = baodan;
+    }
+
+    public BigDecimal getKaifa() {
+        return kaifa;
+    }
+
+    public void setKaifa(BigDecimal kaifa) {
+        this.kaifa = kaifa;
+    }
+
+    public BigDecimal getJinhuo() {
+        return jinhuo;
+    }
+
+    public void setJinhuo(BigDecimal jinhuo) {
+        this.jinhuo = jinhuo;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
 }

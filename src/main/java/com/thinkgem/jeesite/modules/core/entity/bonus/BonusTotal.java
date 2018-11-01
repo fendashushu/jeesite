@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import java.math.BigDecimal;
+
 /**
  * 业绩Entity
  * @author 李延明
@@ -16,13 +18,13 @@ public class BonusTotal extends DataEntity<BonusTotal> {
 	
 	private static final long serialVersionUID = 1L;
 	private String loginName;		// 会员编号
-	private String apvTotal;		// A区累计
-	private String bpvTotal;		// B区累计
-	private String apv;		// A区当前
-	private String bpv;		// B区当前
-	private String bonusTotal;		// 奖金累计
-	private String bonusCurrent;		// 奖金剩余
-	private String jinhuopv;		// 店铺进货一盒12.5积分，积分累计
+	private BigDecimal apvTotal;		// A区累计
+	private BigDecimal bpvTotal;		// B区累计
+	private BigDecimal apv;		// A区当前
+	private BigDecimal bpv;		// B区当前
+	private BigDecimal bonusTotal;		// 奖金累计
+	private BigDecimal bonusCurrent;		// 奖金剩余
+	private BigDecimal jinhuopv;		// 店铺进货一盒12.5积分，积分累计
 	
 	public BonusTotal() {
 		super();
@@ -40,61 +42,60 @@ public class BonusTotal extends DataEntity<BonusTotal> {
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
 	}
-	
-	public String getApvTotal() {
-		return apvTotal;
-	}
 
-	public void setApvTotal(String apvTotal) {
-		this.apvTotal = apvTotal;
-	}
-	
-	public String getBpvTotal() {
-		return bpvTotal;
-	}
+    public BigDecimal getApvTotal() {
+        return apvTotal;
+    }
 
-	public void setBpvTotal(String bpvTotal) {
-		this.bpvTotal = bpvTotal;
-	}
-	
-	public String getApv() {
-		return apv;
-	}
+    public void setApvTotal(BigDecimal apvTotal) {
+        this.apvTotal = apvTotal;
+    }
 
-	public void setApv(String apv) {
-		this.apv = apv;
-	}
-	
-	public String getBpv() {
-		return bpv;
-	}
+    public BigDecimal getBpvTotal() {
+        return bpvTotal;
+    }
 
-	public void setBpv(String bpv) {
-		this.bpv = bpv;
-	}
-	
-	public String getBonusTotal() {
-		return bonusTotal;
-	}
+    public void setBpvTotal(BigDecimal bpvTotal) {
+        this.bpvTotal = bpvTotal;
+    }
 
-	public void setBonusTotal(String bonusTotal) {
-		this.bonusTotal = bonusTotal;
-	}
-	
-	public String getBonusCurrent() {
-		return bonusCurrent;
-	}
+    public BigDecimal getApv() {
+        return apv;
+    }
 
-	public void setBonusCurrent(String bonusCurrent) {
-		this.bonusCurrent = bonusCurrent;
-	}
-	
-	public String getJinhuopv() {
-		return jinhuopv;
-	}
+    public void setApv(BigDecimal apv) {
+        this.apv = apv;
+    }
 
-	public void setJinhuopv(String jinhuopv) {
-		this.jinhuopv = jinhuopv;
-	}
-	
+    public BigDecimal getBpv() {
+        return bpv;
+    }
+
+    public void setBpv(BigDecimal bpv) {
+        this.bpv = bpv;
+    }
+
+    public BigDecimal getBonusTotal() {
+        return bonusTotal;
+    }
+
+    public void setBonusTotal(BigDecimal bonusTotal) {
+        this.bonusTotal = bonusTotal;
+    }
+
+    public BigDecimal getBonusCurrent() {
+        return bonusCurrent;
+    }
+
+    public void setBonusCurrent(BigDecimal bonusCurrent) {
+        this.bonusCurrent = bonusCurrent;
+    }
+
+    public BigDecimal getJinhuopv() {
+        return jinhuopv;
+    }
+
+    public void setJinhuopv(BigDecimal jinhuopv) {
+        this.jinhuopv = jinhuopv;
+    }
 }

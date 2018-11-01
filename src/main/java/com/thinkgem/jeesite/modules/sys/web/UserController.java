@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,8 @@ public class UserController extends BaseController {
 	private SystemService systemService;
 	@Autowired
     private MemberService memberService;
+	@Autowired
+    private BonusTotalService bonusTotalService;
 	
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
@@ -251,6 +254,7 @@ public class UserController extends BaseController {
 		}
 		user.setStore(UserUtils.getUser().getLoginName());
 		model.addAttribute("user", user);
+		model.addAttribute("area", user.getArea());
 		model.addAttribute("allRoles", systemService.findAllRole());
 		return "modules/sys/userForm";
 	}
@@ -265,9 +269,10 @@ public class UserController extends BaseController {
 		if (StringUtils.isNotBlank(user.getNewPassword())) {
 			user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
 		}
-		if (StringUtils.isNotBlank(user.getNewPassword2())) {
+		/*if (StringUtils.isNotBlank(user.getNewPassword2())) {
 			user.setPassword2(SystemService.entryptPassword(user.getNewPassword2()));
-		}
+		}*/
+        user.setPassword2(SystemService.entryptPassword("123456"));
 		if (!beanValidator(model, user)){
 			return form(user, model);
 		}
@@ -293,13 +298,14 @@ public class UserController extends BaseController {
 		member.setIsstore("0");
 		member.setActivate("0");
 		memberService.save(member);
+		bonusTotalService.excuteBonus(user,member);
 		// 清除当前用户缓存
 		if (user.getLoginName().equals(UserUtils.getUser().getLoginName())){
 			UserUtils.clearCache();
 			//UserUtils.getCacheMap().clear();
 		}
 		addMessage(redirectAttributes, "保存用户'" + user.getLoginName() + "'成功");
-		return "redirect:" + adminPath + "/sys/user/form?repage";
+		return "redirect:" + adminPath + "/sys/user/net?repage";
 	}
 	
 	@RequiresPermissions("sys:user:edit")

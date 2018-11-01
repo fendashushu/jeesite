@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.core.dao.setting.MemberSettingDao">
+    
+	<sql id="memberSettingColumns">
+		a.id AS "id",
+		a.name0 AS "name0",
+		a.name1 AS "name1",
+		a.name2 AS "name2",
+		a.name3 AS "name3",
+		a.pv0 AS "pv0",
+		a.pv1 AS "pv1",
+		a.pv2 AS "pv2",
+		a.pv3 AS "pv3",
+		a.jion0 AS "jion0",
+		a.jion1 AS "jion1",
+		a.jion2 AS "jion2",
+		a.jion3 AS "jion3",
+		a.zhitui0 AS "zhitui0",
+		a.zhitui1 AS "zhitui1",
+		a.zhitui2 AS "zhitui2",
+		a.zhitui3 AS "zhitui3",
+		a.hezuo0 AS "hezuo0",
+		a.hezuo1 AS "hezuo1",
+		a.hezuo2 AS "hezuo2",
+		a.hezuo3 AS "hezuo3",
+		a.guanli0 AS "guanli0",
+		a.guanli1 AS "guanli1",
+		a.guanli2 AS "guanli2",
+		a.guanli3 AS "guanli3",
+		a.tuidian0 AS "tuidian0",
+		a.tuidian1 AS "tuidian1",
+		a.tuidian2 AS "tuidian2",
+		a.tuidian3 AS "tuidian3",
+		a.zhou0 AS "zhou0",
+		a.zhou1 AS "zhou1",
+		a.zhou2 AS "zhou2",
+		a.zhou3 AS "zhou3",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="memberSettingJoins">
+	</sql>
+    
+	<select id="get" resultType="MemberSetting">
+		SELECT 
+			<include refid="memberSettingColumns"/>
+		FROM member_setting a
+		<include refid="memberSettingJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MemberSetting">
+		SELECT 
+			<include refid="memberSettingColumns"/>
+		FROM member_setting a
+		<include refid="memberSettingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MemberSetting">
+		SELECT 
+			<include refid="memberSettingColumns"/>
+		FROM member_setting a
+		<include refid="memberSettingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO member_setting(
+			id,
+			name0,
+			name1,
+			name2,
+			name3,
+			pv0,
+			pv1,
+			pv2,
+			pv3,
+			jion0,
+			jion1,
+			jion2,
+			jion3,
+			zhitui0,
+			zhitui1,
+			zhitui2,
+			zhitui3,
+			hezuo0,
+			hezuo1,
+			hezuo2,
+			hezuo3,
+			guanli0,
+			guanli1,
+			guanli2,
+			guanli3,
+			tuidian0,
+			tuidian1,
+			tuidian2,
+			tuidian3,
+			zhou0,
+			zhou1,
+			zhou2,
+			zhou3,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name0},
+			#{name1},
+			#{name2},
+			#{name3},
+			#{pv0},
+			#{pv1},
+			#{pv2},
+			#{pv3},
+			#{jion0},
+			#{jion1},
+			#{jion2},
+			#{jion3},
+			#{zhitui0},
+			#{zhitui1},
+			#{zhitui2},
+			#{zhitui3},
+			#{hezuo0},
+			#{hezuo1},
+			#{hezuo2},
+			#{hezuo3},
+			#{guanli0},
+			#{guanli1},
+			#{guanli2},
+			#{guanli3},
+			#{tuidian0},
+			#{tuidian1},
+			#{tuidian2},
+			#{tuidian3},
+			#{zhou0},
+			#{zhou1},
+			#{zhou2},
+			#{zhou3},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE member_setting SET 	
+			name0 = #{name0},
+			name1 = #{name1},
+			name2 = #{name2},
+			name3 = #{name3},
+			pv0 = #{pv0},
+			pv1 = #{pv1},
+			pv2 = #{pv2},
+			pv3 = #{pv3},
+			jion0 = #{jion0},
+			jion1 = #{jion1},
+			jion2 = #{jion2},
+			jion3 = #{jion3},
+			zhitui0 = #{zhitui0},
+			zhitui1 = #{zhitui1},
+			zhitui2 = #{zhitui2},
+			zhitui3 = #{zhitui3},
+			hezuo0 = #{hezuo0},
+			hezuo1 = #{hezuo1},
+			hezuo2 = #{hezuo2},
+			hezuo3 = #{hezuo3},
+			guanli0 = #{guanli0},
+			guanli1 = #{guanli1},
+			guanli2 = #{guanli2},
+			guanli3 = #{guanli3},
+			tuidian0 = #{tuidian0},
+			tuidian1 = #{tuidian1},
+			tuidian2 = #{tuidian2},
+			tuidian3 = #{tuidian3},
+			zhou0 = #{zhou0},
+			zhou1 = #{zhou1},
+			zhou2 = #{zhou2},
+			zhou3 = #{zhou3},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE member_setting SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

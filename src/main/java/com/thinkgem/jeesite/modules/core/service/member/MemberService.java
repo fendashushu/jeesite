@@ -3,8 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.core.service.member;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.core.dao.bonus.BonusTotalDao;
+import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
+import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,8 @@ import com.thinkgem.jeesite.modules.core.dao.member.MemberDao;
 public class MemberService extends CrudService<MemberDao, Member> {
     @Autowired
     private MemberDao memberDao;
+    @Autowired
+    private BonusTotalService bonusTotalService;
 
 	public Member get(String id) {
 		return super.get(id);
@@ -52,6 +58,16 @@ public class MemberService extends CrudService<MemberDao, Member> {
 	@Transactional(readOnly = false)
 	public void save(Member member) {
 		super.save(member);
+        BonusTotal bonusTotal = new BonusTotal();
+        bonusTotal.setLoginName(member.getLoginName());
+        bonusTotal.setApv(BigDecimal.ZERO);
+        bonusTotal.setBpv(BigDecimal.ZERO);
+        bonusTotal.setApvTotal(BigDecimal.ZERO);
+        bonusTotal.setBpvTotal(BigDecimal.ZERO);
+        bonusTotal.setBonusCurrent(BigDecimal.ZERO);
+        bonusTotal.setBonusTotal(BigDecimal.ZERO);
+        bonusTotal.setJinhuopv(BigDecimal.ZERO);
+        bonusTotalService.save(bonusTotal);
 	}
 	
 	@Transactional(readOnly = false)

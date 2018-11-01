@@ -82,8 +82,7 @@
             <div class="controls">
 
                 <form:select path="area" class="input-xlarge" disabled="false">
-                    <form:option value="A" label="A区"/>
-                    <form:option value="B" label="B区"/>
+                    <form:option value="${area}" label="${area}区"/>
                 </form:select>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
@@ -141,7 +140,7 @@
 				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
 			</div>
 		</div>
-		<div class="control-group">
+		<%--<div class="control-group">
 			<label class="control-label">二级密码:</label>
 			<div class="controls">
 				<input id="newPassword2" name="newPassword2" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}"/>
@@ -155,7 +154,7 @@
 				<input id="confirmNewPassword2" name="confirmNewPassword2" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword2"/>
 				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
 			</div>
-		</div>
+		</div>--%>
 		<div class="control-group">
 			<label class="control-label">身份证号:</label>
 			<div class="controls">
