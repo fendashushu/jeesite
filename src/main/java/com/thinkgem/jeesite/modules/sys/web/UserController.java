@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.entity.setting.MemberSetting;
 import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
+import com.thinkgem.jeesite.modules.core.service.setting.MemberSettingService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,6 +58,8 @@ public class UserController extends BaseController {
     private MemberService memberService;
 	@Autowired
     private BonusTotalService bonusTotalService;
+	@Autowired
+    private MemberSettingService memberSettingService;
 	
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
@@ -298,7 +302,8 @@ public class UserController extends BaseController {
 		member.setIsstore("0");
 		member.setActivate("0");
 		memberService.save(member);
-		bonusTotalService.excuteBonus(user,member);
+		MemberSetting memberSetting = memberSettingService.get("1");
+		bonusTotalService.excuteBonus(user,member,memberSetting);
 		// 清除当前用户缓存
 		if (user.getLoginName().equals(UserUtils.getUser().getLoginName())){
 			UserUtils.clearCache();

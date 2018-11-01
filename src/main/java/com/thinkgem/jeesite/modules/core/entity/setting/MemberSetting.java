@@ -45,9 +45,9 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 	private Integer tuidian2;		// 2级代理推店奖；15%
 	private Integer tuidian3;		// 3级代理推店奖；15%
 	private Integer zhou0;		// 会员周封顶；0
-	private Integer zhou1;		// 1级代理周封顶；3000
-	private Integer zhou2;		// 2级代理周封顶；6000
-	private Integer zhou3;		// 3级代理周封顶；8000
+	private Integer zhou1;		// 1级代理周封顶；30000
+	private Integer zhou2;		// 2级代理周封顶；60000
+	private Integer zhou3;		// 3级代理周封顶；80000
 	
 	public MemberSetting() {
 		super();
