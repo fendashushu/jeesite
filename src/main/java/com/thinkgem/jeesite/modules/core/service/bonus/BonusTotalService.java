@@ -164,35 +164,37 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
             }
             //管理奖，推荐人拿合作奖的n%
             String referee = member.getReferee();
-            Member memberR = memberDao.getMemberByLoginName(referee);//当前碰对的直推人
-            String levelR = member.getMemberlevel();
-            BonusTotal bonusTotalR = bonusTotalDao.getBonusTotalByLoginName(referee);//直推人的奖金表
-            BigDecimal guanli = BigDecimal.ZERO;
-            if(!"0".equals(levelR)){
-                if("1".equals(levelR)){
-                    guanli = hezuo.multiply(BigDecimal.valueOf(guanli1)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
-                }else if("2".equals(levelR)){
-                    guanli = hezuo.multiply(BigDecimal.valueOf(guanli2)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
-                }else{
-                    guanli = hezuo.multiply(BigDecimal.valueOf(guanli3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+            if(!"0".equals(referee)){
+                Member memberR = memberDao.getMemberByLoginName(referee);//当前碰对的直推人
+                String levelR = member.getMemberlevel();
+                BonusTotal bonusTotalR = bonusTotalDao.getBonusTotalByLoginName(referee);//直推人的奖金表
+                BigDecimal guanli = BigDecimal.ZERO;
+                if(!"0".equals(levelR)){
+                    if("1".equals(levelR)){
+                        guanli = hezuo.multiply(BigDecimal.valueOf(guanli1)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                    }else if("2".equals(levelR)){
+                        guanli = hezuo.multiply(BigDecimal.valueOf(guanli2)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                    }else{
+                        guanli = hezuo.multiply(BigDecimal.valueOf(guanli3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                    }
                 }
+
+                PvDetail pvDetail = new PvDetail();
+                pvDetail.setLoginName(referee);
+                pvDetail.setNote("管理奖");
+                pvDetail.setPvtotal(guanli);
+                pvDetail.setPvsheng(guanli.multiply(new BigDecimal(0.95)));
+                pvDetail.setPvdues(guanli.multiply(new BigDecimal(0.05)));
+                pvDetail.setPvtype("3");
+                pvDetail.setFromName(contact);
+                pvDetail.setZhuceName(zhuceName);
+                pvDetailService.save(pvDetail);
+
+                guanli = guanli.multiply(new BigDecimal(0.95));
+                bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
+                bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
+                bonusTotalDao.updateBouns(bonusTotalR);
             }
-
-            PvDetail pvDetail = new PvDetail();
-            pvDetail.setLoginName(contact);
-            pvDetail.setNote("管理奖");
-            pvDetail.setPvtotal(guanli);
-            pvDetail.setPvsheng(guanli.multiply(new BigDecimal(0.95)));
-            pvDetail.setPvdues(guanli.multiply(new BigDecimal(0.05)));
-            pvDetail.setPvtype("3");
-            pvDetail.setFromName(contact);
-            pvDetail.setZhuceName(zhuceName);
-            pvDetailService.save(pvDetail);
-
-            guanli = guanli.multiply(new BigDecimal(0.95));
-            bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
-            bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
-            bonusTotalDao.updateBouns(bonusTotalR);
         }
         bonusTotalDao.updateBouns(bonusTotal);
     }
