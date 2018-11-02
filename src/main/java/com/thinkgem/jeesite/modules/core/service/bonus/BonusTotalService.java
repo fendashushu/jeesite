@@ -9,9 +9,11 @@ import java.util.List;
 import com.thinkgem.jeesite.modules.core.dao.member.MemberDao;
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
 import com.thinkgem.jeesite.modules.core.entity.pv.PvTotal;
+import com.thinkgem.jeesite.modules.core.entity.pvdetail.PvDetail;
 import com.thinkgem.jeesite.modules.core.entity.setting.MemberSetting;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 import com.thinkgem.jeesite.modules.core.service.pv.PvTotalService;
+import com.thinkgem.jeesite.modules.core.service.pvdetail.PvDetailService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
     @Autowired
     private MemberDao memberDao;
     @Autowired
-    private PvTotalService pvTotalService;
+    private PvDetailService pvDetailService;
 
 	public BonusTotal get(String id) {
 		return super.get(id);
@@ -88,6 +90,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         Integer guanli3 = memberSetting.getGuanli3();
 
         String memberLevel = member.getMemberlevel();//注册会员级别
+        String fromName = member.getLoginName();
         String area = member.getArea();
         String contact = member.getContact();//接点人编号
         Member contactM = memberDao.getMemberByLoginName(contact);
@@ -103,16 +106,17 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                     bonus = BigDecimal.valueOf(pv3);
                 }
             }
-            setPv(contact,area,bonus,hezuo1,hezuo2,hezuo3,guanli1,guanli2,guanli3);
+            setPv(contact,area,bonus,hezuo1,hezuo2,hezuo3,guanli1,guanli2,guanli3,member.getLoginName(),fromName);
             contact = contactM.getContact();
             area = contactM.getArea();
+            fromName = contactM.getLoginName();
             contactM = memberDao.getMemberByLoginName(contact);
         }
 
     }
 
     //接点人及父级接点人添加pv
-    public void  setPv(String contact,String area,BigDecimal bonus,Integer hezuo1,Integer hezuo2,Integer hezuo3,Integer guanli1,Integer guanli2,Integer guanli3){
+    public void  setPv(String contact,String area,BigDecimal bonus,Integer hezuo1,Integer hezuo2,Integer hezuo3,Integer guanli1,Integer guanli2,Integer guanli3,String zhuceName,String fromName){
         BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(contact);//接点人奖金表
         if("A".equals(area)){
             bonusTotal.setApvTotal(bonusTotal.getApvTotal().add(bonus));
@@ -141,6 +145,17 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 }else{
                     hezuo = small.multiply(BigDecimal.valueOf(hezuo3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
                 }
+                PvDetail pvDetail = new PvDetail();
+                pvDetail.setLoginName(contact);
+                pvDetail.setNote("合作奖");
+                pvDetail.setPvtotal(hezuo);
+                pvDetail.setPvsheng(hezuo.multiply(new BigDecimal(0.95)));
+                pvDetail.setPvdues(hezuo.multiply(new BigDecimal(0.05)));
+                pvDetail.setPvtype("2");
+                pvDetail.setFromName(fromName);
+                pvDetail.setZhuceName(zhuceName);
+                pvDetailService.save(pvDetail);
+
                 hezuo = hezuo.multiply(new BigDecimal(0.95));
                 bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(hezuo));
                 bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(hezuo));
@@ -162,6 +177,18 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                     guanli = hezuo.multiply(BigDecimal.valueOf(guanli3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
                 }
             }
+
+            PvDetail pvDetail = new PvDetail();
+            pvDetail.setLoginName(contact);
+            pvDetail.setNote("管理奖");
+            pvDetail.setPvtotal(guanli);
+            pvDetail.setPvsheng(guanli.multiply(new BigDecimal(0.95)));
+            pvDetail.setPvdues(guanli.multiply(new BigDecimal(0.05)));
+            pvDetail.setPvtype("3");
+            pvDetail.setFromName(contact);
+            pvDetail.setZhuceName(zhuceName);
+            pvDetailService.save(pvDetail);
+
             guanli = guanli.multiply(new BigDecimal(0.95));
             bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
             bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
@@ -212,6 +239,17 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 }
             }
         }
+        PvDetail pvDetail = new PvDetail();
+        pvDetail.setLoginName(refree);
+        pvDetail.setNote("直推奖");
+        pvDetail.setPvtotal(bonus);
+        pvDetail.setPvsheng(bonus.multiply(new BigDecimal(0.95)));
+        pvDetail.setPvdues(bonus.multiply(new BigDecimal(0.05)));
+        pvDetail.setPvtype("1");
+        pvDetail.setFromName(member.getLoginName());
+        pvDetail.setZhuceName(member.getLoginName());
+        pvDetailService.save(pvDetail);
+
         bonus = bonus.multiply(new BigDecimal(0.95));
         BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(refree);//推荐人奖金表
         bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(bonus));
