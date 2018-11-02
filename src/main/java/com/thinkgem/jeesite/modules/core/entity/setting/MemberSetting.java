@@ -37,8 +37,8 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 	private Integer hezuo2;		// 2级代理合作奖；16%
 	private Integer hezuo3;		// 3级代理合作奖；18%
 	private Integer guanli0;		// 会员管理奖；0
-	private String guanli1;		// 1级代理管理奖；6%
-	private String guanli2;		// 2级代理管理奖；10%
+	private Integer guanli1;		// 1级代理管理奖；6%
+	private Integer guanli2;		// 2级代理管理奖；10%
 	private Integer guanli3;		// 3级代理管理奖；12%
 	private Integer tuidian0;		// 会员推店奖；0
 	private Integer tuidian1;		// 1级代理推店奖；10%
@@ -247,20 +247,20 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 	}
 	
 	@Length(min=1, max=11, message="1级代理管理奖；6%长度必须介于 1 和 11 之间")
-	public String getGuanli1() {
+	public Integer getGuanli1() {
 		return guanli1;
 	}
 
-	public void setGuanli1(String guanli1) {
+	public void setGuanli1(Integer guanli1) {
 		this.guanli1 = guanli1;
 	}
 	
 	@Length(min=1, max=11, message="2级代理管理奖；10%长度必须介于 1 和 11 之间")
-	public String getGuanli2() {
+	public Integer getGuanli2() {
 		return guanli2;
 	}
 
-	public void setGuanli2(String guanli2) {
+	public void setGuanli2(Integer guanli2) {
 		this.guanli2 = guanli2;
 	}
 	

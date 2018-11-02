@@ -266,6 +266,24 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "save")
 	public String save(User user, Member member, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	    String store = member.getStore();
+	    String referee = member.getReferee();
+        String contact = member.getContact();
+        Member storeM = memberService.getMemberByLoginName(store);
+        Member refereeM = memberService.getMemberByLoginName(referee);
+        Member contactM = memberService.getMemberByLoginName(contact);
+        if(storeM == null){
+            addMessage(redirectAttributes, "会员注册失败，请检查服务中心是否存在！");
+            return "redirect:" + adminPath + "/sys/user/net?repage";
+        }
+        if(refereeM == null){
+            addMessage(redirectAttributes, "会员注册失败，请检查推荐人是否存在！");
+            return "redirect:" + adminPath + "/sys/user/net?repage";
+        }
+        if(contactM == null){
+            addMessage(redirectAttributes, "会员注册失败，请检查接点人是否存在！");
+            return "redirect:" + adminPath + "/sys/user/net?repage";
+        }
 	    try {
             // 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
             user.setCompany(new Office("1"));

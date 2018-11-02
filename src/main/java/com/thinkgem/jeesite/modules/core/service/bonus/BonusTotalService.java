@@ -83,6 +83,10 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         Integer hezuo2 = memberSetting.getHezuo2();
         Integer hezuo3 = memberSetting.getHezuo3();
 
+        Integer guanli1 = memberSetting.getGuanli1();//直推奖比例1、2、3级
+        Integer guanli2 = memberSetting.getGuanli2();
+        Integer guanli3 = memberSetting.getGuanli3();
+
         String memberLevel = member.getMemberlevel();//注册会员级别
         String area = member.getArea();
         String contact = member.getContact();//接点人编号
@@ -99,7 +103,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                     bonus = BigDecimal.valueOf(pv3);
                 }
             }
-            setPv(contact,area,bonus);
+            setPv(contact,area,bonus,hezuo1,hezuo2,hezuo3,guanli1,guanli2,guanli3);
             contact = contactM.getContact();
             contactM = memberDao.getMemberByLoginName(contact);
         }
@@ -107,7 +111,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
     }
 
     //接点人及父级接点人添加pv
-    public void  setPv(String contact,String area,BigDecimal bonus){
+    public void  setPv(String contact,String area,BigDecimal bonus,Integer hezuo1,Integer hezuo2,Integer hezuo3,Integer guanli1,Integer guanli2,Integer guanli3){
         BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(contact);//接点人奖金表
         if("A".equals(area)){
             bonusTotal.setApvTotal(bonusTotal.getApvTotal().add(bonus));
@@ -115,6 +119,52 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         }else {
             bonusTotal.setBpvTotal(bonusTotal.getBpvTotal().add(bonus));
             bonusTotal.setBpv(bonusTotal.getBpv().add(bonus));
+        }
+        BigDecimal apv = bonusTotal.getApv();
+        BigDecimal bpv = bonusTotal.getBpv();
+        Member member = memberDao.getMemberByLoginName(contact);
+        String level = member.getMemberlevel();
+        BigDecimal small = BigDecimal.ZERO;
+        if(apv.compareTo(BigDecimal.ZERO)>0 && bpv.compareTo(BigDecimal.ZERO)>0){
+            if(apv.compareTo(bpv)>0){//A>B,按B区算
+                small = bpv;
+            }else{//B>A,按A区算
+                small = apv;
+            }
+            BigDecimal hezuo = BigDecimal.ZERO;//合作奖
+            if (!"0".equals(level)){
+                if("1".equals(level)){
+                    hezuo = small.multiply(BigDecimal.valueOf(hezuo1)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                }else if("2".equals(level)){
+                    hezuo = small.multiply(BigDecimal.valueOf(hezuo2)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                }else{
+                    hezuo = small.multiply(BigDecimal.valueOf(hezuo3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                }
+                hezuo = hezuo.multiply(new BigDecimal(0.95));
+                bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(hezuo));
+                bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(hezuo));
+                bonusTotal.setApv(bonusTotal.getApv().subtract(small));
+                bonusTotal.setBpv(bonusTotal.getBpv().subtract(small));
+            }
+            //管理奖，推荐人拿合作奖的n%
+            String referee = member.getReferee();
+            Member memberR = memberDao.getMemberByLoginName(referee);//当前碰对的直推人
+            String levelR = member.getMemberlevel();
+            BonusTotal bonusTotalR = bonusTotalDao.getBonusTotalByLoginName(referee);//直推人的奖金表
+            BigDecimal guanli = BigDecimal.ZERO;
+            if(!"0".equals(levelR)){
+                if("1".equals(levelR)){
+                    guanli = hezuo.multiply(BigDecimal.valueOf(guanli1)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                }else if("2".equals(levelR)){
+                    guanli = hezuo.multiply(BigDecimal.valueOf(guanli2)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                }else{
+                    guanli = hezuo.multiply(BigDecimal.valueOf(guanli3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+                }
+            }
+            guanli = guanli.multiply(new BigDecimal(0.95));
+            bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
+            bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
+            bonusTotalDao.updateBouns(bonusTotalR);
         }
         bonusTotalDao.updateBouns(bonusTotal);
     }
