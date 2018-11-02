@@ -105,6 +105,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
             }
             setPv(contact,area,bonus,hezuo1,hezuo2,hezuo3,guanli1,guanli2,guanli3);
             contact = contactM.getContact();
+            area = contactM.getArea();
             contactM = memberDao.getMemberByLoginName(contact);
         }
 
