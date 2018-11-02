@@ -25,6 +25,7 @@ public class PvTotal extends DataEntity<PvTotal> {
 	private BigDecimal kaifa;		// 开发代理店铺奖
 	private BigDecimal jinhuo;		// 店铺进货一盒12.5积分
 	private BigDecimal total;		// 扣税后奖金总额
+    private String fromMember;      //积分来源
 	
 	public PvTotal() {
 		super();
@@ -42,6 +43,15 @@ public class PvTotal extends DataEntity<PvTotal> {
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
 	}
+
+    @Length(min=1, max=100, message="积分来源长度必须介于 1 和 100 之间")
+    public String getFromMember() {
+        return fromMember;
+    }
+
+    public void setFromMember(String fromMember) {
+        this.fromMember = fromMember;
+    }
 
     public BigDecimal getZhitui() {
         return zhitui;
