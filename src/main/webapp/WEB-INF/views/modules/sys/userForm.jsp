@@ -93,8 +93,8 @@
                 <form:select path="memberlevel" class="input-xlarge">
                     <form:option value="0" label="会员[￥500]"/>
                     <form:option value="1" label="一级[￥1200]"/>
-                    <form:option value="2" label="一级[￥3600]"/>
-                    <form:option value="3" label="一级[￥7200]"/>
+                    <form:option value="2" label="二级[￥3600]"/>
+                    <form:option value="3" label="三级[￥7200]"/>
                 </form:select>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>

@@ -77,13 +77,13 @@
 
     <!-- 查询下级用户 -->
     <select id="getMemberNet" resultType="Member">
-        select a.*,u.name,u.status from
+        select a.*,u.name,u.status,b.apv,b.bpv,b.apv_total apvTotal,b.bpv_total bpvTotal from
             (select * from sys_member m where login_name=#{loginName} or Contact = #{loginName}
              union
              select * from sys_member where Contact in (
                  select login_name from sys_member where Contact = #{loginName})
-             order by create_date) a,sys_user u
-        where a.userId = u.id
+            ) a inner join sys_user u on a.userId = u.id
+            left join bonus_total b on a.login_name = b.login_name
     </select>
 
     <select id="getMemberByLoginName" resultType="Member">

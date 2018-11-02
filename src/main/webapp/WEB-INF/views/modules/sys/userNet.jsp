@@ -127,15 +127,15 @@
                     <td class="back" colspan="4" align="center">总计</td>
                 </tr>
                 <tr>
-                    <td class="back" align="center">240000</td>
-                    <td class="back" align="center">27000</td>
+                    <td class="back" align="center">${m1.apvTotal}</td>
+                    <td class="back" align="center">${m1.bpvTotal}</td>
                 </tr>
                 <tr>
                     <td class="back" colspan="4" align="center">结余</td>
                 </tr>
                 <tr>
-                    <td class="back" align="center">213000</td>
-                    <td class="back" align="center">0</td>
+                    <td class="back" align="center">${m1.apv}</td>
+                    <td class="back" align="center">${m1.bpv}</td>
                 </tr>
                 </tbody></table></td>
     </tr>
@@ -226,15 +226,15 @@
                             <td class="backa" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backa" align="center">4000</td>
-                            <td class="backa" align="center">230000</td>
+                            <td class="backa" align="center">${ma.apvTotal}</td>
+                            <td class="backa" align="center">${ma.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backa" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backa" align="center">0</td>
-                            <td class="backa" align="center">226000</td>
+                            <td class="backa" align="center">${ma.apv}</td>
+                            <td class="backa" align="center">${ma.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -331,15 +331,15 @@
                             <td class="backb" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backb" align="center">21000</td>
-                            <td class="backb" align="center">0</td>
+                            <td class="backb" align="center">${mb.apvTotal}</td>
+                            <td class="backb" align="center">${mb.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backb" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backb" align="center">21000</td>
-                            <td class="backb" align="center">0</td>
+                            <td class="backb" align="center">${mb.apv}</td>
+                            <td class="backb" align="center">${mb.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -441,15 +441,15 @@
                             <td class="backaa" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backaa" align="center">1000</td>
-                            <td class="backaa" align="center">0</td>
+                            <td class="backaa" align="center">${maa.apvTotal}</td>
+                            <td class="backaa" align="center">${maa.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backaa" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backaa" align="center">1000</td>
-                            <td class="backaa" align="center">0</td>
+                            <td class="backaa" align="center">${maa.apv}</td>
+                            <td class="backaa" align="center">${maa.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -551,15 +551,15 @@
                             <td class="backab" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backab" align="center">1000</td>
-                            <td class="backab" align="center">223000</td>
+                            <td class="backab" align="center">${mab.apvTotal}</td>
+                            <td class="backab" align="center">${mab.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backab" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backbb" align="center">0</td>
-                            <td class="backbb" align="center">222000</td>
+                            <td class="backbb" align="center">${mab.apv}</td>
+                            <td class="backbb" align="center">${mab.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -654,15 +654,15 @@
                             <td class="backba" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backba" align="center">15000</td>
-                            <td class="backba" align="center">0</td>
+                            <td class="backba" align="center">${mba.apvTotal}</td>
+                            <td class="backba" align="center">${mba.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backba"colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backba" align="center">15000</td>
-                            <td class="backba" align="center">0</td>
+                            <td class="backba" align="center">${mba.apv}</td>
+                            <td class="backba" align="center">${mba.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -764,15 +764,15 @@
                             <td class="backbb" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backbb" align="center">15000</td>
-                            <td class="backbb" align="center">0</td>
+                            <td class="backbb" align="center">${mbb.apvTotal}</td>
+                            <td class="backbb" align="center">${mbb.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backbb"colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backbb" align="center">15000</td>
-                            <td class="backbb" align="center">0</td>
+                            <td class="backbb" align="center">${mbb.apv}</td>
+                            <td class="backbb" align="center">${mbb.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>

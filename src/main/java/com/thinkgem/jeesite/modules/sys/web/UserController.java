@@ -266,50 +266,55 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "save")
 	public String save(User user, Member member, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		// 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
-		user.setCompany(new Office("1"));
-		user.setOffice(new Office("2"));
-		// 如果新密码为空，则不更换密码
-		if (StringUtils.isNotBlank(user.getNewPassword())) {
-			user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
-		}
+	    try {
+            // 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
+            user.setCompany(new Office("1"));
+            user.setOffice(new Office("2"));
+            // 如果新密码为空，则不更换密码
+            if (StringUtils.isNotBlank(user.getNewPassword())) {
+                user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
+            }
 		/*if (StringUtils.isNotBlank(user.getNewPassword2())) {
 			user.setPassword2(SystemService.entryptPassword(user.getNewPassword2()));
 		}*/
-        user.setPassword2(SystemService.entryptPassword("123456"));
-		if (!beanValidator(model, user)){
-			return form(user, model);
-		}
-		if (!"true".equals(checkLoginName(user.getOldLoginName(), user.getLoginName()))){
-			addMessage(model, "保存用户'" + user.getLoginName() + "'失败，登录名已存在");
-			return form(user, model);
-		}
-		// 角色数据有效性验证，过滤不在授权内的角色
-		List<Role> roleList = Lists.newArrayList();
-		List<String> roleIdList = user.getRoleIdList();
-		for (Role r : systemService.findAllRole()){
-			if (roleIdList.contains(r.getId())){
-				roleList.add(r);
-			}
-		}
-		user.setRoleList(roleList);
-		// 保存用户信息
-        user.setStatus(1);
-		systemService.saveUser(user);
-		member.setUserid(user.getId());
-        Member member1 = memberService.getMemberByLoginName(member.getReferee());
-        member.setReferees(member1.getReferees()+","+member.getReferee());
-		member.setIsstore("0");
-		member.setActivate("0");
-		memberService.save(member);
-		MemberSetting memberSetting = memberSettingService.get("1");
-		bonusTotalService.excuteBonus(user,member,memberSetting);
-		// 清除当前用户缓存
-		if (user.getLoginName().equals(UserUtils.getUser().getLoginName())){
-			UserUtils.clearCache();
-			//UserUtils.getCacheMap().clear();
-		}
-		addMessage(redirectAttributes, "保存用户'" + user.getLoginName() + "'成功");
+            user.setPassword2(SystemService.entryptPassword("123456"));
+            if (!beanValidator(model, user)){
+                return form(user, model);
+            }
+            if (!"true".equals(checkLoginName(user.getOldLoginName(), user.getLoginName()))){
+                addMessage(model, "保存用户'" + user.getLoginName() + "'失败，登录名已存在");
+                return form(user, model);
+            }
+            // 角色数据有效性验证，过滤不在授权内的角色
+            List<Role> roleList = Lists.newArrayList();
+            List<String> roleIdList = user.getRoleIdList();
+            for (Role r : systemService.findAllRole()){
+                if (roleIdList.contains(r.getId())){
+                    roleList.add(r);
+                }
+            }
+            user.setRoleList(roleList);
+            // 保存用户信息
+            user.setStatus(1);
+            systemService.saveUser(user);
+            member.setUserid(user.getId());
+            Member member1 = memberService.getMemberByLoginName(member.getReferee());
+            member.setReferees(member1.getReferees()+","+member.getReferee());
+            member.setIsstore("0");
+            member.setActivate("0");
+            memberService.save(member);
+            MemberSetting memberSetting = memberSettingService.get("1");
+            bonusTotalService.excuteBonus(user,member,memberSetting);
+            // 清除当前用户缓存
+            if (user.getLoginName().equals(UserUtils.getUser().getLoginName())){
+                UserUtils.clearCache();
+                //UserUtils.getCacheMap().clear();
+            }
+            addMessage(redirectAttributes, "会员注册'" + user.getLoginName() + "'成功");
+        }catch (Exception e){
+            addMessage(redirectAttributes, "会员注册失败请检查服务中心、接点人、推荐人是否正确！");
+        }
+
 		return "redirect:" + adminPath + "/sys/user/net?repage";
 	}
 	

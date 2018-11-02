@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import java.math.BigDecimal;
+
 /**
  * 会员Entity
  * @author 李延明
@@ -35,6 +37,10 @@ public class Member extends DataEntity<Member> {
 	private String name;
 	private String status;
 	private String referees;
+	private BigDecimal apv;
+	private BigDecimal bpv;
+	private BigDecimal apvTotal;
+	private BigDecimal bpvTotal;
 
 	public Member() {
 		super();
@@ -213,5 +219,36 @@ public class Member extends DataEntity<Member> {
 	public void setActivate(String activate) {
 		this.activate = activate;
 	}
-	
+
+    public BigDecimal getApv() {
+        return apv;
+    }
+
+    public void setApv(BigDecimal apv) {
+        this.apv = apv;
+    }
+
+    public BigDecimal getBpv() {
+        return bpv;
+    }
+
+    public void setBpv(BigDecimal bpv) {
+        this.bpv = bpv;
+    }
+
+    public BigDecimal getApvTotal() {
+        return apvTotal;
+    }
+
+    public void setApvTotal(BigDecimal apvTotal) {
+        this.apvTotal = apvTotal;
+    }
+
+    public BigDecimal getBpvTotal() {
+        return bpvTotal;
+    }
+
+    public void setBpvTotal(BigDecimal bpvTotal) {
+        this.bpvTotal = bpvTotal;
+    }
 }

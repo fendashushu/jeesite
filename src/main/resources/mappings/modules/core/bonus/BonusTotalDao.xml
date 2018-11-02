@@ -134,7 +134,11 @@
 	<update id="updateBouns">
 		UPDATE bonus_total SET
 			bonus_total = #{bonusTotal},
-			bonus_current = #{bonusCurrent}
+			bonus_current = #{bonusCurrent},
+            apv_total = #{apvTotal},
+            bpv_total = #{bpvTotal},
+            apv = #{apv},
+            bpv = #{bpv}
 		WHERE login_name = #{loginName}
 	</update>
 	

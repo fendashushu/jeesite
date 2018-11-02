@@ -64,52 +64,76 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
 	//注册会员后开始计算奖金
     @Transactional(readOnly = false)
     public void excuteBonus(User user, Member member,MemberSetting memberSetting){
-	    Integer pv1 = memberSetting.getPv1();//1、2、3级代理奖金级别
-	    Integer pv2 = memberSetting.getPv2();
-	    Integer pv3 = memberSetting.getPv3();
-        //直推奖，推荐人奖金=注册人级别pv*推荐人级别zhuitui
-        Integer zhitui1 = memberSetting.getZhitui1();//直推奖比例1、2、3级
-        Integer zhitui2 = memberSetting.getZhitui2();
-        Integer zhitui3 = memberSetting.getZhitui3();
+        zhitui(member,memberSetting);
+        hezuo(member,memberSetting);
 
-        //直推奖，推荐人奖金=注册人级别pv*推荐人级别zhuitui
+       /* PvTotal pvTotal = new PvTotal();
+        pvTotal.setLoginName(refree);
+        pvTotal.setZhitui(zhitui);
+        pvTotal.setFromMember(user.getLoginName());
+        pvTotalService.save(pvTotal);*/
+    }
+
+    public void hezuo(Member member,MemberSetting memberSetting) {
+        Integer pv1 = memberSetting.getPv1();//1、2、3级代理奖金级别
+        Integer pv2 = memberSetting.getPv2();
+        Integer pv3 = memberSetting.getPv3();
+
         Integer hezuo1 = memberSetting.getHezuo1();//直推奖比例1、2、3级
         Integer hezuo2 = memberSetting.getHezuo2();
         Integer hezuo3 = memberSetting.getHezuo3();
 
         String memberLevel = member.getMemberlevel();//注册会员级别
+        String area = member.getArea();
+        String contact = member.getContact();//接点人编号
+        Member contactM = memberDao.getMemberByLoginName(contact);
+        String contactLevel = contactM.getMemberlevel();//接点人级别
+        while (!"0".equals(contact.trim())){
+            BigDecimal bonus = BigDecimal.ZERO;
+            if(!"0".equals(memberLevel) && !"0".equals(contactLevel)) {//普通会员不计算
+                if("1".equals(memberLevel)) {//pv1
+                    bonus = BigDecimal.valueOf(pv1);
+                }else if("2".equals(memberLevel)){
+                    bonus = BigDecimal.valueOf(pv2);
+                }else{
+                    bonus = BigDecimal.valueOf(pv3);
+                }
+            }
+            setPv(contact,area,bonus);
+            contact = contactM.getContact();
+            contactM = memberDao.getMemberByLoginName(contact);
+        }
 
+    }
+
+    //接点人及父级接点人添加pv
+    public void  setPv(String contact,String area,BigDecimal bonus){
+        BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(contact);//接点人奖金表
+        if("A".equals(area)){
+            bonusTotal.setApvTotal(bonusTotal.getApvTotal().add(bonus));
+            bonusTotal.setApv(bonusTotal.getApv().add(bonus));
+        }else {
+            bonusTotal.setBpvTotal(bonusTotal.getBpvTotal().add(bonus));
+            bonusTotal.setBpv(bonusTotal.getBpv().add(bonus));
+        }
+        bonusTotalDao.updateBouns(bonusTotal);
+    }
+
+    public void zhitui(Member member,MemberSetting memberSetting){
+        BigDecimal bonus = BigDecimal.ZERO;
+        Integer pv1 = memberSetting.getPv1();//1、2、3级代理奖金级别
+        Integer pv2 = memberSetting.getPv2();
+        Integer pv3 = memberSetting.getPv3();
+        //直推奖，推荐人奖金=注册人级别pv*推荐人级别zhuitui
+        Integer zhitui1 = memberSetting.getZhitui1();//直推奖比例1、2、3级
+        Integer zhitui2 = memberSetting.getZhitui2();
+        Integer zhitui3 = memberSetting.getZhitui3();
+
+        String memberLevel = member.getMemberlevel();//注册会员级别
         String refree = member.getReferee();//推荐人编号
         Member refreeM = memberDao.getMemberByLoginName(refree);
         String refreeLevel = refreeM.getMemberlevel();//推荐人级别
 
-        String contact = member.getContact();//接点人编号
-        Member contactM = memberDao.getMemberByLoginName(contact);
-        String contactLevel = contactM.getMemberlevel();//接点人级别
-
-        BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(refree);//推荐人奖金表
-
-        BigDecimal zhitui = zhitui(memberLevel,refreeLevel,pv1,pv2,pv3,zhitui1,zhitui2,zhitui3);
-        //BigDecimal hezuo = hezuo(memberLevel,contactLevel,pv1,pv2,pv3,zhitui1,zhitui2,zhitui3);
-
-        bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(zhitui));
-        bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(zhitui));
-        bonusTotalDao.updateBouns(bonusTotal);
-
-
-        PvTotal pvTotal = new PvTotal();
-        pvTotal.setLoginName(refree);
-        pvTotal.setZhitui(zhitui);
-        pvTotalService.save(pvTotal);
-    }
-
-    private BigDecimal hezuo(String memberLevel,String contactLevel,Integer pv1,Integer pv2,Integer pv3,Integer hezuo1,Integer hezuo2,Integer hezuo3) {
-        BigDecimal bonus = BigDecimal.ZERO;
-        return bonus;
-    }
-
-    private BigDecimal zhitui(String memberLevel,String refreeLevel,Integer pv1,Integer pv2,Integer pv3,Integer zhitui1,Integer zhitui2,Integer zhitui3){
-        BigDecimal bonus = BigDecimal.ZERO;
         if(!"0".equals(memberLevel) && !"0".equals(refreeLevel)){//普通会员不计算
             if("1".equals(memberLevel)){//pv1
                 if("1".equals(refreeLevel)){//zhitui1
@@ -138,6 +162,9 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
             }
         }
         bonus = bonus.multiply(new BigDecimal(0.95));
-        return  bonus;
+        BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(refree);//推荐人奖金表
+        bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(bonus));
+        bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(bonus));
+        bonusTotalDao.updateBouns(bonusTotal);
     }
 }
