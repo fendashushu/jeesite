@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.core.dao.pvdetail.PvDetailDao">
+    
+	<sql id="pvDetailColumns">
+		a.id AS "id",
+		a.login_name AS "loginName",
+		a.from_name AS "fromName",
+		a.zhuce_name AS "zhuceName",
+		a.pvtotal AS "pvtotal",
+		a.pvsheng AS "pvsheng",
+		a.pvdues AS "pvdues",
+		a.pvtype AS "pvtype",
+		a.note AS "note",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="pvDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="PvDetail">
+		SELECT 
+			<include refid="pvDetailColumns"/>
+		FROM pv_detail a
+		<include refid="pvDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="PvDetail">
+		SELECT 
+			<include refid="pvDetailColumns"/>
+		FROM pv_detail a
+		<include refid="pvDetailJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PvDetail">
+		SELECT 
+			<include refid="pvDetailColumns"/>
+		FROM pv_detail a
+		<include refid="pvDetailJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO pv_detail(
+			id,
+			login_name,
+			from_name,
+			zhuce_name,
+			pvtotal,
+			pvsheng,
+			pvdues,
+			pvtype,
+			note,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{loginName},
+			#{fromName},
+			#{zhuceName},
+			#{pvtotal},
+			#{pvsheng},
+			#{pvdues},
+			#{pvtype},
+			#{note},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE pv_detail SET 	
+			login_name = #{loginName},
+			from_name = #{fromName},
+			zhuce_name = #{zhuceName},
+			pvtotal = #{pvtotal},
+			pvsheng = #{pvsheng},
+			pvdues = #{pvdues},
+			pvtype = #{pvtype},
+			note = #{note},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE pv_detail SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
