@@ -26,7 +26,9 @@
 		<input id="createDate" name="createDate" type="hidden" value="${createDate}"/>
 		<ul class="ul-form">
             <li><label>会员编号：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-medium"/></li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+                <input class="btn btn-primary" type="button" onclick="history.go(-1)" value="返回"/>
+            </li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
