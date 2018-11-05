@@ -6,6 +6,9 @@ package com.thinkgem.jeesite.modules.core.dao.pvdetail;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.core.entity.pvdetail.PvDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * 积分详情DAO接口
@@ -14,5 +17,5 @@ import com.thinkgem.jeesite.modules.core.entity.pvdetail.PvDetail;
  */
 @MyBatisDao
 public interface PvDetailDao extends CrudDao<PvDetail> {
-	
+    public List<PvDetail> getDetails(PvDetail pvDetail);
 }

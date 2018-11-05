@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.core.service.pvdetail;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,8 @@ import com.thinkgem.jeesite.modules.core.dao.pvdetail.PvDetailDao;
 @Service
 @Transactional(readOnly = true)
 public class PvDetailService extends CrudService<PvDetailDao, PvDetail> {
+    @Autowired
+    private PvDetailDao pvDetailDao;
 
 	public PvDetail get(String id) {
 		return super.get(id);
@@ -29,6 +32,12 @@ public class PvDetailService extends CrudService<PvDetailDao, PvDetail> {
 	public List<PvDetail> findList(PvDetail pvDetail) {
 		return super.findList(pvDetail);
 	}
+
+    public Page<PvDetail> getDetails(Page<PvDetail> page,PvDetail pvDetail) {
+        pvDetail.setPage(page);
+        page.setList(pvDetailDao.getDetails(pvDetail));
+        return page;
+    }
 	
 	public Page<PvDetail> findPage(Page<PvDetail> page, PvDetail pvDetail) {
 		return super.findPage(page, pvDetail);

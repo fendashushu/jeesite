@@ -33,7 +33,7 @@
 		<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 		<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
 		<sys:message content="${message}"/>
-		<div class="control-group">
+		<%--<div class="control-group">
 			<label class="control-label">头像:</label>
 			<div class="controls">
 				<form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="input-xlarge"/>
@@ -51,7 +51,7 @@
 			<div class="controls">
 				<label class="lbl">${user.office.name}</label>
 			</div>
-		</div>
+		</div>--%>
 		<div class="control-group">
 			<label class="control-label">姓名:</label>
 			<div class="controls">
@@ -82,7 +82,7 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<%--<div class="control-group">
 			<label class="control-label">用户类型:</label>
 			<div class="controls">
 				<label class="lbl">${fns:getDictLabel(user.userType, 'sys_user_type', '无')}</label>
@@ -93,7 +93,7 @@
 			<div class="controls">
 				<label class="lbl">${user.roleNames}</label>
 			</div>
-		</div>
+		</div>--%>
 		<div class="control-group">
 			<label class="control-label">上次登录:</label>
 			<div class="controls">

@@ -20,30 +20,27 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/core/pvdetail/pvDetail/">积分详情列表</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="pvDetail" action="${ctx}/core/pvdetail/pvDetail/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="pvDetail" action="${ctx}/core/pvdetail/pvDetail/detail" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
-		<%--<ul class="ul-form">
+		<input id="createDate" name="createDate" type="hidden" value="${createDate}"/>
+		<ul class="ul-form">
             <li><label>会员编号：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-medium"/></li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
-		</ul>--%>
+		</ul>
 	</form:form>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
 				<th>日期</th>
-				<th>直推奖</th>
+				<th>会员编号</th>
+				<th>奖金</th>
 				<th>互助基金</th>
                 <th>可提现金额</th>
-				<th>合作奖</th>
-                <th>互助基金</th>
-                <th>可提现金额</th>
-				<th>管理奖</th>
-                <th>互助基金</th>
-                <th>可提现金额</th>
-				<shiro:hasPermission name="core:pvdetail:pvDetail:edit"><th>操作</th></shiro:hasPermission>
+                <th>备注</th>
+                <th>相关会员</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -53,38 +50,23 @@
 					<fmt:formatDate value="${pvDetail.createDate}" pattern="yyyy-MM-dd"/>
 				</td>
 				<td>
-					${pvDetail.pvTotal1}
+					${pvDetail.loginName}
 				</td>
 				<td>
-					${pvDetail.pvDues1}
+					${pvDetail.pvTotal}
 				</td>
 				<td>
-					${pvDetail.pvSheng1}
+					${pvDetail.pvDues}
 				</td>
 				<td>
-					${pvDetail.pvTotal2}
+					${pvDetail.pvSheng}
 				</td>
 				<td>
-					${pvDetail.pvDues2}
+					${pvDetail.note}
 				</td>
 				<td>
-					${pvDetail.pvSheng2}
+					${pvDetail.zhuceName}
 				</td>
-				<td>
-					${pvDetail.pvTotal3}
-				</td>
-				<td>
-					${pvDetail.pvDues3}
-				</td>
-				<td>
-					${pvDetail.pvSheng3}
-				</td>
-
-                <shiro:hasPermission name="sys:user:edit">
-                <td>
-                    <a href="${ctx}/core/pvdetail/pvDetail/detail?createDate=<fmt:formatDate value="${pvDetail.createDate}" pattern="yyyy-MM-dd"/>">查看</a>
-                </td>
-                </shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>

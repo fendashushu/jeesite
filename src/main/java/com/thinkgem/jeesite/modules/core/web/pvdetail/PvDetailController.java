@@ -22,6 +22,9 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.pvdetail.PvDetail;
 import com.thinkgem.jeesite.modules.core.service.pvdetail.PvDetailService;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * 积分详情Controller
  * @author li
@@ -52,6 +55,19 @@ public class PvDetailController extends BaseController {
 		Page<PvDetail> page = pvDetailService.findPage(new Page<PvDetail>(request, response), pvDetail); 
 		model.addAttribute("page", page);
 		return "modules/core/pvdetail/pvDetailList";
+	}
+
+	@RequiresPermissions("core:pvdetail:pvDetail:view")
+	@RequestMapping(value = {"detail"})
+	public String detail(PvDetail pvDetail, HttpServletRequest request, HttpServletResponse response, Model model) {
+        String createDate = request.getParameter("createDate");
+        String loginName = request.getParameter("loginName");
+        pvDetail.setPvDate(createDate);
+        pvDetail.setLoginName(loginName);
+        Page<PvDetail> page = pvDetailService.getDetails(new Page<PvDetail>(request, response), pvDetail);
+        model.addAttribute("page", page);
+        model.addAttribute("createDate", createDate);
+		return "modules/core/pvdetail/pvDetailDetail";
 	}
 
 	@RequiresPermissions("core:pvdetail:pvDetail:view")

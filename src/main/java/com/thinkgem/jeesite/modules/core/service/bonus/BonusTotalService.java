@@ -148,9 +148,9 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 PvDetail pvDetail = new PvDetail();
                 pvDetail.setLoginName(contact);
                 pvDetail.setNote("合作奖");
-                pvDetail.setPvtotal(hezuo);
-                pvDetail.setPvsheng(hezuo.multiply(new BigDecimal(0.95)));
-                pvDetail.setPvdues(hezuo.multiply(new BigDecimal(0.05)));
+                pvDetail.setPvTotal(hezuo);
+                pvDetail.setPvSheng(hezuo.multiply(new BigDecimal(0.95)));
+                pvDetail.setPvDues(hezuo.multiply(new BigDecimal(0.05)));
                 pvDetail.setPvtype("2");
                 pvDetail.setFromName(fromName);
                 pvDetail.setZhuceName(zhuceName);
@@ -182,9 +182,9 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 PvDetail pvDetail = new PvDetail();
                 pvDetail.setLoginName(referee);
                 pvDetail.setNote("管理奖");
-                pvDetail.setPvtotal(guanli);
-                pvDetail.setPvsheng(guanli.multiply(new BigDecimal(0.95)));
-                pvDetail.setPvdues(guanli.multiply(new BigDecimal(0.05)));
+                pvDetail.setPvTotal(guanli);
+                pvDetail.setPvSheng(guanli.multiply(new BigDecimal(0.95)));
+                pvDetail.setPvDues(guanli.multiply(new BigDecimal(0.05)));
                 pvDetail.setPvtype("3");
                 pvDetail.setFromName(contact);
                 pvDetail.setZhuceName(zhuceName);
@@ -244,9 +244,9 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         PvDetail pvDetail = new PvDetail();
         pvDetail.setLoginName(refree);
         pvDetail.setNote("直推奖");
-        pvDetail.setPvtotal(bonus);
-        pvDetail.setPvsheng(bonus.multiply(new BigDecimal(0.95)));
-        pvDetail.setPvdues(bonus.multiply(new BigDecimal(0.05)));
+        pvDetail.setPvTotal(bonus);
+        pvDetail.setPvSheng(bonus.multiply(new BigDecimal(0.95)));
+        pvDetail.setPvDues(bonus.multiply(new BigDecimal(0.05)));
         pvDetail.setPvtype("1");
         pvDetail.setFromName(member.getLoginName());
         pvDetail.setZhuceName(member.getLoginName());
