@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import java.math.BigDecimal;
+
 /**
  * 充值Entity
  * @author li
@@ -17,11 +19,10 @@ public class PvRecharge extends DataEntity<PvRecharge> {
 	private static final long serialVersionUID = 1L;
 	private String loginName;		// 会员编号
 	private String name;		// 会员
-	private String amount;		// 金额
+	private BigDecimal amount;		// 金额
 	private String amountType;		// 货币类型
 	private String status;		// 发放状态;0:未发放；1：已发放
-	private String reateBy;		// 创建者
-	
+
 	public PvRecharge() {
 		super();
 	}
@@ -47,16 +48,16 @@ public class PvRecharge extends DataEntity<PvRecharge> {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getAmount() {
-		return amount;
-	}
 
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
-	
-	@Length(min=0, max=2, message="货币类型长度必须介于 0 和 2 之间")
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    @Length(min=0, max=2, message="货币类型长度必须介于 0 和 2 之间")
 	public String getAmountType() {
 		return amountType;
 	}
@@ -72,15 +73,6 @@ public class PvRecharge extends DataEntity<PvRecharge> {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-	
-	@Length(min=1, max=64, message="创建者长度必须介于 1 和 64 之间")
-	public String getReateBy() {
-		return reateBy;
-	}
-
-	public void setReateBy(String reateBy) {
-		this.reateBy = reateBy;
 	}
 	
 }

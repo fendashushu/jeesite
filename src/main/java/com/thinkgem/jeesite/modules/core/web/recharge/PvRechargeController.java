@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.core.web.recharge;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,6 +69,11 @@ public class PvRechargeController extends BaseController {
 		if (!beanValidator(model, pvRecharge)){
 			return form(pvRecharge, model);
 		}
+		User user = UserUtils.getUser();
+		pvRecharge.setAmountType("1");
+		pvRecharge.setLoginName(user.getLoginName());
+		pvRecharge.setName(user.getName());
+		pvRecharge.setStatus("1");
 		pvRechargeService.save(pvRecharge);
 		addMessage(redirectAttributes, "保存充值成功");
 		return "redirect:"+Global.getAdminPath()+"/core/recharge/pvRecharge/?repage";

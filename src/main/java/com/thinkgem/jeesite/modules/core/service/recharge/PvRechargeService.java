@@ -5,6 +5,9 @@ package com.thinkgem.jeesite.modules.core.service.recharge;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.core.dao.bonus.BonusTotalDao;
+import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,8 @@ import com.thinkgem.jeesite.modules.core.dao.recharge.PvRechargeDao;
 @Service
 @Transactional(readOnly = true)
 public class PvRechargeService extends CrudService<PvRechargeDao, PvRecharge> {
+    @Autowired
+    private BonusTotalDao bonusTotalDao;
 
 	public PvRecharge get(String id) {
 		return super.get(id);
@@ -37,6 +42,12 @@ public class PvRechargeService extends CrudService<PvRechargeDao, PvRecharge> {
 	@Transactional(readOnly = false)
 	public void save(PvRecharge pvRecharge) {
 		super.save(pvRecharge);
+        BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(pvRecharge.getLoginName());
+        if (bonusTotal != null){
+            bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(pvRecharge.getAmount()));
+            bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(pvRecharge.getAmount()));
+            bonusTotalDao.updateBouns(bonusTotal);
+        }
 	}
 	
 	@Transactional(readOnly = false)

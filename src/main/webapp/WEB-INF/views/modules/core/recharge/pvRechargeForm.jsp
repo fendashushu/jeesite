@@ -39,7 +39,7 @@
 				<form:input path="amount" htmlEscape="false" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label">货币类型：</label>
 			<div class="controls">
 				<form:input path="amountType" htmlEscape="false" maxlength="2" class="input-xlarge "/>
