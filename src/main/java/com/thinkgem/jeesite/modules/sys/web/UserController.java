@@ -127,6 +127,8 @@ public class UserController extends BaseController {
 		//Page<User> page = systemService.findUser(new Page<User>(request, response), user);
         //model.addAttribute("page", page);
         User user = UserUtils.getUser();
+        Member mCurrent = memberService.getMemberByLoginName(user.getLoginName());
+        model.addAttribute("isstore",mCurrent.getIsstore());//是否为服务中心
         if(loginName != null && !"".equals(loginName)){
             user = systemService.getUserByLoginName(loginName);
         }

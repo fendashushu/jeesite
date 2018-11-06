@@ -69,6 +69,7 @@
             <input name="submin" type="submit" class="button_blue" id="submin" onclick="search()" style="margin-bottom: 10px;" value="查  询">
             <input  class="button_blue" onclick="history.go(-1)" type="button" value="返回上一级" style="margin-bottom: 10px;">
         </td>
+        <td style="background:#f7f0f0" align="center" class="ziti">会员</td>
         <td style="background:#ffb3a7" align="center" class="ziti">银卡</td>
         <td style="background:#a4e2c6" align="center" class="ziti">金卡</td>
         <td style="background:#eedeb0" align="center" class="ziti">钻卡</td>
@@ -78,6 +79,11 @@
     <tr>
             <style>
         <c:choose>
+        <c:when test="${m1.memberlevel eq '0'}">
+            .back{
+            background:#f7f0f0 !important;
+            }
+        </c:when>
         <c:when test="${m1.memberlevel eq '1'}">
             .back{
             background:#ffb3a7 !important;
@@ -146,6 +152,11 @@
     <tr>
             <style>
                 <c:choose>
+                <c:when test="${ma.memberlevel eq '0'}">
+                .backa{
+                    background:#f7f0f0 !important;
+                }
+                </c:when>
                 <c:when test="${ma.memberlevel eq '1'}">
                 .backa{
                     background:#ffb3a7 !important;
@@ -185,7 +196,16 @@
                 <td width="50%" colspan="2" align="center">
                     <table width="120" cellpadding="3" cellspacing="1" border="0" class="table table-striped table-bordered table-condensed tree_table" style="width: 20%;text-align: center !important;">
                         <tbody><tr>
-                            <td style="background: #d8d1d1;" colspan="4" align="center"><a href="${ctx}/sys/user/form?store=${m1.loginName}&contact=${m1.loginName}&area=A">注册</a></td>
+                            <td style="background: #d8d1d1;" colspan="4" align="center">
+                                <c:choose>
+                                    <c:when test="${m1.memberlevel=='0' || isstore=='0'}">
+                                        注册
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${ctx}/sys/user/form?store=${m1.loginName}&contact=${m1.loginName}&area=A">注册</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                         <tr>
                             <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
@@ -248,7 +268,7 @@
                         <tbody><tr>
                             <td style="background: #d8d1d1;" colspan="4" align="center">
                                 <c:choose>
-                                    <c:when test="${m1.memberlevel=='0'}">
+                                    <c:when test="${m1.memberlevel=='0' || isstore=='0'}">
                                         注册
                                     </c:when>
                                     <c:otherwise>
@@ -284,6 +304,11 @@
                 <td width="50%" colspan="2" align="center">
                     <style>
                         <c:choose>
+                        <c:when test="${mb.memberlevel eq '0'}">
+                        .backb{
+                            background:#f7f0f0 !important;
+                        }
+                        </c:when>
                         <c:when test="${mb.memberlevel eq '1'}">
                         .backb{
                             background:#ffb3a7 !important;
@@ -358,7 +383,7 @@
                         <tbody><tr>
                             <td style="background: #d8d1d1;" colspan="4" align="center">
                                 <c:choose>
-                                    <c:when test="${empty ma}">
+                                    <c:when test="${empty ma  || isstore=='0'}">
                                        注册
                                     </c:when>
                                     <c:otherwise>
@@ -393,6 +418,11 @@
                 <td align="center" valign="top">
                     <style>
                         <c:choose>
+                        <c:when test="${maa.memberlevel eq '0'}">
+                        .backaa{
+                            background:#f7f0f0 !important;
+                        }
+                        </c:when>
                         <c:when test="${maa.memberlevel eq '1'}">
                         .backaa{
                             background:#ffb3a7 !important;
@@ -462,7 +492,7 @@
                         <tbody><tr>
                             <td style="background: #d8d1d1;" colspan="4" align="center">
                                 <c:choose>
-                                    <c:when test="${empty ma}">
+                                    <c:when test="${empty ma  || isstore=='0'}">
                                         注册
                                     </c:when>
                                     <c:otherwise>
@@ -504,6 +534,11 @@
                 <td align="center" valign="top">
                     <style>
                         <c:choose>
+                        <c:when test="${mab.memberlevel eq '0'}">
+                        .backab{
+                            background:#f7f0f0 !important;
+                        }
+                        </c:when>
                         <c:when test="${mab.memberlevel eq '1'}">
                         .backab{
                             background:#ffb3a7 !important;
@@ -572,7 +607,7 @@
                         <tbody><tr>
                             <td style="background: #d8d1d1;" colspan="4" align="center">
                                 <c:choose>
-                                    <c:when test="${empty mb}">
+                                    <c:when test="${empty mb  || isstore=='0'}">
                                         注册
                                     </c:when>
                                     <c:otherwise>
@@ -607,6 +642,11 @@
                 <td align="center" valign="top">
                     <style>
                         <c:choose>
+                        <c:when test="${mba.memberlevel eq '0'}">
+                        .backba{
+                            background:#f7f0f0 !important;
+                        }
+                        </c:when>
                         <c:when test="${mba.memberlevel eq '1'}">
                         .backba{
                             background:#ffb3a7 !important;
@@ -675,7 +715,7 @@
                         <tbody><tr>
                             <td style="background: #d8d1d1;" colspan="4" align="center">
                                 <c:choose>
-                                    <c:when test="${empty mb}">
+                                    <c:when test="${empty mb  || isstore=='0'}">
                                         注册
                                     </c:when>
                                     <c:otherwise>
@@ -717,6 +757,11 @@
                 <td align="center" valign="top">
                     <style>
                         <c:choose>
+                        <c:when test="${mbb.memberlevel eq '0'}">
+                        .backbb{
+                            background:#f7f0f0 !important;
+                        }
+                        </c:when>
                         <c:when test="${mbb.memberlevel eq '1'}">
                         .backbb{
                             background:#ffb3a7 !important;
