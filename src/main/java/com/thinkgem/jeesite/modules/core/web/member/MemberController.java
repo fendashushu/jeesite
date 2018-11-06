@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.core.web.member;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
+import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -24,6 +26,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 
+import java.math.BigDecimal;
+
 /**
  * 会员Controller
  * @author 李延明
@@ -35,7 +39,9 @@ public class MemberController extends BaseController {
 
 	@Autowired
 	private MemberService memberService;
-	
+	@Autowired
+	private BonusTotalService bonusTotalService;
+
 	@ModelAttribute
 	public Member get(@RequestParam(required=false) String id) {
 		Member entity = null;
@@ -64,6 +70,25 @@ public class MemberController extends BaseController {
 		Page<Member> page = memberService.getRealMember(new Page<Member>(request, response), member);
 		model.addAttribute("page", page);
 		return "modules/core/member/memberReal";
+	}
+
+	@RequiresPermissions("core:member:member:view")
+	@RequestMapping(value = {"activate"})
+	public String activate(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+	    User user = UserUtils.getUser();
+	    member.setStore(user.getLoginName());
+		BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
+		String msg = "可使用金额：";
+		if(bonusTotal == null){
+			msg += "0";
+		}else {
+			BigDecimal current = bonusTotal.getBonusCurrent();
+			msg += current;
+		}
+		Page<Member> page = memberService.getActivateMember(new Page<Member>(request, response), member);
+		model.addAttribute("page", page);
+		model.addAttribute("msg", msg);
+		return "modules/core/member/memberActivate";
 	}
 
 	@RequiresPermissions("core:member:member:view")
