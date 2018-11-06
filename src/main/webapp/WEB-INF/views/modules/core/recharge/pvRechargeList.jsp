@@ -19,9 +19,9 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/core/recharge/pvRecharge/">充值列表</a></li>
-		<shiro:hasPermission name="core:recharge:pvRecharge:edit"><li><a href="${ctx}/core/recharge/pvRecharge/form">充值添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="core:recharge:pvRecharge:edit"><li><a href="${ctx}/core/recharge/pvRecharge/form">充值申请</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="pvRecharge" action="${ctx}/core/recharge/pvRecharge/" method="post" class="breadcrumb form-search">
+	<%--<form:form id="searchForm" modelAttribute="pvRecharge" action="${ctx}/core/recharge/pvRecharge/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -31,7 +31,7 @@
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
-	</form:form>
+	</form:form>--%>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>

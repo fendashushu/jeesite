@@ -51,6 +51,8 @@ public class PvRechargeController extends BaseController {
 	@RequiresPermissions("core:recharge:pvRecharge:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(PvRecharge pvRecharge, HttpServletRequest request, HttpServletResponse response, Model model) {
+	    User user = UserUtils.getUser();
+	    pvRecharge.setLoginName(user.getLoginName());
 		Page<PvRecharge> page = pvRechargeService.findPage(new Page<PvRecharge>(request, response), pvRecharge); 
 		model.addAttribute("page", page);
 		return "modules/core/recharge/pvRechargeList";

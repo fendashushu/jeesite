@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.core.dao.recharge.PvRechargeDao">
+<mapper namespace="com.thinkgem.jeesite.modules.core.dao.transfer.TransferDao">
     
-	<sql id="pvRechargeColumns">
+	<sql id="transferColumns">
 		a.id AS "id",
 		a.login_name AS "loginName",
 		a.name AS "name",
+		a.to_login_name AS "toLoginName",
+		a.to_name AS "toName",
 		a.amount AS "amount",
 		a.amount_type AS "amountType",
 		a.status AS "status",
-        a.create_by AS "createBy.id",
+		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
@@ -17,25 +19,24 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="pvRechargeJoins">
+	<sql id="transferJoins">
 	</sql>
     
-	<select id="get" resultType="PvRecharge">
+	<select id="get" resultType="Transfer">
 		SELECT 
-			<include refid="pvRechargeColumns"/>
-		FROM pv_recharge a
-		<include refid="pvRechargeJoins"/>
+			<include refid="transferColumns"/>
+		FROM pv_transfer a
+		<include refid="transferJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="PvRecharge">
+	<select id="findList" resultType="Transfer">
 		SELECT 
-			<include refid="pvRechargeColumns"/>
-		FROM pv_recharge a
-		<include refid="pvRechargeJoins"/>
+			<include refid="transferColumns"/>
+		FROM pv_transfer a
+		<include refid="transferJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-            and a.login_name = #{loginName}
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
@@ -53,11 +54,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="PvRecharge">
+	<select id="findAllList" resultType="Transfer">
 		SELECT 
-			<include refid="pvRechargeColumns"/>
-		FROM pv_recharge a
-		<include refid="pvRechargeJoins"/>
+			<include refid="transferColumns"/>
+		FROM pv_transfer a
+		<include refid="transferJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -72,10 +73,12 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO pv_recharge(
+		INSERT INTO pv_transfer(
 			id,
 			login_name,
 			name,
+			to_login_name,
+			to_name,
 			amount,
 			amount_type,
 			status,
@@ -89,10 +92,12 @@
 			#{id},
 			#{loginName},
 			#{name},
+			#{toLoginName},
+			#{toName},
 			#{amount},
 			#{amountType},
 			#{status},
-            #{createBy.id},
+			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
 			#{updateDate},
@@ -102,14 +107,22 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE pv_recharge SET 	
+		UPDATE pv_transfer SET 	
+			login_name = #{loginName},
+			name = #{name},
+			to_login_name = #{toLoginName},
+			to_name = #{toName},
 			amount = #{amount},
-			amount_type = #{amountType}
+			amount_type = #{amountType},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
 	
 	<update id="delete">
-		UPDATE pv_recharge SET 
+		UPDATE pv_transfer SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
