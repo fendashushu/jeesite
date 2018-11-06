@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 会员Entity
@@ -42,6 +43,8 @@ public class Member extends DataEntity<Member> {
 	private BigDecimal bpv;
 	private BigDecimal apvTotal;
 	private BigDecimal bpvTotal;
+	private Date activateDate;
+	private String mobile;
 
 	public Member() {
 		super();
@@ -259,5 +262,21 @@ public class Member extends DataEntity<Member> {
 
     public void setContacts(String contacts) {
         this.contacts = contacts;
+    }
+
+    public Date getActivateDate() {
+        return activateDate;
+    }
+
+    public void setActivateDate(Date activateDate) {
+        this.activateDate = activateDate;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

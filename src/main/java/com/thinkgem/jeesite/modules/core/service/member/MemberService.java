@@ -63,7 +63,13 @@ public class MemberService extends CrudService<MemberDao, Member> {
 	public Page<Member> findPage(Page<Member> page, Member member) {
 		return super.findPage(page, member);
 	}
-	
+
+	public Page<Member> getRealMember(Page<Member> page, Member member) {
+        member.setPage(page);
+        page.setList(memberDao.getRealMember(member));
+        return page;
+	}
+
 	@Transactional(readOnly = false)
 	public void save(Member member) {
 		super.save(member);

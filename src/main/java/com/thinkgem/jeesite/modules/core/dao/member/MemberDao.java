@@ -22,5 +22,5 @@ public interface MemberDao extends CrudDao<Member> {
     public Member getMemberByLoginName(String loginName);
     public List<Member> getMemberContacts(String loginName);
     public Member getMemberA(String loginName);
-
+    public List<Member> getRealMember(Member member);
 }

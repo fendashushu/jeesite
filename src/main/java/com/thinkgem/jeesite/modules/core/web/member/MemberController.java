@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.core.web.member;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +54,16 @@ public class MemberController extends BaseController {
 		Page<Member> page = memberService.findPage(new Page<Member>(request, response), member); 
 		model.addAttribute("page", page);
 		return "modules/core/member/memberList";
+	}
+
+	@RequiresPermissions("core:member:member:view")
+	@RequestMapping(value = {"realMember"})
+	public String realMember(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+	    User user = UserUtils.getUser();
+	    member.setStore(user.getLoginName());
+		Page<Member> page = memberService.getRealMember(new Page<Member>(request, response), member);
+		model.addAttribute("page", page);
+		return "modules/core/member/memberReal";
 	}
 
 	@RequiresPermissions("core:member:member:view")
