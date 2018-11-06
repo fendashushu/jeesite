@@ -284,6 +284,26 @@ public class UserController extends BaseController {
             addMessage(redirectAttributes, "会员注册失败，请检查接点人是否存在！");
             return "redirect:" + adminPath + "/sys/user/net?repage";
         }
+        //判断左区是否有直推会员，如果没有，右区不能添加会员
+        if("B".equals(member.getArea())){
+            Member memberA = memberService.getMemberA(contact);//A去会员
+            if(memberA == null){
+                addMessage(redirectAttributes, "会员注册失败，左侧没有直推会员！");
+                return "redirect:" + adminPath + "/sys/user/net?repage";
+            }
+            List<Member> members = memberService.getMemberContacts(memberA.getLoginName());//A区会员及其所有子会员
+            boolean has = false;
+            for (Member m:members) {
+                if(m.getReferee().equals(contact)){
+                    has = true;
+                    break;
+                }
+            }
+            if(!has){
+                addMessage(redirectAttributes, "会员注册失败，左侧没有直推会员！");
+                return "redirect:" + adminPath + "/sys/user/net?repage";
+            }
+        }
 	    try {
             // 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
             user.setCompany(new Office("1"));
@@ -318,6 +338,7 @@ public class UserController extends BaseController {
             member.setUserid(user.getId());
             Member member1 = memberService.getMemberByLoginName(member.getReferee());
             member.setReferees(member1.getReferees()+","+member.getReferee());
+            member.setContacts(member1.getContacts()+","+member.getContact());
             member.setIsstore("0");
             member.setActivate("0");
             memberService.save(member);

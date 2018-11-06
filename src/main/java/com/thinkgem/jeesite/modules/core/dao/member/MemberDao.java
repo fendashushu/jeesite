@@ -20,5 +20,7 @@ public interface MemberDao extends CrudDao<Member> {
     public List<Member> getMemberNet(User user);
     public List<Member> getMemberRecommend(User user);
     public Member getMemberByLoginName(String loginName);
+    public List<Member> getMemberContacts(String loginName);
+    public Member getMemberA(String loginName);
 
 }

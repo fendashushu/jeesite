@@ -36,6 +36,7 @@ public class Member extends DataEntity<Member> {
     private String loginName;
 	private String name;
 	private String status;
+	private String contacts;
 	private String referees;
 	private BigDecimal apv;
 	private BigDecimal bpv;
@@ -250,5 +251,13 @@ public class Member extends DataEntity<Member> {
 
     public void setBpvTotal(BigDecimal bpvTotal) {
         this.bpvTotal = bpvTotal;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
     }
 }
