@@ -351,6 +351,7 @@ public class UserController extends BaseController {
             }
             addMessage(redirectAttributes, "会员注册'" + user.getLoginName() + "'成功");
         }catch (Exception e){
+            System.out.println(e);
             addMessage(redirectAttributes, "会员注册失败，请检查服务中心、接点人、推荐人是否正确！");
         }
 

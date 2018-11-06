@@ -60,6 +60,7 @@
 <ul class="nav nav-tabs">
     <li class="active"><a href="javaScript:void(0)">网图结构</a></li>
 </ul><br/>
+<sys:message content="${message}"/>
 <table width="100%" height="600" cellpadding="3" cellspacing="1" border="0" align="center">
     <form name="form1" method="post" action="?"></form>
     <tbody><tr>

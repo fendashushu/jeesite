@@ -91,7 +91,7 @@
     </select>
 
     <select id="getMemberA" resultType="Member">
-        select * from sys_member where login_name = #{value} and del_flag='0' and m.area='A'
+        select * from sys_member where login_name = #{value} and del_flag='0' and area='A'
     </select>
 
     <select id="getMemberRecommend" resultType="Member">
@@ -127,7 +127,8 @@
 			isstore,
 			activate,
             login_name,
-            referees
+            referees,
+            contacts
         ) VALUES (
 			#{id},
 			#{userid},
@@ -152,7 +153,8 @@
 			#{isstore},
 			#{activate},
             #{loginName},
-            #{referees}
+            #{referees},
+            #{contacts}
         )
 	</insert>
 	
