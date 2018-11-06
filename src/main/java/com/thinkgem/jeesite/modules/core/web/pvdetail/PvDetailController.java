@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.core.web.pvdetail;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +53,7 @@ public class PvDetailController extends BaseController {
 	@RequiresPermissions("core:pvdetail:pvDetail:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(PvDetail pvDetail, HttpServletRequest request, HttpServletResponse response, Model model) {
+        pvDetail.setLoginName(UserUtils.getUser().getLoginName());
 		Page<PvDetail> page = pvDetailService.findPage(new Page<PvDetail>(request, response), pvDetail); 
 		model.addAttribute("page", page);
 		return "modules/core/pvdetail/pvDetailList";
@@ -61,9 +63,9 @@ public class PvDetailController extends BaseController {
 	@RequestMapping(value = {"detail"})
 	public String detail(PvDetail pvDetail, HttpServletRequest request, HttpServletResponse response, Model model) {
         String createDate = request.getParameter("createDate");
-        String loginName = request.getParameter("loginName");
+        //String loginName = request.getParameter("loginName");
         pvDetail.setPvDate(createDate);
-        pvDetail.setLoginName(loginName);
+        pvDetail.setLoginName(UserUtils.getUser().getLoginName());
         Page<PvDetail> page = pvDetailService.getDetails(new Page<PvDetail>(request, response), pvDetail);
         model.addAttribute("page", page);
         model.addAttribute("createDate", createDate);

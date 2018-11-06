@@ -35,7 +35,7 @@
         select * from pv_detail
         where DATE_FORMAT(create_date,'%Y-%m-%d') = #{pvDate}
         <choose>
-            <when test="loginName !=null and loginName != ''">
+            <when test="loginName !=null and loginName != '' and loginName !='admin'">
                 and login_Name = #{loginName}
             </when>
         </choose>
@@ -58,6 +58,12 @@
         case when pvType='3' then pvSheng else 0 end pvSheng3,
         case when pvType='3' then pvDues else 0 end pvDues3
         from pv_detail
+        <choose>
+            <when test="loginName !=null and loginName != '' and loginName !='admin'">
+                where login_name = #{loginName}
+            </when>
+        </choose>
+
         group by DATE_FORMAT(create_date,'%Y-%m-%d'),pvType
         )a
         group by create_date
