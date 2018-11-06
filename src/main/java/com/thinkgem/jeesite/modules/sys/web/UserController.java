@@ -330,7 +330,7 @@ public class UserController extends BaseController {
             }
             addMessage(redirectAttributes, "会员注册'" + user.getLoginName() + "'成功");
         }catch (Exception e){
-            addMessage(redirectAttributes, "会员注册失败请检查服务中心、接点人、推荐人是否正确！");
+            addMessage(redirectAttributes, "会员注册失败，请检查服务中心、接点人、推荐人是否正确！");
         }
 
 		return "redirect:" + adminPath + "/sys/user/net?repage";

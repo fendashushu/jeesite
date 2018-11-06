@@ -7,8 +7,12 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
+
 			$("#inputForm").validate({
 				submitHandler: function(form){
+                    if(!checkNum()){
+                        return;
+                    }
 					loading('正在提交，请稍等...');
 					form.submit();
 				},
@@ -23,6 +27,31 @@
 				}
 			});
 		});
+
+        function checkUser(id) {
+            var userName = $("#"+id).val();
+            $.post("${ctx}/sys/user/checkUser",{"userName":userName},function(data){
+                if(data != null && data != ''){
+                    alert("验证通过!\r\n编号："+data.loginName+"\r\n姓名："+data.name)
+                }else{
+                    alert("会员不存在，请重新输入！")
+                    $("#"+id).val("");
+                    $("#"+id).focus();
+
+                }
+            })
+        }
+
+        function checkNum(obj) {
+            var val = $("#amount").val();
+            if(isNaN(val)){
+                alert("请输入数字！");
+                $("#amount").focus();
+                $("#amount").val("");
+                return false;
+            }
+            return true;
+        }
 	</script>
 </head>
 <body>
@@ -34,55 +63,29 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">会员编号：</label>
+			<label class="control-label">奖金：</label>
 			<div class="controls">
-				<form:input path="loginName" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+                <label>${bonus}</label>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">会员：</label>
-			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">会员编号：</label>
+			<label class="control-label">转入会员编号：</label>
 			<div class="controls">
 				<form:input path="toLoginName" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">会员：</label>
-			<div class="controls">
-				<form:input path="toName" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+                <input  class="btn btn-primary" type="button" value="验 证" onclick="checkUser('toLoginName')"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">金额：</label>
 			<div class="controls">
-				<form:input path="amount" htmlEscape="false" class="input-xlarge "/>
+				<form:input path="amount" htmlEscape="false" class="input-xlarge " />
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label">货币类型：</label>
 			<div class="controls">
-				<form:input path="amountType" htmlEscape="false" maxlength="2" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">发放状态;0:未发放；1：已发放：</label>
-			<div class="controls">
-				<form:input path="status" htmlEscape="false" maxlength="2" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+				<form:input path="amountType" htmlEscape="false"  maxlength="2" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="form-actions">

@@ -6,6 +6,11 @@ package com.thinkgem.jeesite.modules.core.web.transfer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
+import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +27,9 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.transfer.Transfer;
 import com.thinkgem.jeesite.modules.core.service.transfer.TransferService;
 
+import java.math.BigDecimal;
+import java.text.Bidi;
+
 /**
  * 积分转账Controller
  * @author li
@@ -33,6 +41,10 @@ public class TransferController extends BaseController {
 
 	@Autowired
 	private TransferService transferService;
+	@Autowired
+    private SystemService systemService;
+	@Autowired
+    private BonusTotalService bonusTotalService;
 	
 	@ModelAttribute
 	public Transfer get(@RequestParam(required=false) String id) {
@@ -57,7 +69,10 @@ public class TransferController extends BaseController {
 	@RequiresPermissions("core:transfer:transfer:view")
 	@RequestMapping(value = "form")
 	public String form(Transfer transfer, Model model) {
+	    User user = UserUtils.getUser();
+        BonusTotal bonus = bonusTotalService.getBonusByLoginName(user.getLoginName());
 		model.addAttribute("transfer", transfer);
+		model.addAttribute("bonus", bonus.getBonusCurrent());
 		return "modules/core/transfer/transferForm";
 	}
 
@@ -67,8 +82,19 @@ public class TransferController extends BaseController {
 		if (!beanValidator(model, transfer)){
 			return form(transfer, model);
 		}
+		User user1 = systemService.getUserByLoginName(transfer.getToLoginName());
+		if(user1 == null){
+            addMessage(redirectAttributes, "转账失败，转入会员不存在！");
+            return "redirect:"+Global.getAdminPath()+"/core/transfer/transfer/?repage";
+        }
+		User user = UserUtils.getUser();
+		transfer.setLoginName(user.getLoginName());
+		transfer.setName(user.getName());
+		transfer.setAmountType("1");
+		transfer.setStatus("1");
+		transfer.setToName(user1==null?"":user1.getName());
 		transferService.save(transfer);
-		addMessage(redirectAttributes, "保存积分转账成功");
+		addMessage(redirectAttributes, "积分转账成功");
 		return "redirect:"+Global.getAdminPath()+"/core/transfer/transfer/?repage";
 	}
 	

@@ -7,11 +7,12 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
-            if(!checkNum()){
-                return;
-            }
+
 			$("#inputForm").validate({
 				submitHandler: function(form){
+                    if(!checkNum()){
+                        return;
+                    }
 					loading('正在提交，请稍等...');
 					form.submit();
 				},
@@ -50,7 +51,7 @@
 		<div class="control-group">
 			<label class="control-label">金额：</label>
 			<div class="controls">
-				<form:input path="amount" htmlEscape="false" class="input-xlarge " onblur="checkNum(this)"/>
+				<form:input path="amount" htmlEscape="false" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group" style="display: none;">

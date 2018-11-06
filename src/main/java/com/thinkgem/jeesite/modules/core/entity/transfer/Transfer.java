@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import java.math.BigDecimal;
+
 /**
  * 积分转账Entity
  * @author li
@@ -19,7 +21,7 @@ public class Transfer extends DataEntity<Transfer> {
 	private String name;		// 会员
 	private String toLoginName;		// 会员编号
 	private String toName;		// 会员
-	private String amount;		// 金额
+	private BigDecimal amount;		// 金额
 	private String amountType;		// 货币类型
 	private String status;		// 发放状态;0:未发放；1：已发放
 	
@@ -66,16 +68,16 @@ public class Transfer extends DataEntity<Transfer> {
 	public void setToName(String toName) {
 		this.toName = toName;
 	}
-	
-	public String getAmount() {
-		return amount;
-	}
 
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
-	
-	@Length(min=0, max=2, message="货币类型长度必须介于 0 和 2 之间")
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    @Length(min=0, max=2, message="货币类型长度必须介于 0 和 2 之间")
 	public String getAmountType() {
 		return amountType;
 	}

@@ -52,6 +52,10 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
 	public Page<BonusTotal> findPage(Page<BonusTotal> page, BonusTotal bonusTotal) {
 		return super.findPage(page, bonusTotal);
 	}
+
+	public BonusTotal getBonusByLoginName(String loginName){
+	    return bonusTotalDao.getBonusTotalByLoginName(loginName);
+    }
 	
 	@Transactional(readOnly = false)
 	public void save(BonusTotal bonusTotal) {

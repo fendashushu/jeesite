@@ -18,10 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/core/transfer/transfer/">积分转账列表</a></li>
-		<shiro:hasPermission name="core:transfer:transfer:edit"><li><a href="${ctx}/core/transfer/transfer/form">积分转账添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/core/transfer/transfer/">积分转账记录</a></li>
+		<shiro:hasPermission name="core:transfer:transfer:edit"><li><a href="${ctx}/core/transfer/transfer/form">积分转账</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="transfer" action="${ctx}/core/transfer/transfer/" method="post" class="breadcrumb form-search">
+	<%--<form:form id="searchForm" modelAttribute="transfer" action="${ctx}/core/transfer/transfer/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -31,33 +31,40 @@
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
-	</form:form>
+	</form:form>--%>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>会员</th>
-				<th>更新时间</th>
-				<th>备注信息</th>
-				<shiro:hasPermission name="core:transfer:transfer:edit"><th>操作</th></shiro:hasPermission>
+				<th>转出会员</th>
+				<th>转出会员姓名</th>
+                <th>转入会员</th>
+				<th>转入会员姓名</th>
+				<th>转账金额</th>
+				<th>转账时间</th>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="transfer">
 			<tr>
-				<td><a href="${ctx}/core/transfer/transfer/form?id=${transfer.id}">
+				<td>
+					${transfer.loginName}
+				</td>
+				<td>
 					${transfer.name}
-				</a></td>
+				</td>
+				<td>
+					${transfer.toLoginName}
+				</td>
+				<td>
+					${transfer.toName}
+				</td>
+				<td>
+					${transfer.amount}
+				</td>
 				<td>
 					<fmt:formatDate value="${transfer.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<td>
-					${transfer.remarks}
-				</td>
-				<shiro:hasPermission name="core:transfer:transfer:edit"><td>
-    				<a href="${ctx}/core/transfer/transfer/form?id=${transfer.id}">修改</a>
-					<a href="${ctx}/core/transfer/transfer/delete?id=${transfer.id}" onclick="return confirmx('确认要删除该积分转账吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>
