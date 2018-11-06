@@ -48,6 +48,7 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 	private Integer zhou1;		// 1级代理周封顶；30000
 	private Integer zhou2;		// 2级代理周封顶；60000
 	private Integer zhou3;		// 3级代理周封顶；80000
+    private Integer baodan;//报单奖
 	
 	public MemberSetting() {
 		super();
@@ -344,5 +345,12 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 	public void setZhou3(Integer zhou3) {
 		this.zhou3 = zhou3;
 	}
-	
+
+    public Integer getBaodan() {
+        return baodan;
+    }
+
+    public void setBaodan(Integer baodan) {
+        this.baodan = baodan;
+    }
 }

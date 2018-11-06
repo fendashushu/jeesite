@@ -72,12 +72,42 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
     public void excuteBonus(User user, Member member,MemberSetting memberSetting){
         zhitui(member,memberSetting);
         hezuo(member,memberSetting);
+        baodan(member,memberSetting);
+    }
 
-       /* PvTotal pvTotal = new PvTotal();
-        pvTotal.setLoginName(refree);
-        pvTotal.setZhitui(zhitui);
-        pvTotal.setFromMember(user.getLoginName());
-        pvTotalService.save(pvTotal);*/
+    public void baodan(Member member,MemberSetting memberSetting){
+        Integer pv1 = memberSetting.getPv1();//1、2、3级代理奖金级别
+        Integer pv2 = memberSetting.getPv2();
+        Integer pv3 = memberSetting.getPv3();
+        Integer baodan = memberSetting.getBaodan();
+        String store = member.getStore();
+        Member storeMember = memberDao.getMemberByLoginName(store);
+        String level = member.getMemberlevel();
+        BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(store);
+        BigDecimal bonus = BigDecimal.ZERO;
+        if("1".equals(level)){//baodan1
+            bonus = BigDecimal.valueOf(pv1*baodan).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+        }else if ("2".equals(level)){//baodan2
+            bonus = BigDecimal.valueOf(pv2*baodan).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+        }else{
+            bonus = BigDecimal.valueOf(pv3*baodan).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
+        }
+
+        PvDetail pvDetail = new PvDetail();
+        pvDetail.setLoginName(store);
+        pvDetail.setNote("报单奖");
+        pvDetail.setPvTotal(bonus);
+        pvDetail.setPvSheng(bonus.multiply(new BigDecimal(0.95)));
+        pvDetail.setPvDues(bonus.multiply(new BigDecimal(0.05)));
+        pvDetail.setPvtype("4");
+        pvDetail.setFromName(member.getLoginName());
+        pvDetail.setZhuceName(member.getLoginName());
+        pvDetailService.save(pvDetail);
+
+        bonus = bonus.multiply(new BigDecimal(0.95));
+        bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(bonus));
+        bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(bonus));
+        bonusTotalDao.updateBouns(bonusTotal);
     }
 
     public void hezuo(Member member,MemberSetting memberSetting) {
