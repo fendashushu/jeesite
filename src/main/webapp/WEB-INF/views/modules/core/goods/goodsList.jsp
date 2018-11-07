@@ -25,6 +25,9 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+            <li><label>商品名称：</label>
+                <form:input path="goodsName" htmlEscape="false" maxlength="100" class="input-medium"/>
+            </li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -33,8 +36,13 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>更新时间</th>
-				<th>备注信息</th>
+				<th>商品名称</th>
+				<th>商品图片</th>
+				<th>商品价格</th>
+				<th>商品库存</th>
+				<th>销量</th>
+				<th>是否发布</th>
+				<th>发布时间</th>
 				<shiro:hasPermission name="core:goods:goods:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -42,10 +50,28 @@
 		<c:forEach items="${page.list}" var="goods">
 			<tr>
 				<td><a href="${ctx}/core/goods/goods/form?id=${goods.id}">
-					<fmt:formatDate value="${goods.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${goods.goodsName}
 				</a></td>
 				<td>
-					${goods.remarks}
+                    <img src="${goods.image}" width="100" height="100">
+				</td>
+				<td>
+					${goods.price}
+				</td>
+				<td>
+					${goods.inventory}
+				</td>
+				<td>
+					${goods.inventory}
+				</td>
+				<td>
+                    <c:choose>
+                        <c:when test="${goods.status == '0'}">未发布</c:when>
+                        <c:when test="${goods.status == '1'}">已发布</c:when>
+                    </c:choose>
+				</td>
+				<td>
+                    <fmt:formatDate value="${goods.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<shiro:hasPermission name="core:goods:goods:edit"><td>
     				<a href="${ctx}/core/goods/goods/form?id=${goods.id}">修改</a>

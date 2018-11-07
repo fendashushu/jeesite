@@ -17,6 +17,8 @@
 		a.ext2 AS "ext2",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
+        a.status AS "status",
+        a.publish_date AS "publishDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
@@ -89,6 +91,8 @@
 			update_by,
 			update_date,
 			remarks,
+            status,
+            publish_date,
 			del_flag
 		) VALUES (
 			#{id},
@@ -108,6 +112,8 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
+            #{status},
+            #{publishDate},
 			#{delFlag}
 		)
 	</insert>
@@ -127,6 +133,8 @@
 			ext2 = #{ext2},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
+            status = #{status},
+            publishi_date = #{publishDate},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
