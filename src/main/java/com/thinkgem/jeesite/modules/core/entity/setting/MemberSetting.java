@@ -247,7 +247,7 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 		this.guanli0 = guanli0;
 	}
 	
-	@Length(min=1, max=11, message="1级代理管理奖；6%长度必须介于 1 和 11 之间")
+	@NotNull(message="1级代理管理奖；6%不能为空")
 	public Integer getGuanli1() {
 		return guanli1;
 	}
@@ -256,7 +256,7 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 		this.guanli1 = guanli1;
 	}
 	
-	@Length(min=1, max=11, message="2级代理管理奖；10%长度必须介于 1 和 11 之间")
+	@NotNull(message="2级代理管理奖；10%不能为空")
 	public Integer getGuanli2() {
 		return guanli2;
 	}

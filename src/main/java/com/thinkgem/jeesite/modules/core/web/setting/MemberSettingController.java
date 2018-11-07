@@ -57,6 +57,7 @@ public class MemberSettingController extends BaseController {
 	@RequiresPermissions("core:setting:memberSetting:view")
 	@RequestMapping(value = "form")
 	public String form(MemberSetting memberSetting, Model model) {
+	    memberSetting = memberSettingService.get("1");
 		model.addAttribute("memberSetting", memberSetting);
 		return "modules/core/setting/memberSettingForm";
 	}
@@ -67,9 +68,14 @@ public class MemberSettingController extends BaseController {
 		if (!beanValidator(model, memberSetting)){
 			return form(memberSetting, model);
 		}
-		memberSettingService.save(memberSetting);
-		addMessage(redirectAttributes, "保存会员设置成功");
-		return "redirect:"+Global.getAdminPath()+"/core/setting/memberSetting/?repage";
+		try {
+            memberSettingService.save(memberSetting);
+            addMessage(redirectAttributes, "保存成功");
+        }catch (Exception e){
+            addMessage(redirectAttributes, "保存失败，请检查参数");
+        }
+
+		return "redirect:"+Global.getAdminPath()+"/core/setting/memberSetting/form?repage";
 	}
 	
 	@RequiresPermissions("core:setting:memberSetting:edit")
