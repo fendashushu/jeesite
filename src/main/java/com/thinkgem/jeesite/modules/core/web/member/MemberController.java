@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
+import com.thinkgem.jeesite.modules.core.entity.setting.MemberSetting;
 import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
+import com.thinkgem.jeesite.modules.core.service.setting.MemberSettingService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -27,6 +30,8 @@ import com.thinkgem.jeesite.modules.core.entity.member.Member;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 会员Controller
@@ -41,6 +46,8 @@ public class MemberController extends BaseController {
 	private MemberService memberService;
 	@Autowired
 	private BonusTotalService bonusTotalService;
+	@Autowired
+    private MemberSettingService memberSettingService;
 
 	@ModelAttribute
 	public Member get(@RequestParam(required=false) String id) {
@@ -89,6 +96,45 @@ public class MemberController extends BaseController {
 		model.addAttribute("page", page);
 		model.addAttribute("msg", msg);
 		return "modules/core/member/memberActivate";
+	}
+
+	@RequiresPermissions("core:member:member:edit")
+	@RequestMapping(value = {"activating"})
+    @ResponseBody
+	public Map activating(HttpServletRequest request, HttpServletResponse response, Model model) {
+	    Map map = new HashMap();
+        String loginName = request.getParameter("loginName");
+        Member member = memberService.getMemberByLoginName(loginName);
+        String level = member.getMemberlevel();
+        MemberSetting memberSetting = memberSettingService.get("1");
+        Integer jion0 = memberSetting.getJion0();
+        Integer jion1 = memberSetting.getJion1();
+        Integer jion2 = memberSetting.getJion2();
+        Integer jion3 = memberSetting.getJion3();
+        BigDecimal need = BigDecimal.ZERO;//激活需要的报单币
+        if("0".equals(level)){
+            need = BigDecimal.valueOf(jion0);
+        }else if("1".equals(level)){
+            need = BigDecimal.valueOf(jion1);
+        }else if("2".equals(level)){
+            need = BigDecimal.valueOf(jion2);
+        }else {
+            need = BigDecimal.valueOf(jion3);
+        }
+        User user = UserUtils.getUser();
+        BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
+        BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
+        if(need.compareTo(bonusCurrent)<0){
+            member.setActivate("1");
+            bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
+            memberService.updateMember(member,bonusTotal);
+            map.put("result",true);
+            map.put("msg","激活成功！");
+        }else {
+            map.put("result",false);
+            map.put("msg","金额不足请充值！");
+        }
+		return map;
 	}
 
 	@RequiresPermissions("core:member:member:view")

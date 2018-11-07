@@ -67,6 +67,11 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
 		super.delete(bonusTotal);
 	}
 
+    @Transactional(readOnly = false)
+    public void updateBouns(BonusTotal bonusTotal) {
+        bonusTotalDao.updateBouns(bonusTotal);
+    }
+
 	//注册会员后开始计算奖金
     @Transactional(readOnly = false)
     public void excuteBonus(User user, Member member,MemberSetting memberSetting){

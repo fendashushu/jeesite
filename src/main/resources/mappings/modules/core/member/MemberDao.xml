@@ -188,6 +188,13 @@
             #{contacts}
         )
 	</insert>
+
+    <update id="updateMember">
+        UPDATE sys_member SET
+        isstore = #{isstore},
+        activate = #{activate}
+        WHERE login_name = #{loginName}
+    </update>
 	
 	<update id="update">
 		UPDATE sys_member SET 	

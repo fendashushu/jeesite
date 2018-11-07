@@ -14,6 +14,21 @@
 			$("#searchForm").submit();
         	return false;
         }
+        function activate(loginName) {
+            $.ajaxSetup({async:false})
+		    if(confirm("是否要激活"+loginName+"？")){
+                $.post('${ctx}/core/member/member/activating',{'loginName':loginName},function (data) {
+                    var result = data.result;
+                    var msg = data.msg;
+                    if(result){
+                        alert("激活成功！");
+                        window.location.reload();
+                    }else{
+                        alert(msg);
+                    }
+                })
+            }
+        }
 	</script>
 </head>
 <body>
@@ -71,7 +86,7 @@
 					<fmt:formatDate value="${member.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<shiro:hasPermission name="core:member:member:edit"><td>
-					<a href="${ctx}/core/member/member/form?id=${member.id}">激活</a>
+					<a href="" onclick="activate('${member.loginName}')">激活</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

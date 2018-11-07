@@ -95,5 +95,10 @@ public class MemberService extends CrudService<MemberDao, Member> {
 	public void delete(Member member) {
 		super.delete(member);
 	}
-	
+
+    @Transactional(readOnly = false)
+    public void updateMember(Member member,BonusTotal bonusTotal) {
+        memberDao.updateMember(member);
+        bonusTotalService.updateBouns(bonusTotal);
+    }
 }
