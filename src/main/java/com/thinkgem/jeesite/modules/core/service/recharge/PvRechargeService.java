@@ -26,6 +26,8 @@ import com.thinkgem.jeesite.modules.core.dao.recharge.PvRechargeDao;
 public class PvRechargeService extends CrudService<PvRechargeDao, PvRecharge> {
     @Autowired
     private BonusTotalDao bonusTotalDao;
+    @Autowired
+    private PvRechargeDao pvRechargeDao;
 
 	public PvRecharge get(String id) {
 		return super.get(id);
@@ -38,10 +40,27 @@ public class PvRechargeService extends CrudService<PvRechargeDao, PvRecharge> {
 	public Page<PvRecharge> findPage(Page<PvRecharge> page, PvRecharge pvRecharge) {
 		return super.findPage(page, pvRecharge);
 	}
+
+	public Page<PvRecharge> getConfirmRecharge(Page<PvRecharge> page, PvRecharge pvRecharge) {
+        pvRecharge.setPage(page);
+        page.setList(pvRechargeDao.getConfirmRecharge(pvRecharge));
+        return page;
+	}
 	
 	@Transactional(readOnly = false)
 	public void save(PvRecharge pvRecharge) {
 		super.save(pvRecharge);
+        /*BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(pvRecharge.getLoginName());
+        if (bonusTotal != null){
+            bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(pvRecharge.getAmount()));
+            bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(pvRecharge.getAmount()));
+            bonusTotalDao.updateBouns(bonusTotal);
+        }*/
+	}
+
+	@Transactional(readOnly = false)
+	public void confirmRecharge(PvRecharge pvRecharge) {
+		pvRechargeDao.confirmRecharge(pvRecharge);
         BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(pvRecharge.getLoginName());
         if (bonusTotal != null){
             bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(pvRecharge.getAmount()));

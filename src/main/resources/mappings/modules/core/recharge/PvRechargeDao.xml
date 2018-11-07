@@ -52,6 +52,33 @@
 			</otherwise>
 		</choose>
 	</select>
+
+	<select id="getConfirmRecharge" resultType="PvRecharge">
+		SELECT
+			<include refid="pvRechargeColumns"/>
+		FROM pv_recharge a
+		<include refid="pvRechargeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+            and a.status = '0'
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="loginName != null and loginName != ''">
+				AND a.login_Name LIKE
+					<if test="dbName == 'mysql'">concat('%',#{loginName},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
 	
 	<select id="findAllList" resultType="PvRecharge">
 		SELECT 
@@ -105,6 +132,12 @@
 		UPDATE pv_recharge SET 	
 			amount = #{amount},
 			amount_type = #{amountType}
+		WHERE id = #{id}
+	</update>
+
+	<update id="confirmRecharge">
+		UPDATE pv_recharge SET
+			status = #{status}
 		WHERE id = #{id}
 	</update>
 	

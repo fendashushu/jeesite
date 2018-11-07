@@ -7,6 +7,8 @@ import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.core.entity.recharge.PvRecharge;
 
+import java.util.List;
+
 /**
  * 充值DAO接口
  * @author li
@@ -14,5 +16,6 @@ import com.thinkgem.jeesite.modules.core.entity.recharge.PvRecharge;
  */
 @MyBatisDao
 public interface PvRechargeDao extends CrudDao<PvRecharge> {
-	
+	public List<PvRecharge> getConfirmRecharge(PvRecharge pvRecharge);
+	public void confirmRecharge(PvRecharge pvRecharge);
 }

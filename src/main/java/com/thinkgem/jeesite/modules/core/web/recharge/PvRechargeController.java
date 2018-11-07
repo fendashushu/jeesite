@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -23,6 +24,10 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.recharge.PvRecharge;
 import com.thinkgem.jeesite.modules.core.service.recharge.PvRechargeService;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 充值Controller
@@ -59,6 +64,43 @@ public class PvRechargeController extends BaseController {
 	}
 
 	@RequiresPermissions("core:recharge:pvRecharge:view")
+	@RequestMapping(value = {"confirm"})
+	public String confirm(PvRecharge pvRecharge, HttpServletRequest request, HttpServletResponse response, Model model) {
+	    //User user = UserUtils.getUser();
+	    //pvRecharge.setLoginName(user.getLoginName());
+        String name = request.getParameter("name");
+        String loginName = request.getParameter("loginName");
+        pvRecharge.setLoginName(loginName);
+        pvRecharge.setName(name);
+		Page<PvRecharge> page = pvRechargeService.getConfirmRecharge(new Page<PvRecharge>(request, response), pvRecharge);
+		model.addAttribute("page", page);
+		return "modules/core/recharge/pvRechargeConfirm";
+	}
+
+	@RequiresPermissions("core:recharge:pvRecharge:edit")
+	@RequestMapping(value = {"confirming"})
+    @ResponseBody
+	public Map confirming(PvRecharge pvRecharge, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Map map = new HashMap();
+        String id = request.getParameter("id");
+        String loginName = request.getParameter("loginName");
+        String amount = request.getParameter("amount");
+        pvRecharge.setLoginName(loginName);
+        pvRecharge.setName(id);
+        pvRecharge.setAmount(new BigDecimal(amount));
+        pvRecharge.setStatus("1");
+        try {
+            pvRechargeService.confirmRecharge(pvRecharge);
+            map.put("result",true);
+            map.put("msg","确认成功！");
+        }catch (Exception e){
+            map.put("result",true);
+            map.put("msg","确认失败！");
+        }
+		return map;
+	}
+
+	@RequiresPermissions("core:recharge:pvRecharge:view")
 	@RequestMapping(value = "form")
 	public String form(PvRecharge pvRecharge, Model model) {
 		model.addAttribute("pvRecharge", pvRecharge);
@@ -75,9 +117,9 @@ public class PvRechargeController extends BaseController {
 		pvRecharge.setAmountType("1");
 		pvRecharge.setLoginName(user.getLoginName());
 		pvRecharge.setName(user.getName());
-		pvRecharge.setStatus("1");
+		pvRecharge.setStatus("0");
 		pvRechargeService.save(pvRecharge);
-		addMessage(redirectAttributes, "保存充值成功");
+		addMessage(redirectAttributes, "充值申请成功");
 		return "redirect:"+Global.getAdminPath()+"/core/recharge/pvRecharge/?repage";
 	}
 	
