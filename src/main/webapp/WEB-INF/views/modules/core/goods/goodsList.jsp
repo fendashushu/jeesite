@@ -18,8 +18,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/core/goods/goods/">商品信息列表</a></li>
-		<shiro:hasPermission name="core:goods:goods:edit"><li><a href="${ctx}/core/goods/goods/form">商品信息添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/core/goods/goods/">商品列表</a></li>
+		<shiro:hasPermission name="core:goods:goods:edit"><li><a href="${ctx}/core/goods/goods/form">商品添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="goods" action="${ctx}/core/goods/goods/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

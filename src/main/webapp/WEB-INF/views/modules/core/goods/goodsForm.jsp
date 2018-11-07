@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/core/goods/goods/">商品信息列表</a></li>
-		<li class="active"><a href="${ctx}/core/goods/goods/form?id=${goods.id}">商品信息<shiro:hasPermission name="core:goods:goods:edit">${not empty goods.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="core:goods:goods:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/core/goods/goods/">商品列表</a></li>
+		<li class="active"><a href="${ctx}/core/goods/goods/form?id=${goods.id}">商品<shiro:hasPermission name="core:goods:goods:edit">${not empty goods.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="core:goods:goods:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="goods" action="${ctx}/core/goods/goods/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -44,8 +44,7 @@
 			<label class="control-label">商品类型：</label>
 			<div class="controls">
 				<form:select path="goodsType" class="input-xlarge required">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('goodsType')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
@@ -73,9 +72,10 @@
 		</div>
 		<div class="control-group">
 			<label class="control-label">商品图片：</label>
-			<div class="controls">
-				<form:input path="image" htmlEscape="false" maxlength="1000" class="input-xlarge "/>
-			</div>
+            <div class="controls">
+                <form:hidden id="image" path="image" htmlEscape="false" maxlength="255" class="input-xlarge"/>
+                <sys:ckfinder input="image" type="images" uploadPath="/image" selectMultiple="false" maxWidth="100" maxHeight="100"/>
+            </div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">商品描述：</label>
@@ -92,25 +92,7 @@
 		<div class="control-group">
 			<label class="control-label">是否必点：</label>
 			<div class="controls">
-				<form:radiobuttons path="isMust" items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">扩展1：</label>
-			<div class="controls">
-				<form:input path="ext1" htmlEscape="false" maxlength="200" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">扩展2：</label>
-			<div class="controls">
-				<form:input path="ext2" htmlEscape="false" maxlength="200" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+				<form:radiobuttons path="isMust" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
 			</div>
 		</div>
 		<div class="form-actions">
