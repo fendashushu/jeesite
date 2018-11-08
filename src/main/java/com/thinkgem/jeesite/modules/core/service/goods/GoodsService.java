@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.core.service.goods;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,8 @@ import com.thinkgem.jeesite.modules.core.dao.goods.GoodsDao;
 @Service
 @Transactional(readOnly = true)
 public class GoodsService extends CrudService<GoodsDao, Goods> {
+    @Autowired
+    private GoodsDao goodsDao;
 
 	public Goods get(String id) {
 		return super.get(id);
@@ -38,7 +41,12 @@ public class GoodsService extends CrudService<GoodsDao, Goods> {
 	public void save(Goods goods) {
 		super.save(goods);
 	}
-	
+
+	@Transactional(readOnly = false)
+	public void publish(Goods goods) {
+		goodsDao.publish(goods);
+	}
+
 	@Transactional(readOnly = false)
 	public void delete(Goods goods) {
 		super.delete(goods);

@@ -134,8 +134,15 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
             status = #{status},
-            publishi_date = #{publishDate},
+            publish_date = #{publishDate},
 			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="publish">
+		UPDATE goods SET
+            status = #{status},
+            publish_date = #{publishDate}
 		WHERE id = #{id}
 	</update>
 	

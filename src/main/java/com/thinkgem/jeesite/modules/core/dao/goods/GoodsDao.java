@@ -14,5 +14,6 @@ import com.thinkgem.jeesite.modules.core.entity.goods.Goods;
  */
 @MyBatisDao
 public interface GoodsDao extends CrudDao<Goods> {
-	
+
+    public void publish(Goods goods);
 }

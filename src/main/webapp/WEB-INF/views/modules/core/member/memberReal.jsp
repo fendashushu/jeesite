@@ -18,7 +18,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active">会员列表</li>
+		<li class="active"><a>会员列表</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="member" action="${ctx}/core/member/member/realMember" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

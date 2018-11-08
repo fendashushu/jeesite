@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -21,6 +22,10 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.goods.Goods;
 import com.thinkgem.jeesite.modules.core.service.goods.GoodsService;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 商品信息Controller
@@ -52,6 +57,26 @@ public class GoodsController extends BaseController {
 		Page<Goods> page = goodsService.findPage(new Page<Goods>(request, response), goods); 
 		model.addAttribute("page", page);
 		return "modules/core/goods/goodsList";
+	}
+
+	@RequiresPermissions("core:goods:goods:edit")
+	@RequestMapping(value = "publish")
+    @ResponseBody
+	public Map publish(Goods goods, Model model, HttpServletRequest request, HttpServletResponse response) {
+	    Map map = new HashMap();
+	    String id = request.getParameter("id");
+	    goods.setStatus("1");
+	    goods.setId(id);
+	    goods.setPublishDate(new Date());
+	    try {
+            goodsService.publish(goods);
+	        map.put("result",true);
+	        map.put("msg","发布成功！");
+        }catch (Exception e){
+            map.put("result",false);
+            map.put("msg","发布失败！");
+        }
+		return map;
 	}
 
 	@RequiresPermissions("core:goods:goods:view")

@@ -14,6 +14,20 @@
 			$("#searchForm").submit();
         	return false;
         }
+
+        function publish(id) {
+            $.post("${ctx}/core/goods/goods/publish",{"id":id},function(data){
+                var result = data.result;
+                var msg = data.msg;
+                if(result){
+                    alert(msg);
+                    window.location.reload();
+                }else{
+                    alert(msg);
+                    return;
+                }
+            })
+        }
 	</script>
 </head>
 <body>
@@ -75,6 +89,9 @@
 				</td>
 				<shiro:hasPermission name="core:goods:goods:edit"><td>
     				<a href="${ctx}/core/goods/goods/form?id=${goods.id}">修改</a>
+                    <c:if test="${goods.status == '0'}">
+    				    <a href="javaScript:void(0)" onclick="publish('${goods.id}')">发布</a>
+                    </c:if>
 					<a href="${ctx}/core/goods/goods/delete?id=${goods.id}" onclick="return confirmx('确认要删除该商品信息吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
