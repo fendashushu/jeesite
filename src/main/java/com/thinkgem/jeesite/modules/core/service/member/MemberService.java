@@ -97,8 +97,13 @@ public class MemberService extends CrudService<MemberDao, Member> {
 	}
 
     @Transactional(readOnly = false)
-    public void updateMember(Member member,BonusTotal bonusTotal) {
+    public void updateMember(Member member,BonusTotal bonusTotal,User user) {
         memberDao.updateMember(member);
-        bonusTotalService.updateBouns(bonusTotal);
+        if(bonusTotal != null){
+            bonusTotalService.updateBouns(bonusTotal);
+        }
+        if (user != null){
+            memberDao.insertRole(user);
+        }
     }
 }

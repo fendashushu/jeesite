@@ -45,6 +45,7 @@ public class Member extends DataEntity<Member> {
 	private BigDecimal bpvTotal;
 	private Date activateDate;
 	private String mobile;
+	private Date storeDate;
 
 	public Member() {
 		super();
@@ -278,5 +279,13 @@ public class Member extends DataEntity<Member> {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public Date getStoreDate() {
+        return storeDate;
+    }
+
+    public void setStoreDate(Date storeDate) {
+        this.storeDate = storeDate;
     }
 }

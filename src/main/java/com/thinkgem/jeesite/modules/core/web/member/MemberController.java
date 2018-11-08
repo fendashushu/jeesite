@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.modules.core.entity.setting.MemberSetting;
 import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.core.service.setting.MemberSettingService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import com.thinkgem.jeesite.modules.core.entity.member.Member;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,9 +103,37 @@ public class MemberController extends BaseController {
 	@RequiresPermissions("core:member:member:view")
 	@RequestMapping(value = {"store"})
 	public String store(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
-	   User user = UserUtils.getUser();
+	    User user = UserUtils.getUser();
+        BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
+	    member = memberService.getMemberByLoginName(user.getLoginName());
+	    model.addAttribute("member",member);
+	    model.addAttribute("bonusTotal",bonusTotal);
 		return "modules/core/member/memberStore";
 	}
+
+    @RequiresPermissions("core:member:member:edit")
+    @RequestMapping(value = "storing")
+    public String storing(Member member, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            BigDecimal money = new BigDecimal(8400);
+            BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(member.getLoginName());
+            BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
+            if(money.compareTo(bonusCurrent)>0){
+                addMessage(redirectAttributes, "申请服务中心失败，当前可用积分为"+bonusCurrent+"，请先充值");
+            }else{
+                member = memberService.getMemberByLoginName(member.getLoginName());
+                member.setIsstore("1");
+                member.setStoreDate(new Date());
+                bonusTotal.setBonusCurrent(bonusCurrent.subtract(money));
+                User user = UserUtils.getByLoginName(member.getLoginName());
+                memberService.updateMember(member,bonusTotal,user);
+                addMessage(redirectAttributes, "申请服务中心成功");
+            }
+        }catch (Exception e){
+            addMessage(redirectAttributes, "申请服务中心失败");
+        }
+        return "redirect:"+Global.getAdminPath()+"/core/member/member/store?repage";
+    }
 
 	@RequiresPermissions("core:member:member:edit")
 	@RequestMapping(value = {"activating"})
@@ -133,8 +163,9 @@ public class MemberController extends BaseController {
         BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
         if(need.compareTo(bonusCurrent)<0){
             member.setActivate("1");
+            member.setActivateDate(new Date());
             bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
-            memberService.updateMember(member,bonusTotal);
+            memberService.updateMember(member,bonusTotal,null);
             bonusTotalService.excuteBonus(member,memberSetting);
             map.put("result",true);
             map.put("msg","激活成功！");

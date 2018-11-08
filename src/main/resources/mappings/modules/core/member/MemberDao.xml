@@ -189,10 +189,21 @@
         )
 	</insert>
 
+	<insert id="insertRole">
+		INSERT INTO sys_user_role(
+			user_id,role_id
+        ) VALUES (
+			#{id},
+			'2'
+        )
+	</insert>
+
     <update id="updateMember">
         UPDATE sys_member SET
         isstore = #{isstore},
-        activate = #{activate}
+        activate = #{activate},
+        activate_date = #{activateDate},
+        store_date = #{storeDate}
         WHERE login_name = #{loginName}
     </update>
 	
