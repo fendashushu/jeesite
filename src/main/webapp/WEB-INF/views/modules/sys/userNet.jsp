@@ -61,7 +61,7 @@
     <li class="active"><a href="javaScript:void(0)">网图结构</a></li>
 </ul><br/>
 <sys:message content="${message}"/>
-<table width="100%" height="600" cellpadding="3" cellspacing="1" border="0" align="center">
+<table width="100%" height="600px" cellpadding="3" cellspacing="1" border="0" align="center">
     <form name="form1" method="post" action="?"></form>
     <tbody><tr>
         <td height="22" colspan="12" class="ziti">查询会员：
@@ -147,7 +147,13 @@
                 </tbody></table></td>
     </tr>
     <tr>
-        <td height="36" colspan="4" align="center"><img src="${ctxStatic}/images/t_tree_bottom_l.gif" height="30"><img src="${ctxStatic}/images/t_tree_line.gif" alt="" width="250" height="30"><img src="${ctxStatic}/images/t_tree_top.gif" height="30"><img src="${ctxStatic}/images/t_tree_line.gif" alt="" width="250" height="30"><img src="${ctxStatic}/images/t_tree_bottom_r.gif" height="30"></td>
+        <td height="36" colspan="4" align="center" style="font-size: 0">
+            <img src="${ctxStatic}/images/t_tree_bottom_l.gif" style="height: 30px;">
+            <img src="${ctxStatic}/images/t_tree_line.gif"  style="width: 25%; height: 30px;">
+            <img src="${ctxStatic}/images/t_tree_top.gif" style="height: 30px;">
+            <img src="${ctxStatic}/images/t_tree_line.gif"   style="width:  25%; height: 30px;">
+            <img src="${ctxStatic}/images/t_tree_bottom_r.gif" style="height: 30px;">
+        </td>
     </tr>
     <tr>
             <style>
@@ -372,8 +378,20 @@
         </c:choose>
     </tr>
     <tr>
-        <td height="36" colspan="2" number="10" align="center"><img src="${ctxStatic}/images/t_tree_bottom_l.gif" alt="" height="30"><img src="${ctxStatic}/images/t_tree_line.gif" alt="" width="125" height="30"><img src="${ctxStatic}/images/t_tree_top.gif" alt="" height="30"><img src="${ctxStatic}/images/t_tree_line.gif" alt="" width="125" height="30"><img src="${ctxStatic}/images/t_tree_bottom_r.gif" alt="" height="30"></td>
-        <td colspan="2" number="10" align="center"><img src="${ctxStatic}/images/t_tree_bottom_l.gif" alt="" height="30"><img src="${ctxStatic}/images/t_tree_line.gif" alt="" width="125" height="30"><img src="${ctxStatic}/images/t_tree_top.gif" alt="" height="30"><img src="${ctxStatic}/images/t_tree_line.gif" alt="" width="125" height="30"><img src="${ctxStatic}/images/t_tree_bottom_r.gif" alt="" height="30"></td>
+        <td height="36" colspan="2" number="10" align="center" style="font-size: 0">
+            <img src="${ctxStatic}/images/t_tree_bottom_l.gif" alt=""  style="height: 30px;">
+            <img src="${ctxStatic}/images/t_tree_line.gif" alt="" style="height: 30px;width: 25%;">
+            <img src="${ctxStatic}/images/t_tree_top.gif" alt="" style="height: 30px;">
+            <img src="${ctxStatic}/images/t_tree_line.gif" alt="" style="height: 30px;width: 25%;">
+            <img src="${ctxStatic}/images/t_tree_bottom_r.gif" alt="" style="height: 30px;">
+        </td>
+        <td colspan="2" number="10" align="center" style="font-size: 0">
+            <img src="${ctxStatic}/images/t_tree_bottom_l.gif" alt=""  style="height: 30px;">
+            <img src="${ctxStatic}/images/t_tree_line.gif" alt="" style="height: 30px;width: 25%;">
+            <img src="${ctxStatic}/images/t_tree_top.gif" alt="" style="height: 30px;">
+            <img src="${ctxStatic}/images/t_tree_line.gif" alt="" style="height: 30px;width: 25%;">
+            <img src="${ctxStatic}/images/t_tree_bottom_r.gif" alt="" style="height: 30px;">
+        </td>
     </tr>
     <tr>
         <c:choose>
