@@ -128,6 +128,7 @@ public class MemberController extends BaseController {
             member.setActivate("1");
             bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
             memberService.updateMember(member,bonusTotal);
+            bonusTotalService.excuteBonus(member,memberSetting);
             map.put("result",true);
             map.put("msg","激活成功！");
         }else {

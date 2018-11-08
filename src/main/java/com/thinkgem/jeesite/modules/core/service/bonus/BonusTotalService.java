@@ -74,7 +74,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
 
 	//注册会员后开始计算奖金
     @Transactional(readOnly = false)
-    public void excuteBonus(User user, Member member,MemberSetting memberSetting){
+    public void excuteBonus(Member member,MemberSetting memberSetting){
         zhitui(member,memberSetting);
         hezuo(member,memberSetting);
         baodan(member,memberSetting);
@@ -86,7 +86,6 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         Integer pv3 = memberSetting.getPv3();
         Integer baodan = memberSetting.getBaodan();
         String store = member.getStore();
-        Member storeMember = memberDao.getMemberByLoginName(store);
         String level = member.getMemberlevel();
         BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(store);
         BigDecimal bonus = BigDecimal.ZERO;

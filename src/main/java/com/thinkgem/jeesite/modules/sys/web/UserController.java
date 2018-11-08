@@ -344,8 +344,7 @@ public class UserController extends BaseController {
             member.setIsstore("0");
             member.setActivate("0");
             memberService.save(member);
-            MemberSetting memberSetting = memberSettingService.get("1");
-            bonusTotalService.excuteBonus(user,member,memberSetting);
+
             // 清除当前用户缓存
             if (user.getLoginName().equals(UserUtils.getUser().getLoginName())){
                 UserUtils.clearCache();
