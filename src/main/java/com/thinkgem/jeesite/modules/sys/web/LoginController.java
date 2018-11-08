@@ -8,6 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.service.member.MemberService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.web.util.WebUtils;
@@ -41,6 +44,8 @@ public class LoginController extends BaseController{
 	
 	@Autowired
 	private SessionDAO sessionDAO;
+	@Autowired
+    private MemberService memberService;
 	
 	/**
 	 * 管理登录
@@ -63,7 +68,7 @@ public class LoginController extends BaseController{
 		if (Global.TRUE.equals(Global.getConfig("notAllowRefreshIndex"))){
 			CookieUtils.setCookie(response, "LOGINED", "false");
 		}
-		
+		String activate = (String) request.getSession().getAttribute("acitvate");
 		// 如果已经登录，则跳转到管理首页
 		if(principal != null && !principal.isMobileLogin()){
 			return "redirect:" + adminPath;
@@ -134,6 +139,13 @@ public class LoginController extends BaseController{
 	public String index(HttpServletRequest request, HttpServletResponse response) {
 		Principal principal = UserUtils.getPrincipal();
 
+		User user = UserUtils.getUser();
+        Member member = memberService.getMemberByLoginName(user.getLoginName());
+        if("0".equals(member.getActivate())){
+            UserUtils.getSubject().logout();
+            request.setAttribute("message","会员未激活！");
+            return "modules/sys/sysLogin";
+        }
 		// 登录成功后，验证码计算器清零
 		isValidateCodeLogin(principal.getLoginName(), false, true);
 		
