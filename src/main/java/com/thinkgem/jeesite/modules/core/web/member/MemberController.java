@@ -98,6 +98,13 @@ public class MemberController extends BaseController {
 		return "modules/core/member/memberActivate";
 	}
 
+	@RequiresPermissions("core:member:member:view")
+	@RequestMapping(value = {"store"})
+	public String store(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+	   User user = UserUtils.getUser();
+		return "modules/core/member/memberStore";
+	}
+
 	@RequiresPermissions("core:member:member:edit")
 	@RequestMapping(value = {"activating"})
     @ResponseBody
