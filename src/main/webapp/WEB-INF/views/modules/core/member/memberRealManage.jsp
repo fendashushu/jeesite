@@ -14,6 +14,18 @@
 			$("#searchForm").submit();
         	return false;
         }
+        function lockOrUnlock(loginName,status) {
+            $.post("${ctx}/core/member/member/lockOrUnlock",{"loginName":loginName,"status":status},function (data) {
+                var result = data.result;
+                var msg = data.msg;
+                if(result){
+                    alert(msg);
+                    window.location.reload();
+                }else{
+                    alert(msg);
+                }
+            })
+        }
 	</script>
 </head>
 <body>
@@ -100,14 +112,16 @@
                     <fmt:formatDate value="${member.activateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
                 <td>
+                    <a href="javaScript:void(0)" onclick="lockOrUnlock('${member.loginName}','${member.status}')">
                     <c:choose>
                         <c:when test="${member.status=='0'}">
-                            <a href="${ctx}/core/member/member/unlock?loginName=${member.loginName}">解锁</a>
+                            解锁
                         </c:when>
                         <c:when test="${member.status=='1'}">
-                            <a href="${ctx}/core/member/member/lock?loginName=${member.loginName}">锁定</a>
+                            锁定
                         </c:when>
                     </c:choose>
+                    </a>
                 </td>
 			</tr>
 		</c:forEach>

@@ -27,4 +27,5 @@ public interface MemberDao extends CrudDao<Member> {
     public List<Member> getActivateMember(Member member);
     public void updateMember(Member member);
     public void insertRole(User user);
+    public void lockOrUnlock(User user);
 }

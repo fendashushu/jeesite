@@ -102,6 +102,11 @@ public class MemberService extends CrudService<MemberDao, Member> {
 		super.delete(member);
 	}
 
+	@Transactional(readOnly = false)
+	public void lockOrUnlock(User user) {
+		memberDao.lockOrUnlock(user);
+	}
+
     @Transactional(readOnly = false)
     public void updateMember(Member member,BonusTotal bonusTotal,User user) {
         memberDao.updateMember(member);

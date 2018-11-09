@@ -200,6 +200,42 @@ public class MemberController extends BaseController {
 		return map;
 	}
 
+    /**
+     * 锁定解锁
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     */
+    @RequiresPermissions("core:member:member:edit")
+	@RequestMapping(value = {"lockOrUnlock"})
+    @ResponseBody
+	public Map lockOrUnlock(HttpServletRequest request, HttpServletResponse response, Model model) {
+	    Map map = new HashMap();
+	    String msg = "锁定";
+        String loginName = request.getParameter("loginName");
+        String status = request.getParameter("status");
+        User user = UserUtils.getByLoginName(loginName);
+        if("0".equals(status)){
+            msg = "解锁";
+        }
+        if (user != null){
+            if("1".equals(status)){
+                user.setStatus(0);
+            }else{
+                user.setStatus(1);
+            }
+            memberService.lockOrUnlock(user);
+            map.put("result",true);
+            map.put("msg",msg+"成功！");
+        }else{
+            map.put("result",false);
+            map.put("msg",msg+"失败，会员不存在！");
+        }
+
+		return map;
+	}
+
 	@RequiresPermissions("core:member:member:view")
 	@RequestMapping(value = "form")
 	public String form(Member member, Model model) {
