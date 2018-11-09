@@ -46,6 +46,8 @@ public class Member extends DataEntity<Member> {
 	private Date activateDate;
 	private String mobile;
 	private Date storeDate;
+	private BigDecimal bonusTotal;
+	private BigDecimal bonusCurrent;
 
 	public Member() {
 		super();
@@ -287,5 +289,21 @@ public class Member extends DataEntity<Member> {
 
     public void setStoreDate(Date storeDate) {
         this.storeDate = storeDate;
+    }
+
+    public BigDecimal getBonusTotal() {
+        return bonusTotal;
+    }
+
+    public void setBonusTotal(BigDecimal bonusTotal) {
+        this.bonusTotal = bonusTotal;
+    }
+
+    public BigDecimal getBonusCurrent() {
+        return bonusCurrent;
+    }
+
+    public void setBonusCurrent(BigDecimal bonusCurrent) {
+        this.bonusCurrent = bonusCurrent;
     }
 }
