@@ -97,50 +97,47 @@
 
     <select id="getRealMember" resultType="Member">
         select m.*,u.name,u.mobile  from sys_member m,sys_user u where m.del_flag = '0'  and m.activate = '1' and m.userid = u.id
-        <choose>
-            <when test="store !=null and store != '' and store != 'admin'">
+            <if test="store !=null and store != '' and store != 'admin'">
                 and m.store = #{store}
-            </when>
-            <when test="loginName !=null and loginName != '' ">
+            </if>
+            <if test="loginName !=null and loginName != '' ">
                 and m.login_name like CONCAT('%', #{loginName}, '%')
-            </when>
-            <when test="referee !=null and referee != '' ">
+            </if>
+            <if test="referee !=null and referee != '' ">
                 and m.referee  like CONCAT('%', #{referee}, '%')
-            </when>
-        </choose>
+            </if>
     </select>
 
     <select id="realMemberManager" resultType="Member">
         select m.*,u.name,u.status,t.bonus_total bonusTotal,t.bonus_current bonusCurrent from sys_member m ,sys_user u,bonus_total t
         where m.activate = '1' and m.userId = u.id  and u.del_flag = '0'
         and m.login_name = t.login_name
-        <choose>
-            <when test="store !=null and store != '' and store != 'admin'">
+            <if test="store !=null and store != ''">
                 and m.store = #{store}
-            </when>
-            <when test="loginName !=null and loginName != '' ">
+            </if>
+            <if test="name !=null and name != ''">
+                and m.contact = #{name}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
                 and m.login_name like CONCAT('%', #{loginName}, '%')
-            </when>
-            <when test="referee !=null and referee != '' ">
+            </if>
+            <if test="referee !=null and referee != '' ">
                 and m.referee  like CONCAT('%', #{referee}, '%')
-            </when>
-        </choose>
+            </if>
         order by m.create_date ASC
     </select>
 
     <select id="getActivateMember" resultType="Member">
         select m.*,u.name,u.mobile  from sys_member m,sys_user u where m.del_flag = '0'  and m.activate = '0' and m.userid = u.id
-        <choose>
-            <when test="store !=null and store != '' and store != 'admin'">
+            <if test="store !=null and store != '' and store != 'admin'">
                 and m.store = #{store}
-            </when>
-            <when test="loginName !=null and loginName != '' ">
+            </if>
+            <if test="loginName !=null and loginName != '' ">
                 and m.login_name like CONCAT('%', #{loginName}, '%')
-            </when>
-            <when test="referee !=null and referee != '' ">
+            </if>
+            <if test="referee !=null and referee != '' ">
                 and m.referee  like CONCAT('%', #{referee}, '%')
-            </when>
-        </choose>
+            </if>
     </select>
 
     <select id="getMemberRecommend" resultType="Member">

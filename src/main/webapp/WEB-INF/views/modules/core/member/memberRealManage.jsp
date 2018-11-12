@@ -32,9 +32,14 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a>会员列表</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="member" action="${ctx}/core/member/member/realMemberManager" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="member"
+               action="${ctx}/core/member/member/realMemberManager"
+               method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+        <c:if test="${my == true}">
+            <input id="name" name="name" type="hidden" value="${name}"/>
+        </c:if>
 		<ul class="ul-form">
             <li><label>会员编号：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-medium"/></li>
             <li><label>推荐人：</label><form:input path="referee" htmlEscape="false" maxlength="50" class="input-medium"/></li>
@@ -58,7 +63,9 @@
 				<th>剩余奖金</th>
 				<th>报单时间</th>
 				<th>确认时间</th>
+                <c:if test="${my == false}">
 				<th>操作</th>
+                </c:if>
 			</tr>
 		</thead>
 		<tbody>
@@ -111,6 +118,7 @@
 				<td>
                     <fmt:formatDate value="${member.activateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
+                <c:if test="${my == false}">
                 <td>
                     <a href="javaScript:void(0)" onclick="lockOrUnlock('${member.loginName}','${member.status}')">
                     <c:choose>
@@ -122,7 +130,9 @@
                         </c:when>
                     </c:choose>
                     </a>
+                    <a href="${ctx}/core/member/member/realMemberManager?name=${member.loginName}">我的推荐</a>
                 </td>
+                </c:if>
 			</tr>
 		</c:forEach>
 		</tbody>

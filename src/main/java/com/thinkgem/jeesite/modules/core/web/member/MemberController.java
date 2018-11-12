@@ -100,6 +100,14 @@ public class MemberController extends BaseController {
     @RequiresPermissions("core:member:member:view")
 	@RequestMapping(value = {"realMemberManager"})
 	public String realMemberManager(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+        String name = request.getParameter("name");
+        if(name != null && !"".equals(name)){
+            member.setName(name);
+            model.addAttribute("my",true);
+            model.addAttribute("name",name);
+        }else{
+            model.addAttribute("my",false);
+        }
 		Page<Member> page = memberService.realMemberManager(new Page<Member>(request, response), member);
 		model.addAttribute("page", page);
 		return "modules/core/member/memberRealManage";
