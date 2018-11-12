@@ -82,6 +82,12 @@ public class MemberService extends CrudService<MemberDao, Member> {
         return page;
 	}
 
+	public Page<Member> baodan(Page<Member> page, Member member) {
+        member.setPage(page);
+        page.setList(memberDao.baodan(member));
+        return page;
+	}
+
 	public Page<Member> getActivateMember(Page<Member> page, Member member) {
         member.setPage(page);
         page.setList(memberDao.getActivateMember(member));

@@ -130,6 +130,24 @@ public class MemberController extends BaseController {
 		return "modules/core/member/storeManage";
 	}
 
+
+    /**
+     * 管理员查看所有服务中心
+     * @param member
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     */
+    @RequiresPermissions("core:member:member:view")
+	@RequestMapping(value = {"baodan"})
+	public String baodan(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<Member> page = memberService.baodan(new Page<Member>(request, response), member);
+		model.addAttribute("page", page);
+		model.addAttribute("baodan", member.getBaodan());
+		return "modules/core/member/memberBaodan";
+	}
+
 	@RequiresPermissions("core:member:member:view")
 	@RequestMapping(value = {"activate"})
 	public String activate(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {

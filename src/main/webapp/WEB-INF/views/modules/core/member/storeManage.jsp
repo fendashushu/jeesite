@@ -38,7 +38,7 @@
 		<li class="active"><a>会员列表</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="member"
-               action="${ctx}/core/member/member/realMemberManager"
+               action="${ctx}/core/member/member/storeManager"
                method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -105,7 +105,7 @@
                 </td>
                 <td>
                     <a href="javaScript:void(0)" onclick="addBonus('${member.loginName}','${member.loginName}_bonus')">确认</a>
-                    <a href="javaScript:void(0)">报单记录</a>
+                    <a href="${ctx}/core/member/member/baodan?baodan=${member.loginName}">报单记录</a>
                 </td>
 			</tr>
 		</c:forEach>
