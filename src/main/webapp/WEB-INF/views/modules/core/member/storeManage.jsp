@@ -37,9 +37,6 @@
                method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
-        <c:if test="${my == true}">
-            <input id="name" name="name" type="hidden" value="${name}"/>
-        </c:if>
 		<ul class="ul-form">
             <li><label>会员编号：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-medium"/></li>
             <li><label>推荐人：</label><form:input path="referee" htmlEscape="false" maxlength="50" class="input-medium"/></li>
@@ -54,18 +51,13 @@
 				<th>会员编号</th>
 				<th>会员姓名</th>
 				<th>会员级别</th>
+				<th>推荐人</th>
 				<th>联系电话</th>
 				<th>身份证号</th>
-				<th>推荐人</th>
-				<th>接点人</th>
-				<th>服务中心</th>
-				<th>累计奖金</th>
 				<th>剩余奖金</th>
-				<th>报单时间</th>
-				<th>确认时间</th>
-                <c:if test="${my == false}">
+				<th>注册时间</th>
+				<th>增减积分</th>
 				<th>操作</th>
-                </c:if>
 			</tr>
 		</thead>
 		<tbody>
@@ -86,28 +78,16 @@
                     </c:choose>
                 </td>
                 <td>
-                        ${member.mobile}
-                </td>
-                <td>
-                        ${member.idcard}
-                </td>
-                <td>
                     <c:choose>
                         <c:when test="${member.referee=='0'}">顶层会员</c:when>
                         <c:otherwise>${member.referee}</c:otherwise>
                     </c:choose>
                 </td>
                 <td>
-                    <c:choose>
-                        <c:when test="${member.contact=='0'}">顶层会员</c:when>
-                        <c:otherwise>${member.contact}</c:otherwise>
-                    </c:choose>
+                        ${member.mobile}
                 </td>
                 <td>
-                        ${member.store}
-                </td>
-                <td>
-                        ${member.bonusTotal}
+                        ${member.idcard}
                 </td>
                 <td>
                         ${member.bonusCurrent}
@@ -115,24 +95,13 @@
 				<td>
 					<fmt:formatDate value="${member.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<td>
-                    <fmt:formatDate value="${member.activateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-                <c:if test="${my == false}">
                 <td>
-                    <a href="javaScript:void(0)" onclick="lockOrUnlock('${member.loginName}','${member.status}')">
-                    <c:choose>
-                        <c:when test="${member.status=='0'}">
-                            解锁
-                        </c:when>
-                        <c:when test="${member.status=='1'}">
-                            锁定
-                        </c:when>
-                    </c:choose>
-                    </a>
-                    <a href="${ctx}/core/member/member/realMemberManager?name=${member.loginName}">我的推荐</a>
+                    <input type="text" name="bonus" value="">
                 </td>
-                </c:if>
+                <td>
+                    <a href="javaScript:void(0)" onclick="lockOrUnlock('${member.loginName}','${member.status}')">确认</a>
+                    <a href="javaScript:void(0)">报单记录</a>
+                </td>
 			</tr>
 		</c:forEach>
 		</tbody>

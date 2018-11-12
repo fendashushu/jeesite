@@ -8,6 +8,7 @@
 		a.store AS "store",
 		a.referee AS "referee",
 		a.contact AS "contact",
+		a.baodan AS "baodan",
 		a.area AS "area",
 		a.memberlevel AS "memberlevel",
 		a.bank AS "bank",
@@ -127,6 +128,26 @@
         order by m.create_date ASC
     </select>
 
+
+    <select id="storeManage" resultType="Member">
+        select m.*,u.name,u.status,t.bonus_total bonusTotal,t.bonus_current bonusCurrent from sys_member m ,sys_user u,bonus_total t
+        where m.activate = '1' and m.userId = u.id  and u.del_flag = '0' and m.isstore = '1'
+        and m.login_name = t.login_name
+            <if test="store !=null and store != ''">
+                and m.store = #{store}
+            </if>
+            <if test="name !=null and name != ''">
+                and m.contact = #{name}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                and m.login_name like CONCAT('%', #{loginName}, '%')
+            </if>
+            <if test="referee !=null and referee != '' ">
+                and m.referee  like CONCAT('%', #{referee}, '%')
+            </if>
+        order by m.create_date ASC
+    </select>
+
     <select id="getActivateMember" resultType="Member">
         select m.*,u.name,u.mobile  from sys_member m,sys_user u where m.del_flag = '0'  and m.activate = '0' and m.userid = u.id
             <if test="store !=null and store != '' and store != 'admin'">
@@ -155,6 +176,7 @@
 			store,
 			referee,
 			contact,
+            baodan,
 			area,
 			memberlevel,
 			bank,
@@ -181,6 +203,7 @@
 			#{store},
 			#{referee},
 			#{contact},
+			#{baodan},
 			#{area},
 			#{memberlevel},
 			#{bank},
@@ -234,6 +257,7 @@
 			store = #{store},
 			referee = #{referee},
 			contact = #{contact},
+            baodan = #{baodan},
 			area = #{area},
 			memberlevel = #{memberlevel},
 			bank = #{bank},

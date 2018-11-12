@@ -343,6 +343,7 @@ public class UserController extends BaseController {
             member.setContacts(member1.getContacts()+","+member.getContact());
             member.setIsstore("0");
             member.setActivate("0");
+            member.setBaodan(UserUtils.getUser().getLoginName());
             memberService.save(member);
 
             // 清除当前用户缓存

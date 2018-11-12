@@ -76,6 +76,12 @@ public class MemberService extends CrudService<MemberDao, Member> {
         return page;
 	}
 
+	public Page<Member> storeManage(Page<Member> page, Member member) {
+        member.setPage(page);
+        page.setList(memberDao.storeManage(member));
+        return page;
+	}
+
 	public Page<Member> getActivateMember(Page<Member> page, Member member) {
         member.setPage(page);
         page.setList(memberDao.getActivateMember(member));

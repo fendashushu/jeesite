@@ -34,6 +34,7 @@ public class Member extends DataEntity<Member> {
 	private String qq;		// QQ号
 	private String isstore;		// 是否服务中心；0：否；1：是
 	private String activate;		// 是否激活；0：否；1：是
+    private String baodan; //报单人
     private String loginName;
 	private String name;
 	private String status;
@@ -305,5 +306,13 @@ public class Member extends DataEntity<Member> {
 
     public void setBonusCurrent(BigDecimal bonusCurrent) {
         this.bonusCurrent = bonusCurrent;
+    }
+
+    public String getBaodan() {
+        return baodan;
+    }
+
+    public void setBaodan(String baodan) {
+        this.baodan = baodan;
     }
 }

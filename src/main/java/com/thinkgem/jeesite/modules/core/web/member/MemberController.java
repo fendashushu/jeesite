@@ -113,6 +113,23 @@ public class MemberController extends BaseController {
 		return "modules/core/member/memberRealManage";
 	}
 
+
+    /**
+     * 管理员查看所有服务中心
+     * @param member
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     */
+    @RequiresPermissions("core:member:member:view")
+	@RequestMapping(value = {"storeManager"})
+	public String storeManager(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<Member> page = memberService.storeManage(new Page<Member>(request, response), member);
+		model.addAttribute("page", page);
+		return "modules/core/member/storeManage";
+	}
+
 	@RequiresPermissions("core:member:member:view")
 	@RequestMapping(value = {"activate"})
 	public String activate(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
