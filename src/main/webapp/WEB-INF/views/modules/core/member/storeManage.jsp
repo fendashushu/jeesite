@@ -14,8 +14,13 @@
 			$("#searchForm").submit();
         	return false;
         }
-        function lockOrUnlock(loginName,status) {
-            $.post("${ctx}/core/member/member/lockOrUnlock",{"loginName":loginName,"status":status},function (data) {
+        function addBonus(loginName,id) {
+            var bonus = $("#"+id).val();
+            if(bonus == "" || isNaN(bonus)){
+                alert("请输入积分");
+                return;
+            }
+            $.post("${ctx}/core/bonus/bonusTotal/addBonus",{"loginName":loginName,"bonusCurrent":bonus},function (data) {
                 var result = data.result;
                 var msg = data.msg;
                 if(result){
@@ -96,10 +101,10 @@
 					<fmt:formatDate value="${member.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
                 <td>
-                    <input type="text" name="bonus" value="">
+                    <input type="text" name="bonus" value="" id="${member.loginName}_bonus">
                 </td>
                 <td>
-                    <a href="javaScript:void(0)" onclick="lockOrUnlock('${member.loginName}','${member.status}')">确认</a>
+                    <a href="javaScript:void(0)" onclick="addBonus('${member.loginName}','${member.loginName}_bonus')">确认</a>
                     <a href="javaScript:void(0)">报单记录</a>
                 </td>
 			</tr>

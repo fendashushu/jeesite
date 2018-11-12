@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -21,6 +22,9 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
 import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 业绩Controller
@@ -70,6 +74,23 @@ public class BonusTotalController extends BaseController {
 		bonusTotalService.save(bonusTotal);
 		addMessage(redirectAttributes, "保存业绩汇总成功");
 		return "redirect:"+Global.getAdminPath()+"/core/bonus/bonusTotal/?repage";
+	}
+
+	@RequestMapping(value = "addBonus")
+    @ResponseBody
+	public Map addBonus(BonusTotal bonusTotal, Model model, RedirectAttributes redirectAttributes) {
+        Map map = new HashMap();
+        try {
+            BonusTotal bonusTotal1 = bonusTotalService.getBonusByLoginName(bonusTotal.getLoginName());
+            bonusTotal1.setBonusCurrent(bonusTotal1.getBonusCurrent().add(bonusTotal.getBonusCurrent()));
+            bonusTotalService.updateBouns(bonusTotal1);
+            map.put("result",true);
+            map.put("msg","积分增减成功！");
+        }catch (Exception e){
+            map.put("result",false);
+            map.put("msg","积分增减失败！");
+        }
+		return map;
 	}
 	
 	@RequiresPermissions("core:bonus:bonusTotal:edit")
