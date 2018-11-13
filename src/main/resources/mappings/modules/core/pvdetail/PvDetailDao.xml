@@ -33,10 +33,16 @@
 
     <select id="getDetails" resultType="PvDetail">
         select * from pv_detail
-        where DATE_FORMAT(create_date,'%Y-%m-%d') = #{pvDate}
+        where 1=1
+        <if test="pvDate != null and pvDate != '' ">
+          and DATE_FORMAT(create_date,'%Y-%m-%d') = #{pvDate}
+        </if>
         <choose>
             <when test="loginName !=null and loginName != '' and loginName !='admin'">
                 and login_Name = #{loginName}
+            </when>
+            <when test="fromName !=null and fromName != '' ">
+                and login_Name = #{fromName}
             </when>
         </choose>
         ORDER BY create_date DESC
@@ -45,7 +51,8 @@
 	<select id="findList" resultType="PvDetail">
         select create_date, sum(pvTotal1) pvTotal1,sum(pvTotal2) pvTotal2,sum(pvTotal3) pvTotal3,
         sum(pvSheng1) pvSheng1,sum(pvSheng2) pvSheng2,sum(pvSheng3) pvSheng3,
-        sum(pvDues1) pvDues1,sum(pvDues2) pvDues2,sum(pvDues3) pvDues3
+        sum(pvDues1) pvDues1,sum(pvDues2) pvDues2,sum(pvDues3) pvDues3,
+        sum(pvSheng1)+ sum(pvsheng2)+sum(pvsheng3) pvZong
         from(
         select DATE_FORMAT(create_date,'%Y-%m-%d') create_date,
         case when pvType='1' then pvTotal else 0 end pvTotal1,

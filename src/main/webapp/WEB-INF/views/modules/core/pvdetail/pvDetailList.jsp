@@ -43,6 +43,7 @@
 				<th>管理奖</th>
                 <th>互助基金</th>
                 <th>可提现金额</th>
+                <th>奖金总额</th>
 				<shiro:hasPermission name="core:pvdetail:pvDetail:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -78,6 +79,9 @@
 				</td>
 				<td>
 					${pvDetail.pvSheng3}
+				</td>
+				<td>
+					${pvDetail.pvZong}
 				</td>
 
                 <shiro:hasPermission name="sys:user:edit">

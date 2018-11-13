@@ -43,6 +43,9 @@
                 <th>可提现金额</th>
                 <th>备注</th>
                 <th>相关会员</th>
+                <c:if test="${flag != 'detail'}">
+                    <th>奖金明细</th>
+                </c:if>
 			</tr>
 		</thead>
 		<tbody>
@@ -69,6 +72,11 @@
 				<td>
 					${pvDetail.zhuceName}
 				</td>
+                <c:if test="${flag != 'detail'}">
+                <td>
+                    <a href="${ctx}/core/pvdetail/pvDetail/detail?name=${pvDetail.loginName}&flag=detail">查看</a>
+                </td>
+                </c:if>
 			</tr>
 		</c:forEach>
 		</tbody>

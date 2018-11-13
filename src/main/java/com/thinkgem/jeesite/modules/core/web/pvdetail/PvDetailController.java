@@ -63,9 +63,17 @@ public class PvDetailController extends BaseController {
 	@RequestMapping(value = {"detail"})
 	public String detail(PvDetail pvDetail, HttpServletRequest request, HttpServletResponse response, Model model) {
         String createDate = request.getParameter("createDate");
-        //String loginName = request.getParameter("loginName");
-        pvDetail.setPvDate(createDate);
-        pvDetail.setLoginName(UserUtils.getUser().getLoginName());
+        String flag = request.getParameter("flag");
+        String name = request.getParameter("name");
+        if("detail".equals(flag)){
+            pvDetail.setFromName(name);
+            model.addAttribute("flag", "detail");
+        }else if("allDetail".equals(flag)){
+            model.addAttribute("flag", "detail");
+        }else{
+            pvDetail.setPvDate(createDate);
+            pvDetail.setLoginName(UserUtils.getUser().getLoginName());
+        }
         Page<PvDetail> page = pvDetailService.getDetails(new Page<PvDetail>(request, response), pvDetail);
         model.addAttribute("page", page);
         model.addAttribute("createDate", createDate);

@@ -37,6 +37,7 @@ public class PvDetail extends DataEntity<PvDetail> {
     private BigDecimal pvTotal3;
     private BigDecimal pvSheng3;
     private BigDecimal pvDues3;
+    private BigDecimal pvZong; //可提现和
 
     private String pvDate;
 	
@@ -195,5 +196,13 @@ public class PvDetail extends DataEntity<PvDetail> {
 
     public void setPvDate(String pvDate) {
         this.pvDate = pvDate;
+    }
+
+    public BigDecimal getPvZong() {
+        return pvZong;
+    }
+
+    public void setPvZong(BigDecimal pvZong) {
+        this.pvZong = pvZong;
     }
 }
