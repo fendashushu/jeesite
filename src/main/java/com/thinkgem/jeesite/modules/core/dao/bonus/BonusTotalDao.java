@@ -19,5 +19,4 @@ public interface BonusTotalDao extends CrudDao<BonusTotal> {
 
     public void updateBouns(BonusTotal bonusTotal);
 
-
 }
