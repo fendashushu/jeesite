@@ -58,6 +58,12 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>
+        <if test="beginDate != null and beginDate != ''">
+            and a.data_date >= #{beginDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and a.data_date &lt;= #{endDate}
+        </if>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}

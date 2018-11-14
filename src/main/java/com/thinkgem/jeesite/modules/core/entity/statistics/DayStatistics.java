@@ -30,6 +30,8 @@ public class DayStatistics extends DataEntity<DayStatistics> {
 	private BigDecimal allBobi;		// 总波比
 	private String ext1;		// 扩展1
 	private String ext2;		// 扩展2
+    private Date beginDate;
+    private Date endDate;
 	
 	public DayStatistics() {
 		super();
@@ -130,5 +132,20 @@ public class DayStatistics extends DataEntity<DayStatistics> {
 	public void setExt2(String ext2) {
 		this.ext2 = ext2;
 	}
-	
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 }
