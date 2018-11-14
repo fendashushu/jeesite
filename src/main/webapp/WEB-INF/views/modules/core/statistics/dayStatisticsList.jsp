@@ -73,10 +73,10 @@
 					${dayStatistics.outAllBonus}
 				</td>
 				<td>
-					${dayStatistics.bobi}
+					${dayStatistics.bobi}%
 				</td>
 				<td>
-					${dayStatistics.allBobi}
+					${dayStatistics.allBobi}%
 				</td>
 			</tr>
 		</c:forEach>

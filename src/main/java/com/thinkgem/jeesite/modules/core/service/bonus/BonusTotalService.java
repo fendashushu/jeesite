@@ -189,8 +189,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
         statistics.setOutAllBonus(statistics.getOutAllBonus().add(bonus));
         statistics.setOutBonus(statistics.getOutBonus().add(bonus));
-        statistics.setBobi(statistics.getOutBonus().divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-        statistics.setAllBobi(statistics.getOutAllBonus().divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+        statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+        statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
         statisticsService.save(statistics);
     }
 
@@ -283,8 +283,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
                 statistics.setOutAllBonus(statistics.getOutAllBonus().add(hezuo));
                 statistics.setOutBonus(statistics.getOutBonus().add(hezuo));
-                statistics.setBobi(statistics.getOutBonus().divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-                statistics.setAllBobi(statistics.getOutAllBonus().divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+                statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+                statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
                 statisticsService.save(statistics);
             }
             //管理奖，推荐人拿合作奖的n%
@@ -323,8 +323,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
                 statistics.setOutAllBonus(statistics.getOutAllBonus().add(guanli));
                 statistics.setOutBonus(statistics.getOutBonus().add(guanli));
-                statistics.setBobi(statistics.getOutBonus().divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-                statistics.setAllBobi(statistics.getOutAllBonus().divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+                statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+                statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
                 statisticsService.save(statistics);
             }
         }
@@ -393,8 +393,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
         statistics.setOutAllBonus(statistics.getOutAllBonus().add(bonus));
         statistics.setOutBonus(statistics.getOutBonus().add(bonus));
-        statistics.setBobi(statistics.getOutBonus().divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-        statistics.setAllBobi(statistics.getOutAllBonus().divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+        statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+        statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
         statisticsService.save(statistics);
     }
 }
