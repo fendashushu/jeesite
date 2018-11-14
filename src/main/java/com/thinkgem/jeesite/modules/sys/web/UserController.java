@@ -289,11 +289,11 @@ public class UserController extends BaseController {
         //判断左区是否有直推会员，如果没有，右区不能添加会员
         if("B".equals(member.getArea())){
             Member memberA = memberService.getMemberA(contact);//A去会员
-            if(memberA == null){
+            if(memberA == null && !"admin".equals(contact)){
                 addMessage(redirectAttributes, "会员注册失败，左侧没有直推会员！");
                 return "redirect:" + adminPath + "/sys/user/net?repage";
             }
-            List<Member> members = memberService.getMemberContacts(memberA.getLoginName());//A区会员及其所有子会员
+            List<Member> members = memberService.getMemberContacts(memberA==null?"admin":memberA.getLoginName());//A区会员及其所有子会员
             boolean has = false;
             for (Member m:members) {
                 if(m.getReferee().equals(contact)){

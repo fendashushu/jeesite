@@ -33,6 +33,22 @@
 		<include refid="dayStatisticsJoins"/>
 		WHERE a.id = #{id}
 	</select>
+
+	<select id="getByDate" resultType="DayStatistics">
+		SELECT
+			<include refid="dayStatisticsColumns"/>
+		FROM day_statistics a
+		<include refid="dayStatisticsJoins"/>
+		WHERE DATE_FORMAT(a.data_date,'%Y-%m-%d') = #{value} and a.del_flag = '0'
+	</select>
+
+	<select id="getLastest" resultType="DayStatistics">
+		SELECT
+			<include refid="dayStatisticsColumns"/>
+		FROM day_statistics a
+		<include refid="dayStatisticsJoins"/>
+        where a.data_date =( select max(data_date) from day_statistics where DATE_FORMAT(data_date,'%Y-%m-%d') != #{value} ) and del_flag = '0'
+	</select>
 	
 	<select id="findList" resultType="DayStatistics">
 		SELECT 

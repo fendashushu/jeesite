@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.thinkgem.jeesite.modules.core.dao.bonus.BonusTotalDao;
 import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
+import com.thinkgem.jeesite.modules.core.entity.setting.MemberSetting;
 import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,13 +121,16 @@ public class MemberService extends CrudService<MemberDao, Member> {
 	}
 
     @Transactional(readOnly = false)
-    public void updateMember(Member member,BonusTotal bonusTotal,User user) {
+    public void updateMember(Member member, BonusTotal bonusTotal, User user, MemberSetting memberSetting) {
         memberDao.updateMember(member);
         if(bonusTotal != null){
             bonusTotalService.updateBouns(bonusTotal);
         }
         if (user != null){
             memberDao.insertRole(user);
+        }
+        if(memberSetting != null){
+            bonusTotalService.excuteBonus(member,memberSetting);
         }
     }
 }

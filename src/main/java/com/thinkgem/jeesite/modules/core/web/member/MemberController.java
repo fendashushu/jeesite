@@ -193,7 +193,7 @@ public class MemberController extends BaseController {
                 member.setStoreDate(new Date());
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(money));
                 User user = UserUtils.getByLoginName(member.getLoginName());
-                memberService.updateMember(member,bonusTotal,user);
+                memberService.updateMember(member,bonusTotal,user,null);
                 addMessage(redirectAttributes, "申请服务中心成功");
             }
         }catch (Exception e){
@@ -232,8 +232,7 @@ public class MemberController extends BaseController {
             member.setActivate("1");
             member.setActivateDate(new Date());
             bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
-            memberService.updateMember(member,bonusTotal,null);
-            bonusTotalService.excuteBonus(member,memberSetting);
+            memberService.updateMember(member,bonusTotal,null,memberSetting);
             map.put("result",true);
             map.put("msg","激活成功！");
         }else {

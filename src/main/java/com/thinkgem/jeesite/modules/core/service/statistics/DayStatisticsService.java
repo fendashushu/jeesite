@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.core.service.statistics;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.common.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +23,21 @@ import com.thinkgem.jeesite.modules.core.dao.statistics.DayStatisticsDao;
 @Service
 @Transactional(readOnly = true)
 public class DayStatisticsService extends CrudService<DayStatisticsDao, DayStatistics> {
+    @Autowired
+    private DayStatisticsDao statisticsDao;
 
 	public DayStatistics get(String id) {
 		return super.get(id);
 	}
-	
+
+	public DayStatistics getByDate(String date) {
+		return statisticsDao.getByDate(date);
+	}
+
+	public DayStatistics getLastest() {
+		return statisticsDao.getLastest(DateUtils.getDate());
+	}
+
 	public List<DayStatistics> findList(DayStatistics dayStatistics) {
 		return super.findList(dayStatistics);
 	}

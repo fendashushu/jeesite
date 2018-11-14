@@ -14,5 +14,9 @@ import com.thinkgem.jeesite.modules.core.entity.statistics.DayStatistics;
  */
 @MyBatisDao
 public interface DayStatisticsDao extends CrudDao<DayStatistics> {
-	
+
+    public DayStatistics getByDate(String date);
+
+    public DayStatistics getLastest(String date);
+
 }
