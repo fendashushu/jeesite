@@ -79,6 +79,57 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         bonusTotalDao.updateBouns(bonusTotal);
     }
 
+	//开发店铺，直推三级900/600,150,150
+    @Transactional(readOnly = false)
+    public void kaifaStore(Member member){
+        String referee1 = member.getReferee();
+        Member member1 = memberDao.getMemberByLoginName(referee1);
+        String level = member1.getMemberlevel();
+        BonusTotal bonusTotal1 = bonusTotalDao.getBonusTotalByLoginName(referee1);
+        BigDecimal bonus = BigDecimal.ZERO;
+        if("1".equals(level)){
+            bonus = new BigDecimal("600");
+            bonusTotal1.setBonusTotal(bonusTotal1.getBonusTotal().add(new BigDecimal("600")));
+            bonusTotal1.setBonusCurrent(bonusTotal1.getBonusCurrent().add(new BigDecimal("600")));
+        }else if("2".equals(level) || "3".equals(level)){
+            bonus = new BigDecimal("900");
+            bonusTotal1.setBonusTotal(bonusTotal1.getBonusTotal().add(new BigDecimal("900")));
+            bonusTotal1.setBonusCurrent(bonusTotal1.getBonusCurrent().add(new BigDecimal("900")));
+        }
+        bonusTotalDao.updateBouns(bonusTotal1);
+        /*PvDetail pvDetail = new PvDetail();
+        pvDetail.setLoginName(referee1);
+        pvDetail.setNote("开发店铺奖（一代）");
+        pvDetail.setPvTotal(bonus);
+        pvDetail.setPvSheng(bonus.multiply(new BigDecimal(0.95)));
+        pvDetail.setPvDues(bonus.multiply(new BigDecimal(0.05)));
+        pvDetail.setPvtype("4");
+        pvDetail.setFromName(member.getLoginName());
+        pvDetail.setZhuceName(member.getLoginName());
+        pvDetailService.save(pvDetail);*/
+
+
+        String referee2 = member1.getReferee();
+        if(!"0".equals(referee2)){
+            Member member2 = memberDao.getMemberByLoginName(referee2);
+            BonusTotal bonusTotal2 = bonusTotalDao.getBonusTotalByLoginName(referee2);
+            bonusTotal2.setBonusCurrent(bonusTotal2.getBonusCurrent().add(new BigDecimal("150")));
+            bonusTotal2.setBonusTotal(bonusTotal2.getBonusTotal().add(new BigDecimal("150")));
+            bonusTotalDao.updateBouns(bonusTotal2);
+
+            String referee3 = member2.getReferee();
+            if(!"0".equals(referee3)){
+                Member member3 = memberDao.getMemberByLoginName(referee3);
+                BonusTotal bonusTotal3 = bonusTotalDao.getBonusTotalByLoginName(referee3);
+                bonusTotal3.setBonusTotal(bonusTotal3.getBonusTotal().add(new BigDecimal(150)));
+                bonusTotal3.setBonusCurrent(bonusTotal3.getBonusCurrent().add(new BigDecimal(150)));
+                bonusTotalDao.updateBouns(bonusTotal3);
+            }
+        }
+
+        //statistics(member,memberSetting,bonus);
+    }
+
 	//激活会员后开始计算奖金
     @Transactional(readOnly = false)
     public void excuteBonus(Member member,MemberSetting memberSetting){

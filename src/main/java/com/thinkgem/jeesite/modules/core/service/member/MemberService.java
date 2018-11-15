@@ -134,6 +134,7 @@ public class MemberService extends CrudService<MemberDao, Member> {
         }
         if (user != null){
             memberDao.insertRole(user);
+            bonusTotalService.kaifaStore(member);
         }
         if(memberSetting != null && before == null){
             bonusTotalService.excuteBonus(member,memberSetting);
