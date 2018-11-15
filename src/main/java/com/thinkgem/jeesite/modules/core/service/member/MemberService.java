@@ -95,6 +95,12 @@ public class MemberService extends CrudService<MemberDao, Member> {
         return page;
 	}
 
+	public Page<Member> getUpMember(Page<Member> page, Member member) {
+        member.setPage(page);
+        page.setList(memberDao.getUpMember(member));
+        return page;
+	}
+
 	@Transactional(readOnly = false)
 	public void save(Member member) {
 		super.save(member);
@@ -121,7 +127,7 @@ public class MemberService extends CrudService<MemberDao, Member> {
 	}
 
     @Transactional(readOnly = false)
-    public void updateMember(Member member, BonusTotal bonusTotal, User user, MemberSetting memberSetting) {
+    public void updateMember(Member member, BonusTotal bonusTotal, User user, MemberSetting memberSetting,String before,String after) {
         memberDao.updateMember(member);
         if(bonusTotal != null){
             bonusTotalService.updateBouns(bonusTotal);
@@ -129,8 +135,11 @@ public class MemberService extends CrudService<MemberDao, Member> {
         if (user != null){
             memberDao.insertRole(user);
         }
-        if(memberSetting != null){
+        if(memberSetting != null && before == null){
             bonusTotalService.excuteBonus(member,memberSetting);
+        }
+        if(before != null && after != null){
+            bonusTotalService.upBonus(member,memberSetting,before,after);
         }
     }
 }

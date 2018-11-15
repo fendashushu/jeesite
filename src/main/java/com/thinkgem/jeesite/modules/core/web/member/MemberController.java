@@ -168,6 +168,78 @@ public class MemberController extends BaseController {
 	}
 
 	@RequiresPermissions("core:member:member:view")
+	@RequestMapping(value = {"up"})
+	public String up(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+	    User user = UserUtils.getUser();
+	    member.setStore(user.getLoginName());
+		BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
+		String msg = "可使用金额：";
+		if(bonusTotal == null){
+			msg += "0";
+		}else {
+			BigDecimal current = bonusTotal.getBonusCurrent();
+			msg += current;
+		}
+		Page<Member> page = memberService.getUpMember(new Page<Member>(request, response), member);
+		model.addAttribute("page", page);
+		model.addAttribute("msg", msg);
+		return "modules/core/member/memberUp";
+	}
+
+    @RequiresPermissions("core:member:member:edit")
+    @RequestMapping(value = {"uping"})
+    @ResponseBody
+    public Map uping(HttpServletRequest request, HttpServletResponse response, Model model) {
+        Map map = new HashMap();
+        String loginName = request.getParameter("loginName");
+        String level = request.getParameter("level");
+        Member member = memberService.getMemberByLoginName(loginName);
+        String memberlevel = member.getMemberlevel();
+        MemberSetting memberSetting = memberSettingService.get("1");
+        Integer jion0 = memberSetting.getJion0();
+        Integer jion1 = memberSetting.getJion1();
+        Integer jion2 = memberSetting.getJion2();
+        Integer jion3 = memberSetting.getJion3();
+        BigDecimal need = BigDecimal.ZERO;//激活需要的报单币
+        if("0".equals(memberlevel)){
+            if("1".equals(level)){
+                need = BigDecimal.valueOf(jion1).subtract(BigDecimal.valueOf(jion0));
+            }else if("2".equals(level)){
+                need = BigDecimal.valueOf(jion2).subtract(BigDecimal.valueOf(jion0));
+            }else if("3".equals(level)){
+                need = BigDecimal.valueOf(jion3).subtract(BigDecimal.valueOf(jion0));
+            }
+        }else if("1".equals(memberlevel)){
+            if("2".equals(level)){
+                need = BigDecimal.valueOf(jion2).subtract(BigDecimal.valueOf(jion1));
+            }else if("3".equals(level)){
+                need = BigDecimal.valueOf(jion3).subtract(BigDecimal.valueOf(jion1));
+            }
+        }else if("2".equals(memberlevel)){
+            need = BigDecimal.valueOf(jion3).subtract(BigDecimal.valueOf(jion2));
+        }
+        User user = UserUtils.getUser();
+        BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
+        BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
+        try {
+            if(need.compareTo(bonusCurrent)<0){
+                member.setMemberlevel(level);
+                bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
+                memberService.updateMember(member,bonusTotal,null,memberSetting,memberlevel,level);
+                map.put("result",true);
+                map.put("msg","升级成功！");
+            }else {
+                map.put("result",false);
+                map.put("msg","金额不足请充值！");
+            }
+        }catch (Exception e){
+            map.put("result",false);
+            map.put("msg","升级失败！");
+        }
+        return map;
+    }
+
+	@RequiresPermissions("core:member:member:view")
 	@RequestMapping(value = {"store"})
 	public String store(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
 	    User user = UserUtils.getUser();
@@ -191,9 +263,11 @@ public class MemberController extends BaseController {
                 member = memberService.getMemberByLoginName(member.getLoginName());
                 member.setIsstore("1");
                 member.setStoreDate(new Date());
+                bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(new BigDecimal("150")));
+                bonusTotal.setBonusCurrent(bonusCurrent.add(new BigDecimal("150")));
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(money));
                 User user = UserUtils.getByLoginName(member.getLoginName());
-                memberService.updateMember(member,bonusTotal,user,null);
+                memberService.updateMember(member,bonusTotal,user,null,null,null);
                 addMessage(redirectAttributes, "申请服务中心成功");
             }
         }catch (Exception e){
@@ -228,18 +302,23 @@ public class MemberController extends BaseController {
         User user = UserUtils.getUser();
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
         BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
-        if(need.compareTo(bonusCurrent)<0){
-            member.setActivate("1");
-            member.setActivateDate(new Date());
-            bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
-            memberService.updateMember(member,bonusTotal,null,memberSetting);
-            map.put("result",true);
-            map.put("msg","激活成功！");
-        }else {
+        try{
+            if(need.compareTo(bonusCurrent)<0){
+                member.setActivate("1");
+                member.setActivateDate(new Date());
+                bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
+                memberService.updateMember(member,bonusTotal,null,memberSetting,null,null);
+                map.put("result",true);
+                map.put("msg","激活成功！");
+            }else {
+                map.put("result",false);
+                map.put("msg","金额不足请充值！");
+            }
+        }catch (Exception e){
             map.put("result",false);
-            map.put("msg","金额不足请充值！");
+            map.put("msg","激活失败！");
         }
-		return map;
+        return map;
 	}
 
     /**
@@ -261,19 +340,25 @@ public class MemberController extends BaseController {
         if("0".equals(status)){
             msg = "解锁";
         }
-        if (user != null){
-            if("1".equals(status)){
-                user.setStatus(0);
+        try {
+            if (user != null){
+                if("1".equals(status)){
+                    user.setStatus(0);
+                }else{
+                    user.setStatus(1);
+                }
+                memberService.lockOrUnlock(user);
+                map.put("result",true);
+                map.put("msg",msg+"成功！");
             }else{
-                user.setStatus(1);
+                map.put("result",false);
+                map.put("msg",msg+"失败，会员不存在！");
             }
-            memberService.lockOrUnlock(user);
-            map.put("result",true);
-            map.put("msg",msg+"成功！");
-        }else{
+        }catch (Exception e){
             map.put("result",false);
-            map.put("msg",msg+"失败，会员不存在！");
+            map.put("msg",msg+"失败！");
         }
+
 
 		return map;
 	}

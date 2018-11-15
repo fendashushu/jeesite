@@ -79,35 +79,80 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         bonusTotalDao.updateBouns(bonusTotal);
     }
 
-	//注册会员后开始计算奖金
+	//激活会员后开始计算奖金
     @Transactional(readOnly = false)
     public void excuteBonus(Member member,MemberSetting memberSetting){
 
-        statistics(member,memberSetting);
+        statistics(member,memberSetting,null);
         zhitui(member,memberSetting);
-        hezuo(member,memberSetting);
+        hezuo(member,memberSetting,null);
         baodan(member,memberSetting);
     }
-
-    public void statistics(Member member,MemberSetting memberSetting){
+	//升级会员后开始计算奖金
+    @Transactional(readOnly = false)
+    public void upBonus(Member member,MemberSetting memberSetting,String before,String after){
+        Integer pv0 = memberSetting.getPv0();//1、2、3级代理奖金级别
         Integer pv1 = memberSetting.getPv1();//1、2、3级代理奖金级别
         Integer pv2 = memberSetting.getPv2();
         Integer pv3 = memberSetting.getPv3();
+        Integer pv = 0;
+        if("0".equals(before)){
+            if("1".equals(after)){
+                pv = pv1-pv0;
+            }else if("2".equals(after)){
+                pv = pv2-pv0;
+            }else if("3".equals(after)){
+                pv = pv3-pv0;
+            }
+        }else if("1".equals(before)){
+            if("2".equals(after)){
+                pv = pv2-pv1;
+            }else if("3".equals(after)){
+                pv = pv3-pv1;
+            }
+        }else if("2".equals(before)){
+            if("3".equals(after)){
+                pv = pv3-pv2;
+            }
+        }
+        statistics(member,memberSetting,pv);
+        hezuo(member,memberSetting,pv);
+    }
+
+    public void statistics(Member member,MemberSetting memberSetting,Integer pv){
+        Integer pv1 = memberSetting.getPv1();//1、2、3级代理奖金级别
+        Integer pv2 = memberSetting.getPv2();
+        Integer pv3 = memberSetting.getPv3();
+        if(pv != null){
+            pv1 = pv;
+            pv2 = pv;
+            pv3 = pv;
+        }
         String level = member.getMemberlevel();
         DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
         DayStatistics lastest = statisticsService.getLastest();
         if(statistics == null){
             statistics = new DayStatistics();
             statistics.setDataDate(new Date());
-            statistics.setNewMembers(1);
+            if(pv == null){
+                statistics.setNewMembers(1);
+            }else{
+                statistics.setNewMembers(0);
+            }
             if(lastest == null){
-                statistics.setAllMembers(1);
+                if(pv == null) {
+                    statistics.setAllMembers(1);
+                }else{
+                    statistics.setAllMembers(0);
+                }
                 statistics.setOutBonus(BigDecimal.ZERO);
                 statistics.setOutAllBonus(BigDecimal.ZERO);
                 statistics.setBobi(BigDecimal.ZERO);
                 statistics.setAllBobi(BigDecimal.ZERO);
             }else{
-                statistics.setAllMembers(lastest.getAllMembers()+1);
+                if(pv == null) {
+                    statistics.setAllMembers(lastest.getAllMembers() + 1);
+                }
                 statistics.setOutBonus(BigDecimal.ZERO);
                 statistics.setOutAllBonus(lastest.getOutAllBonus());
                 statistics.setBobi(BigDecimal.ZERO);
@@ -137,8 +182,13 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
             }
 
         }else {
-            statistics.setNewMembers(statistics.getNewMembers()+1);
-            statistics.setAllMembers(statistics.getAllMembers()+1);
+            if(pv == null) {
+                statistics.setNewMembers(statistics.getNewMembers() + 1);
+                statistics.setAllMembers(statistics.getAllMembers() + 1);
+            }else{
+                statistics.setNewMembers(statistics.getNewMembers());
+                statistics.setAllMembers(statistics.getAllMembers());
+            }
             if("1".equals(level)){
                 statistics.setNewBonus(statistics.getNewBonus().add(BigDecimal.valueOf(pv1)));
                 statistics.setAllBonus(statistics.getAllBonus().add(BigDecimal.valueOf(pv1)));
@@ -194,16 +244,20 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         statisticsService.save(statistics);
     }
 
-    public void hezuo(Member member,MemberSetting memberSetting) {
+    public void hezuo(Member member,MemberSetting memberSetting,Integer pv) {
         Integer pv1 = memberSetting.getPv1();//1、2、3级代理奖金级别
         Integer pv2 = memberSetting.getPv2();
         Integer pv3 = memberSetting.getPv3();
-
-        Integer hezuo1 = memberSetting.getHezuo1();//直推奖比例1、2、3级
+        if(pv != null){
+            pv1 = pv;
+            pv2 = pv;
+            pv3 = pv;
+        }
+        Integer hezuo1 = memberSetting.getHezuo1();//合作奖比例1、2、3级
         Integer hezuo2 = memberSetting.getHezuo2();
         Integer hezuo3 = memberSetting.getHezuo3();
 
-        Integer guanli1 = memberSetting.getGuanli1();//直推奖比例1、2、3级
+        Integer guanli1 = memberSetting.getGuanli1();//管理奖比例1、2、3级
         Integer guanli2 = memberSetting.getGuanli2();
         Integer guanli3 = memberSetting.getGuanli3();
 
