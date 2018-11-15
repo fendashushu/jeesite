@@ -25,6 +25,7 @@ public class timerService {
         System.out.println("定时任务："+new Date());
     }*/
 
+    //注册后三个月无直推的封点
     //0 0 23/23 * * *;每天23点执行
     @Scheduled(cron = "0 0 23/23 * * *")
     @Transactional(readOnly = false)
@@ -37,8 +38,10 @@ public class timerService {
                 List<Member> ref = memberDao.isReferee(m);
                 if(ref == null || ref.size()<=0){
                     User user = UserUtils.getByLoginName(loginName);
-                    user.setStatus(0);
-                    memberDao.lockOrUnlock(user);
+                    if("1".equals(user.getStatus())){
+                        user.setStatus(0);
+                        memberDao.lockOrUnlock(user);
+                    }
                 }
             }
         }

@@ -175,7 +175,7 @@
     <select id="get3Month" resultType="Member">
         select <include refid="memberColumns"/>
         from sys_member a
-        WHERE create_date &lt; date_sub(now(),interval 3 month)
+        WHERE create_date BETWEEN date_sub(now(),interval 4 month) and date_sub(now(),interval 3 month)
     </select>
 
     <select id="isReferee" resultType="Member">
