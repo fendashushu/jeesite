@@ -26,9 +26,10 @@ public class timerService {
     }*/
 
     //0 0 23/23 * * *;每天23点执行
-    @Scheduled(cron = "0 0 11/11 * * *")
+    @Scheduled(cron = "0 0 23/23 * * *")
     @Transactional(readOnly = false)
     public void lock(){
+        System.out.println("定时任务开始！！！！！");
         List<Member> memberList = memberDao.get3Month();
         if(memberList != null && memberList.size()>0){
             for (Member m:memberList) {
@@ -41,6 +42,7 @@ public class timerService {
                 }
             }
         }
+        System.out.println("定时任务结束！！！！！");
     }
 
 }

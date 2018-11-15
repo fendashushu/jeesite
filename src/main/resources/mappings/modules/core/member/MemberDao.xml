@@ -174,13 +174,13 @@
 
     <select id="get3Month" resultType="Member">
         select <include refid="memberColumns"/>
-        from sys_member
+        from sys_member a
         WHERE create_date &lt; date_sub(now(),interval 3 month)
     </select>
 
     <select id="isReferee" resultType="Member">
         select <include refid="memberColumns"/>
-        from sys_member
+        from sys_member a
         WHERE referees like CONCAT('%', #{loginName}, '%')
     </select>
 
