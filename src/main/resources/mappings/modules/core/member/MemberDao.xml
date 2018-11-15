@@ -172,6 +172,18 @@
             </if>
     </select>
 
+    <select id="get3Month" resultType="Member">
+        select <include refid="memberColumns"/>
+        from sys_member
+        WHERE create_date &lt; date_sub(now(),interval 3 month)
+    </select>
+
+    <select id="isReferee" resultType="Member">
+        select <include refid="memberColumns"/>
+        from sys_member
+        WHERE referees like CONCAT('%', #{loginName}, '%')
+    </select>
+
     <select id="getMemberRecommend" resultType="Member">
         select m.*,u.name from sys_member m,sys_user u where m.userId = u.id and m.del_flag='0' and (m.referees like CONCAT('%', #{loginName}, '%') or m.login_name=#{loginName})
     </select>

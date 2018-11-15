@@ -141,9 +141,9 @@ public class LoginController extends BaseController{
 
 		User user = UserUtils.getUser();
         Member member = memberService.getMemberByLoginName(user.getLoginName());
-        if(member != null && "0".equals(member.getActivate())){
+        if(member != null && ("0".equals(member.getActivate()) ||"0".equals(member.getStatus()))){
             UserUtils.getSubject().logout();
-            request.setAttribute("message","会员未激活！");
+            request.setAttribute("message","会员未激活或已被锁定！");
             return "modules/sys/sysLogin";
         }
 		// 登录成功后，验证码计算器清零
