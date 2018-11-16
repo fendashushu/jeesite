@@ -168,6 +168,73 @@ public class MemberController extends BaseController {
 	}
 
 	@RequiresPermissions("core:member:member:view")
+	@RequestMapping(value = {"acitvityUp"})
+	public String acitvityUp(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+	    User user = UserUtils.getUser();
+	    member.setStore(user.getLoginName());
+		BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
+		String msg = "可使用金额：";
+		if(bonusTotal == null){
+			msg += "0";
+		}else {
+			BigDecimal current = bonusTotal.getBonusCurrent();
+			msg += current;
+		}
+		Page<Member> page = memberService.getUpMember(new Page<Member>(request, response), member);
+		model.addAttribute("page", page);
+		model.addAttribute("msg", msg);
+		return "modules/core/member/memberActivityUp";
+	}
+
+    @RequiresPermissions("core:member:member:edit")
+    @RequestMapping(value = {"activityUping"})
+    @ResponseBody
+    public Map activityUping(HttpServletRequest request, HttpServletResponse response, Model model) {
+        Map map = new HashMap();
+        String loginName = request.getParameter("loginName");
+        String level = request.getParameter("level");
+        Member member = memberService.getMemberByLoginName(loginName);
+        String memberlevel = member.getMemberlevel();
+        MemberSetting memberSetting = memberSettingService.get("1");
+        Integer oneToTwo = memberSetting.getOneToTwo();
+        Integer oneToThree = memberSetting.getOneToThree();
+        Integer twoToThree = memberSetting.getTwoToThree();
+        BigDecimal need = BigDecimal.ZERO;//升级需要的报单币
+        if("0".equals(memberlevel)){
+            map.put("result",false);
+            map.put("msg","会员不能参与此活动！");
+            return map;
+        }else if("1".equals(memberlevel)){
+            if("2".equals(level)){
+                need = BigDecimal.valueOf(oneToTwo);
+            }else if("3".equals(level)){
+                need = BigDecimal.valueOf(oneToThree);
+            }
+        }else if("2".equals(memberlevel)){
+            need = BigDecimal.valueOf(twoToThree);
+        }
+        User user = UserUtils.getUser();
+        BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
+        BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
+        try {
+            if(need.compareTo(bonusCurrent)<0){
+                member.setMemberlevel(level);
+                bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
+                memberService.updateMember(member,bonusTotal,null,null,null,null);
+                map.put("result",true);
+                map.put("msg","升级成功！");
+            }else {
+                map.put("result",false);
+                map.put("msg","金额不足请充值！");
+            }
+        }catch (Exception e){
+            map.put("result",false);
+            map.put("msg","升级失败！");
+        }
+        return map;
+    }
+
+	@RequiresPermissions("core:member:member:view")
 	@RequestMapping(value = {"up"})
 	public String up(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
 	    User user = UserUtils.getUser();
@@ -185,6 +252,7 @@ public class MemberController extends BaseController {
 		model.addAttribute("msg", msg);
 		return "modules/core/member/memberUp";
 	}
+
 
     @RequiresPermissions("core:member:member:edit")
     @RequestMapping(value = {"uping"})

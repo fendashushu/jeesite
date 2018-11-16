@@ -79,7 +79,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         bonusTotalDao.updateBouns(bonusTotal);
     }
 
-	//开发店铺，直推三级900/600,150,150
+	//开发店铺，直推三代900/600,150,150
     @Transactional(readOnly = false)
     public void kaifaStore(Member member){
         String referee1 = member.getReferee();
