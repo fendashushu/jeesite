@@ -49,7 +49,10 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 	private Integer zhou2;		// 2级代理周封顶；60000
 	private Integer zhou3;		// 3级代理周封顶；80000
     private Integer baodan;//报单奖
-	
+    private Integer oneToTwo;  //活动升级1升2
+    private Integer oneToThree;//活动升级2升3
+    private Integer twoToThree;//活动升级2升3
+
 	public MemberSetting() {
 		super();
 	}
@@ -352,5 +355,29 @@ public class MemberSetting extends DataEntity<MemberSetting> {
 
     public void setBaodan(Integer baodan) {
         this.baodan = baodan;
+    }
+
+    public Integer getOneToTwo() {
+        return oneToTwo;
+    }
+
+    public void setOneToTwo(Integer oneToTwo) {
+        this.oneToTwo = oneToTwo;
+    }
+
+    public Integer getOneToThree() {
+        return oneToThree;
+    }
+
+    public void setOneToThree(Integer oneToThree) {
+        this.oneToThree = oneToThree;
+    }
+
+    public Integer getTwoToThree() {
+        return twoToThree;
+    }
+
+    public void setTwoToThree(Integer twoToThree) {
+        this.twoToThree = twoToThree;
     }
 }
