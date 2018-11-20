@@ -23,6 +23,7 @@ public class Goods extends DataEntity<Goods> {
 	private BigDecimal price;		// 零售价
 	private BigDecimal vipPrice;		// 会员价
 	private Integer inventory;		// 库存
+    private Integer saleNum;     //销量
 	private String image;		// 商品图片
 	private String goodsDesc;		// 商品描述
 	private String xh;		// 序号
@@ -150,5 +151,13 @@ public class Goods extends DataEntity<Goods> {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
+    }
+
+    public Integer getSaleNum() {
+        return saleNum;
+    }
+
+    public void setSaleNum(Integer saleNum) {
+        this.saleNum = saleNum;
     }
 }

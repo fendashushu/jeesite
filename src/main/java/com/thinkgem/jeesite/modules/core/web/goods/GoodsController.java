@@ -54,9 +54,17 @@ public class GoodsController extends BaseController {
 	@RequiresPermissions("core:goods:goods:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Goods goods, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<Goods> page = goodsService.findPage(new Page<Goods>(request, response), goods); 
+		Page<Goods> page = goodsService.shopList(new Page<Goods>(request, response), goods);
 		model.addAttribute("page", page);
 		return "modules/core/goods/goodsList";
+	}
+
+	@RequiresPermissions("core:goods:goods:view")
+	@RequestMapping(value = {"shop"})
+	public String shop(Goods goods, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<Goods> page = goodsService.findPage(new Page<Goods>(request, response), goods);
+		model.addAttribute("page", page);
+		return "modules/core/goods/goodsShop";
 	}
 
 	@RequiresPermissions("core:goods:goods:edit")
@@ -78,6 +86,15 @@ public class GoodsController extends BaseController {
         }
 		return map;
 	}
+
+	@RequiresPermissions("core:goods:goods:view")
+	@RequestMapping(value = "orderDetail")
+	public String orderDetail(Goods goods, Model model) {
+	    goods = goodsService.get(goods.getId());
+		model.addAttribute("goods", goods);
+		return "modules/core/goods/orderDetail";
+	}
+
 
 	@RequiresPermissions("core:goods:goods:view")
 	@RequestMapping(value = "form")

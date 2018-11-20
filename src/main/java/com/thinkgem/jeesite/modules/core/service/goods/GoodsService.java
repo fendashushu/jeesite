@@ -36,7 +36,13 @@ public class GoodsService extends CrudService<GoodsDao, Goods> {
 	public Page<Goods> findPage(Page<Goods> page, Goods goods) {
 		return super.findPage(page, goods);
 	}
-	
+
+	public Page<Goods> shopList(Page<Goods> page, Goods goods) {
+        goods.setPage(page);
+        page.setList(goodsDao.shopList(goods));
+        return page;
+	}
+
 	@Transactional(readOnly = false)
 	public void save(Goods goods) {
 		super.save(goods);

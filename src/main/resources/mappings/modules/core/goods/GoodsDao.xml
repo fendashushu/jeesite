@@ -9,6 +9,7 @@
 		a.price AS "price",
 		a.vip_price AS "vipPrice",
 		a.inventory AS "inventory",
+		a.sale_num AS "saleNum",
 		a.image AS "image",
 		a.goods_desc AS "goodsDesc",
 		a.xh AS "xh",
@@ -71,7 +72,26 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
+
+	<select id="shopList" resultType="Goods">
+		SELECT
+			<include refid="goodsColumns"/>
+		FROM goods a
+		<include refid="goodsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and a.status='1'
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
 	<insert id="insert">
 		INSERT INTO goods(
 			id,
@@ -80,6 +100,7 @@
 			price,
 			vip_price,
 			inventory,
+            sale_num,
 			image,
 			goods_desc,
 			xh,
@@ -101,6 +122,7 @@
 			#{price},
 			#{vipPrice},
 			#{inventory},
+            #{saleNum},
 			#{image},
 			#{goodsDesc},
 			#{xh},
@@ -125,6 +147,7 @@
 			price = #{price},
 			vip_price = #{vipPrice},
 			inventory = #{inventory},
+            sale_num = #{saleNum},
 			image = #{image},
 			goods_desc = #{goodsDesc},
 			xh = #{xh},
