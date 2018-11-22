@@ -36,7 +36,7 @@
             <input type="hidden" value="${goods.price}" name="goodsPrice" id="goodsPrice" />
             <input type="hidden" value="${goods.vipPrice}" name="vipPrice" id="vipPrice" />
 			<div class="controls">
-				<form:input path="goodsName" htmlEscape="false" maxlength="500" class="input-xlarge required"/>
+				<form:input path="goodsCount" htmlEscape="false" maxlength="500" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

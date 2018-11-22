@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.core.web.goods;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.core.entity.orders.Orders;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -91,6 +92,10 @@ public class GoodsController extends BaseController {
 	@RequestMapping(value = "orderDetail")
 	public String orderDetail(Goods goods, Model model) {
 	    goods = goodsService.get(goods.getId());
+	    Orders orders = new Orders();
+	    orders.setGoodsId(goods.getId());
+	    orders.setGoodsPrice(goods.getPrice());
+		model.addAttribute("orders", orders);
 		model.addAttribute("goods", goods);
 		return "modules/core/goods/orderDetail";
 	}

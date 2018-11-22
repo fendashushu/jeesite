@@ -6,6 +6,9 @@ package com.thinkgem.jeesite.modules.core.web.orders;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.core.entity.goods.Goods;
+import com.thinkgem.jeesite.modules.core.service.goods.GoodsService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +36,8 @@ public class OrdersController extends BaseController {
 
 	@Autowired
 	private OrdersService ordersService;
+	@Autowired
+    private GoodsService goodsService;
 	
 	@ModelAttribute
 	public Orders get(@RequestParam(required=false) String id) {
@@ -54,6 +59,18 @@ public class OrdersController extends BaseController {
 		return "modules/core/orders/ordersList";
 	}
 
+    @RequiresPermissions("core:goods:goods:view")
+    @RequestMapping(value = "orderDetail")
+    public String orderDetail(Goods goods, Model model) {
+        goods = goodsService.get(goods.getId());
+        Orders orders = new Orders();
+        orders.setGoodsId(goods.getId());
+        orders.setGoodsPrice(goods.getPrice());
+        model.addAttribute("orders", orders);
+        model.addAttribute("goods", goods);
+        return "modules/core/goods/orderDetail";
+    }
+
 	@RequiresPermissions("core:orders:orders:view")
 	@RequestMapping(value = "form")
 	public String form(Orders orders, Model model) {
@@ -67,6 +84,10 @@ public class OrdersController extends BaseController {
 		if (!beanValidator(model, orders)){
 			return form(orders, model);
 		}
+		orders.setLoginName(UserUtils.getUser().getLoginName());
+        orders.setOrderId(System.currentTimeMillis());
+        orders.setStatus("0");
+        orders.setOrderType("0");
 		ordersService.save(orders);
 		addMessage(redirectAttributes, "保存订单成功");
 		return "redirect:"+Global.getAdminPath()+"/core/orders/orders/?repage";

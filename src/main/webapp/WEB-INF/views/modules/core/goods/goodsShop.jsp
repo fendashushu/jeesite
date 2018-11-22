@@ -30,7 +30,7 @@
         }
 
         function makeOrder(id){
-		    jBox.open("iframe:${ctx}/core/goods/goods/orderDetail?id="+id,"订单信息",800,500,{iframeScrolling: 'no',buttons: false});
+		    jBox.open("iframe:${ctx}/core/orders/orders/orderDetail?id="+id,"订单信息",800,500,{iframeScrolling: 'no',buttons: false});
         }
 	</script>
 </head>

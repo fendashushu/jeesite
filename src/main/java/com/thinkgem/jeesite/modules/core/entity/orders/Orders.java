@@ -4,6 +4,8 @@
 package com.thinkgem.jeesite.modules.core.entity.orders;
 
 import org.hibernate.validator.constraints.Length;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -17,15 +19,15 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class Orders extends DataEntity<Orders> {
 	
 	private static final long serialVersionUID = 1L;
-	private String orderId;		// 订单编号
+	private Long orderId;		// 订单编号
 	private String goodsId;		// 商品编号
 	private String loginName;		// 会员编号/购买人
 	private String takeName;		// 收货人
 	private String takeAddress;		// 收货地址
 	private String takePhone;		// 收货电话
-	private String goodsPrice;		// 商品单价
-	private String vipPrice;		// 店铺商品单价
-	private String goodsCount;		// 商品数量
+	private BigDecimal goodsPrice;		// 商品单价
+	private BigDecimal vipPrice;		// 店铺商品单价
+	private Integer goodsCount;		// 商品数量
 	private String orderType;		// 订单类型
 	private String status;		// 订单状态
 	private String expressCompany;		// 物流公司
@@ -42,16 +44,15 @@ public class Orders extends DataEntity<Orders> {
 		super(id);
 	}
 
-	@Length(min=1, max=100, message="订单编号长度必须介于 1 和 100 之间")
-	public String getOrderId() {
-		return orderId;
-	}
+    public Long getOrderId() {
+        return orderId;
+    }
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
-	
-	@Length(min=1, max=64, message="商品编号长度必须介于 1 和 64 之间")
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    @Length(min=1, max=64, message="商品编号长度必须介于 1 和 64 之间")
 	public String getGoodsId() {
 		return goodsId;
 	}
@@ -95,33 +96,32 @@ public class Orders extends DataEntity<Orders> {
 	public void setTakePhone(String takePhone) {
 		this.takePhone = takePhone;
 	}
-	
-	public String getGoodsPrice() {
-		return goodsPrice;
-	}
 
-	public void setGoodsPrice(String goodsPrice) {
-		this.goodsPrice = goodsPrice;
-	}
-	
-	public String getVipPrice() {
-		return vipPrice;
-	}
+    public BigDecimal getGoodsPrice() {
+        return goodsPrice;
+    }
 
-	public void setVipPrice(String vipPrice) {
-		this.vipPrice = vipPrice;
-	}
-	
-	@Length(min=0, max=11, message="商品数量长度必须介于 0 和 11 之间")
-	public String getGoodsCount() {
-		return goodsCount;
-	}
+    public void setGoodsPrice(BigDecimal goodsPrice) {
+        this.goodsPrice = goodsPrice;
+    }
 
-	public void setGoodsCount(String goodsCount) {
-		this.goodsCount = goodsCount;
-	}
-	
-	@Length(min=0, max=2, message="订单类型长度必须介于 0 和 2 之间")
+    public BigDecimal getVipPrice() {
+        return vipPrice;
+    }
+
+    public void setVipPrice(BigDecimal vipPrice) {
+        this.vipPrice = vipPrice;
+    }
+
+    public Integer getGoodsCount() {
+        return goodsCount;
+    }
+
+    public void setGoodsCount(Integer goodsCount) {
+        this.goodsCount = goodsCount;
+    }
+
+    @Length(min=0, max=2, message="订单类型长度必须介于 0 和 2 之间")
 	public String getOrderType() {
 		return orderType;
 	}
