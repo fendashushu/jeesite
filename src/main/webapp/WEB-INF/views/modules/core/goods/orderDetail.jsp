@@ -27,7 +27,7 @@
 </head>
 <body>
 	<br/>
-	<form:form id="inputForm" modelAttribute="goods" action="${ctx}/core/goods/goods/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="orders" action="${ctx}/core/orders/orders/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -43,21 +43,21 @@
 		<div class="control-group">
 			<label class="control-label">收货人姓名：</label>
 			<div class="controls">
-				<form:input path="price" htmlEscape="false" class="input-xlarge required"/>
+				<form:input path="takeName" htmlEscape="false" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">联系电话：</label>
 			<div class="controls">
-				<form:input path="price" htmlEscape="false" class="input-xlarge required"/>
+				<form:input path="takePhone" htmlEscape="false" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">售后地址：</label>
+			<label class="control-label">收货地址：</label>
 			<div class="controls">
-				<form:input path="vipPrice" htmlEscape="false" class="input-xlarge required"/>
+				<form:input path="takeAddress" htmlEscape="false" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
