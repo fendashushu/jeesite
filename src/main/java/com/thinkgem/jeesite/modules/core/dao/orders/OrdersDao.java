@@ -7,6 +7,8 @@ import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.core.entity.orders.Orders;
 
+import java.util.List;
+
 /**
  * 订单DAO接口
  * @author li
@@ -14,5 +16,6 @@ import com.thinkgem.jeesite.modules.core.entity.orders.Orders;
  */
 @MyBatisDao
 public interface OrdersDao extends CrudDao<Orders> {
-	
+
+    public List<Orders> myOrders(Orders orders);
 }

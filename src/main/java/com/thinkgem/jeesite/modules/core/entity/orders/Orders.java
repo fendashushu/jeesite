@@ -35,7 +35,10 @@ public class Orders extends DataEntity<Orders> {
 	private Date expressDate;		// 发货日期
 	private String ext1;		// 扩展1
 	private String ext2;		// 扩展2
-	
+    private BigDecimal total; //总额
+    private BigDecimal vipTotal; //总额
+    private String goodsName;
+
 	public Orders() {
 		super();
 	}
@@ -183,5 +186,28 @@ public class Orders extends DataEntity<Orders> {
 	public void setExt2(String ext2) {
 		this.ext2 = ext2;
 	}
-	
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public BigDecimal getVipTotal() {
+        return vipTotal;
+    }
+
+    public void setVipTotal(BigDecimal vipTotal) {
+        this.vipTotal = vipTotal;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
 }

@@ -59,6 +59,27 @@
 			</otherwise>
 		</choose>
 	</select>
+
+	<select id="myOrders" resultType="Orders">
+		SELECT
+			<include refid="ordersColumns"/>,a.goods_count*a.goods_price total,a.goods_count*a.vip_price vipTotal,g.goods_name goodsName
+		FROM orders a,goods g
+		<include refid="ordersJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and a.login_name = #{loginName} and a.goods_id = g.id
+			<if test="orderId != null and orderId != ''">
+				AND a.order_id = #{orderId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
 	
 	<select id="findAllList" resultType="Orders">
 		SELECT 

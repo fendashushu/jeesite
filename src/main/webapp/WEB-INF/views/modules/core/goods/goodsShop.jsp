@@ -36,8 +36,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/core/goods/goods/">商品列表</a></li>
-		<shiro:hasPermission name="core:goods:goods:edit"><li><a href="${ctx}/core/goods/goods/form">商品添加</a></li></shiro:hasPermission>
+		<li class="active"><a>商品列表</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="goods" action="${ctx}/core/goods/goods/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -58,7 +57,7 @@
 				<th>商品图片</th>
 				<th>商品价格</th>
 				<th>商品库存</th>
-				<th>购买数量</th>
+				<th>销售数量</th>
 				<shiro:hasPermission name="core:goods:goods:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -78,7 +77,7 @@
 					${goods.inventory}
 				</td>
 				<td>
-					${goods.inventory}
+					${goods.saleNum}
 				</td>
 				<shiro:hasPermission name="core:goods:goods:edit"><td>
     				<a href="javaScript:void(0)" onclick="makeOrder('${goods.id}')">购买</a>

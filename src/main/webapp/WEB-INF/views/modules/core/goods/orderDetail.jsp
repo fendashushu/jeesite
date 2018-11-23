@@ -5,24 +5,21 @@
 	<title>商品信息管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			//$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
-				}
-			});
-		});
+		function submitForm() {
+            loading('正在提交，请稍等...');
+            //form.submit();
+            $.post('${ctx}/core/orders/orders/buy',$("#inputForm").serialize(),function(data){
+                if(data.result){
+                    closeLoading();
+                    alert(data.msg);
+                    window.parent.window.location.href="${ctx}/core/orders/orders";
+                    window.parent.window.jBox.close();
+                }else{
+                    closeLoading();
+                    alert(data.msg);
+                }
+            })
+        }
 	</script>
 </head>
 <body>
@@ -62,7 +59,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="core:goods:goods:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="确 认"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="core:goods:goods:edit"><input id="btnSubmit" class="btn btn-primary" onclick="submitForm()" type="button" value="确 认"/>&nbsp;</shiro:hasPermission>
 		</div>
 	</form:form>
 </body>

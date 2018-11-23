@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.core.service.orders;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,8 @@ import com.thinkgem.jeesite.modules.core.dao.orders.OrdersDao;
 @Service
 @Transactional(readOnly = true)
 public class OrdersService extends CrudService<OrdersDao, Orders> {
+    @Autowired
+    private OrdersDao ordersDao;
 
 	public Orders get(String id) {
 		return super.get(id);
@@ -32,6 +35,12 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
 	
 	public Page<Orders> findPage(Page<Orders> page, Orders orders) {
 		return super.findPage(page, orders);
+	}
+
+	public Page<Orders> myOrders(Page<Orders> page, Orders orders) {
+        orders.setPage(page);
+        page.setList(ordersDao.myOrders(orders));
+        return page;
 	}
 	
 	@Transactional(readOnly = false)

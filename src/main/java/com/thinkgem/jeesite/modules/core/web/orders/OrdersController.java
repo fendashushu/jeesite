@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -24,6 +25,9 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.orders.Orders;
 import com.thinkgem.jeesite.modules.core.service.orders.OrdersService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 订单Controller
@@ -59,6 +63,15 @@ public class OrdersController extends BaseController {
 		return "modules/core/orders/ordersList";
 	}
 
+	@RequiresPermissions("core:orders:orders:view")
+	@RequestMapping(value = {"myOrders"})
+	public String myOrders(Orders orders, HttpServletRequest request, HttpServletResponse response, Model model) {
+	    orders.setLoginName(UserUtils.getUser().getLoginName());
+		Page<Orders> page = ordersService.myOrders(new Page<Orders>(request, response), orders);
+		model.addAttribute("page", page);
+		return "modules/core/orders/myOrders";
+	}
+
     @RequiresPermissions("core:goods:goods:view")
     @RequestMapping(value = "orderDetail")
     public String orderDetail(Goods goods, Model model) {
@@ -91,6 +104,29 @@ public class OrdersController extends BaseController {
 		ordersService.save(orders);
 		addMessage(redirectAttributes, "保存订单成功");
 		return "redirect:"+Global.getAdminPath()+"/core/orders/orders/?repage";
+	}
+
+	@RequiresPermissions("core:orders:orders:edit")
+	@RequestMapping(value = "buy")
+    @ResponseBody
+	public Map buy(Orders orders, Model model, RedirectAttributes redirectAttributes) {
+        Map map = new HashMap();
+        try {
+            orders.setLoginName(UserUtils.getUser().getLoginName());
+            orders.setOrderId(System.currentTimeMillis());
+            orders.setStatus("0");
+            orders.setOrderType("0");
+            ordersService.save(orders);
+            Goods goods = goodsService.get(orders.getGoodsId());
+            goods.setSaleNum((goods.getSaleNum()==null?0:goods.getSaleNum())+orders.getGoodsCount());
+            goodsService.save(goods);
+            map.put("result",true);
+            map.put("msg","购买成功！");
+        }catch (Exception e){
+            map.put("result",false);
+            map.put("msg","购买失败！");
+        }
+		return map;
 	}
 	
 	@RequiresPermissions("core:orders:orders:edit")
