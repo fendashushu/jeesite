@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.thinkgem.jeesite.modules.core.entity.goods.Goods;
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.core.service.goods.GoodsService;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
     private GoodsService goodsService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private BonusTotalService bonusTotalService;
 
 	public Orders get(String id) {
 		return super.get(id);
@@ -67,7 +70,10 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
         Member member = memberService.getMemberByLoginName(orders.getLoginName());
         String isStore = member.getIsstore();
         if("1".equals(isStore)){
-            BigDecimal total = new BigDecimal(orders.getGoodsCount()).multiply(orders.getVipPrice());
+            BigDecimal total = new BigDecimal(orders.getGoodsCount()).multiply(goods.getPv());
+            if(total.compareTo(BigDecimal.ZERO)>0){
+                bonusTotalService.jinhuo(member,total);
+            }
         }
 	}
 

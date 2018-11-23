@@ -12,7 +12,7 @@
                 if(data.result){
                     closeLoading();
                     alert(data.msg);
-                    window.parent.window.location.href="${ctx}/core/orders/orders";
+                    window.parent.window.location.href="${ctx}/core/orders/orders/myOrders";
                     window.parent.window.jBox.close();
                 }else{
                     closeLoading();
