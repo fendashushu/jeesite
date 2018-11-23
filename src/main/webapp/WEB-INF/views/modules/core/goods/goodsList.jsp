@@ -76,7 +76,7 @@
 					${goods.inventory}
 				</td>
 				<td>
-					${goods.inventory}
+					${goods.saleNum}
 				</td>
 				<td>
                     <c:choose>

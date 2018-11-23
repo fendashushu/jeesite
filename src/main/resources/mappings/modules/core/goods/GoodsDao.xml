@@ -23,6 +23,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
+        a.pv AS "pv",
 		a.del_flag AS "delFlag"
 	</sql>
 	
@@ -121,6 +122,7 @@
 			remarks,
             status,
             publish_date,
+            pv,
 			del_flag
 		) VALUES (
 			#{id},
@@ -143,6 +145,7 @@
 			#{remarks},
             #{status},
             #{publishDate},
+            #{pv},
 			#{delFlag}
 		)
 	</insert>
@@ -165,6 +168,7 @@
 			update_date = #{updateDate},
             status = #{status},
             publish_date = #{publishDate},
+            pv = #{pv},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>

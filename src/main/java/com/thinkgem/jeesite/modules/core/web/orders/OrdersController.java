@@ -116,10 +116,7 @@ public class OrdersController extends BaseController {
             orders.setOrderId(System.currentTimeMillis());
             orders.setStatus("0");
             orders.setOrderType("0");
-            ordersService.save(orders);
-            Goods goods = goodsService.get(orders.getGoodsId());
-            goods.setSaleNum((goods.getSaleNum()==null?0:goods.getSaleNum())+orders.getGoodsCount());
-            goodsService.save(goods);
+            ordersService.buy(orders);
             map.put("result",true);
             map.put("msg","购买成功！");
         }catch (Exception e){

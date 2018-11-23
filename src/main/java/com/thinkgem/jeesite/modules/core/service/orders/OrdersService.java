@@ -3,8 +3,13 @@
  */
 package com.thinkgem.jeesite.modules.core.service.orders;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.core.entity.goods.Goods;
+import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.service.goods.GoodsService;
+import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +29,10 @@ import com.thinkgem.jeesite.modules.core.dao.orders.OrdersDao;
 public class OrdersService extends CrudService<OrdersDao, Orders> {
     @Autowired
     private OrdersDao ordersDao;
+    @Autowired
+    private GoodsService goodsService;
+    @Autowired
+    private MemberService memberService;
 
 	public Orders get(String id) {
 		return super.get(id);
@@ -47,7 +56,21 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
 	public void save(Orders orders) {
 		super.save(orders);
 	}
-	
+
+
+	@Transactional(readOnly = false)
+	public void buy(Orders orders) {
+		super.save(orders);
+        Goods goods = goodsService.get(orders.getGoodsId());
+        goods.setSaleNum((goods.getSaleNum()==null?0:goods.getSaleNum())+orders.getGoodsCount());
+        goodsService.save(goods);
+        Member member = memberService.getMemberByLoginName(orders.getLoginName());
+        String isStore = member.getIsstore();
+        if("1".equals(isStore)){
+            BigDecimal total = new BigDecimal(orders.getGoodsCount()).multiply(orders.getVipPrice());
+        }
+	}
+
 	@Transactional(readOnly = false)
 	public void delete(Orders orders) {
 		super.delete(orders);

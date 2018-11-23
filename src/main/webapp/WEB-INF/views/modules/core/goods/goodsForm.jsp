@@ -64,6 +64,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">产生积分：</label>
+			<div class="controls">
+				<form:input path="pv" htmlEscape="false" class="input-xlarge required" />
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">库存：</label>
 			<div class="controls">
 				<form:input path="inventory" htmlEscape="false" class="input-xlarge required"/>

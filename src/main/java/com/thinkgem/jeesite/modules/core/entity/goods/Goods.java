@@ -32,6 +32,7 @@ public class Goods extends DataEntity<Goods> {
 	private String ext2;		// 扩展2
     private String  status;
     private Date publishDate;
+    private BigDecimal pv;  //产生积分
 	
 	public Goods() {
 		super();
@@ -159,5 +160,13 @@ public class Goods extends DataEntity<Goods> {
 
     public void setSaleNum(Integer saleNum) {
         this.saleNum = saleNum;
+    }
+
+    public BigDecimal getPv() {
+        return pv;
+    }
+
+    public void setPv(BigDecimal pv) {
+        this.pv = pv;
     }
 }
