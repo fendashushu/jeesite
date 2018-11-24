@@ -6,8 +6,12 @@ package com.thinkgem.jeesite.modules.core.web.orders;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
 import com.thinkgem.jeesite.modules.core.entity.goods.Goods;
+import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.core.service.goods.GoodsService;
+import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.orders.Orders;
 import com.thinkgem.jeesite.modules.core.service.orders.OrdersService;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +47,10 @@ public class OrdersController extends BaseController {
 	private OrdersService ordersService;
 	@Autowired
     private GoodsService goodsService;
+	@Autowired
+    private MemberService memberService;
+	@Autowired
+    private BonusTotalService bonusTotalService;
 	
 	@ModelAttribute
 	public Orders get(@RequestParam(required=false) String id) {
@@ -112,7 +121,26 @@ public class OrdersController extends BaseController {
 	public Map buy(Orders orders, Model model, RedirectAttributes redirectAttributes) {
         Map map = new HashMap();
         try {
-            orders.setLoginName(UserUtils.getUser().getLoginName());
+            String loginName = UserUtils.getUser().getLoginName();
+            Member member = memberService.getMemberByLoginName(loginName);
+            BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(loginName);
+            BigDecimal total = orders.getGoodsPrice().multiply(new BigDecimal(orders.getGoodsCount()));
+            BigDecimal vipTotal = orders.getVipPrice().multiply(new BigDecimal(orders.getGoodsCount()));
+            BigDecimal bonus = bonusTotal.getBonusCurrent();
+            if("1".equals(member.getIsstore())){
+                if(bonus.compareTo(vipTotal)<0){
+                    map.put("result",false);
+                    map.put("msg","购买失败,金额不足，请先充值！");
+                    return map;
+                }
+            }else{
+                if(bonus.compareTo(total)<0){
+                    map.put("result",false);
+                    map.put("msg","购买失败,金额不足，请先充值！");
+                    return map;
+                }
+            }
+            orders.setLoginName(loginName);
             orders.setOrderId(System.currentTimeMillis());
             orders.setStatus("0");
             orders.setOrderType("0");
