@@ -14,13 +14,17 @@
 			$("#searchForm").submit();
         	return false;
         }
+
+        function deliver(id){
+            jBox.open("iframe:${ctx}/core/orders/orders/deliverGoods?id="+id,"物流信息",800,500,{iframeScrolling: 'no',buttons: false});
+        }
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a>订单列表</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="orders" action="${ctx}/core/orders/orders/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="orders" action="${ctx}/core/orders/orders/deliverGoodsList" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -90,7 +94,7 @@
 				<shiro:hasPermission name="core:orders:orders:edit"><td>
                     <c:choose>
                         <c:when test="${orders.status=='0'}">
-                            <a href="${ctx}/core/orders/orders/form?id=${orders.id}">发货</a>
+							<a href="javaScript:void(0)" onclick="deliver('${orders.id}')">发货</a>
                         </c:when>
                     </c:choose>
 				</td></shiro:hasPermission>

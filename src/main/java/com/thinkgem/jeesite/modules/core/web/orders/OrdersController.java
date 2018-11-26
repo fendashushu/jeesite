@@ -31,6 +31,7 @@ import com.thinkgem.jeesite.modules.core.entity.orders.Orders;
 import com.thinkgem.jeesite.modules.core.service.orders.OrdersService;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,6 +103,14 @@ public class OrdersController extends BaseController {
         return "modules/core/goods/orderDetail";
     }
 
+    @RequiresPermissions("core:goods:goods:view")
+    @RequestMapping(value = "deliverGoods")
+    public String deliverGoods(Orders orders, Model model) {
+        orders = ordersService.get(orders.getId());
+        model.addAttribute("orders", orders);
+        return "modules/core/orders/deliverGoods";
+    }
+
 	@RequiresPermissions("core:orders:orders:view")
 	@RequestMapping(value = "form")
 	public String form(Orders orders, Model model) {
@@ -159,6 +168,26 @@ public class OrdersController extends BaseController {
         }catch (Exception e){
             map.put("result",false);
             map.put("msg","购买失败！");
+        }
+		return map;
+	}
+
+	@RequiresPermissions("core:orders:orders:edit")
+	@RequestMapping(value = "deliver")
+    @ResponseBody
+	public Map deliver(Orders orders, Model model, RedirectAttributes redirectAttributes) {
+        Map map = new HashMap();
+        try {
+			orders.setExpressCompany(orders.getExpressCompany());
+			orders.setExpressNum(orders.getExpressNum());
+			orders.setExpressDate(new Date());
+			orders.setStatus("1");
+            ordersService.save(orders);
+            map.put("result",true);
+            map.put("msg","发货成功！");
+        }catch (Exception e){
+            map.put("result",false);
+            map.put("msg","发货失败！");
         }
 		return map;
 	}

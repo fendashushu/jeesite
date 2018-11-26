@@ -24,7 +24,7 @@
 </head>
 <body>
 	<br/>
-	<form:form id="inputForm" modelAttribute="orders" action="${ctx}/core/orders/orders/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="orders"  method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
