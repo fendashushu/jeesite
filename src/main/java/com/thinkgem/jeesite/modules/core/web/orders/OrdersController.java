@@ -81,6 +81,15 @@ public class OrdersController extends BaseController {
 		return "modules/core/orders/myOrders";
 	}
 
+
+	@RequiresPermissions("core:orders:orders:view")
+	@RequestMapping(value = {"deliverGoodsList"})
+	public String deliverGoodsList(Orders orders, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<Orders> page = ordersService.deliverGoodsList(new Page<Orders>(request, response), orders);
+		model.addAttribute("page", page);
+		return "modules/core/orders/deliverGoodsList";
+	}
+
     @RequiresPermissions("core:goods:goods:view")
     @RequestMapping(value = "orderDetail")
     public String orderDetail(Goods goods, Model model) {

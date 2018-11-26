@@ -55,6 +55,12 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
         page.setList(ordersDao.myOrders(orders));
         return page;
 	}
+
+	public Page<Orders> deliverGoodsList(Page<Orders> page, Orders orders) {
+        orders.setPage(page);
+        page.setList(ordersDao.deliverGoodsList(orders));
+        return page;
+	}
 	
 	@Transactional(readOnly = false)
 	public void save(Orders orders) {

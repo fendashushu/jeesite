@@ -18,4 +18,6 @@ import java.util.List;
 public interface OrdersDao extends CrudDao<Orders> {
 
     public List<Orders> myOrders(Orders orders);
+
+    public List<Orders> deliverGoodsList(Orders orders);
 }
