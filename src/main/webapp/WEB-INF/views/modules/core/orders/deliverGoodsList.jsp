@@ -96,6 +96,9 @@
                         <c:when test="${orders.status=='0'}">
 							<a href="javaScript:void(0)" onclick="deliver('${orders.id}')">发货</a>
                         </c:when>
+						<c:when test="${orders.status=='1'}">
+							<a href="javaScript:void(0)" onclick="deliver('${orders.id}')">修改</a>
+						</c:when>
                     </c:choose>
 				</td></shiro:hasPermission>
 			</tr>

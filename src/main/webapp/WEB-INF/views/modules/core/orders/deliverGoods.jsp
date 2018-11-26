@@ -42,7 +42,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="core:goods:goods:edit"><input id="btnSubmit" class="btn btn-primary" onclick="submitForm()" type="button" value="确 认"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="core:orders:orders:edit"><input id="btnSubmit" class="btn btn-primary" onclick="submitForm()" type="button" value="确 认"/>&nbsp;</shiro:hasPermission>
 		</div>
 	</form:form>
 </body>

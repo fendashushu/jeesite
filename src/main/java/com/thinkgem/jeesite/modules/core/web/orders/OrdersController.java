@@ -103,7 +103,7 @@ public class OrdersController extends BaseController {
         return "modules/core/goods/orderDetail";
     }
 
-    @RequiresPermissions("core:goods:goods:view")
+    @RequiresPermissions("core:orders:orders:view")
     @RequestMapping(value = "deliverGoods")
     public String deliverGoods(Orders orders, Model model) {
         orders = ordersService.get(orders.getId());
@@ -177,6 +177,10 @@ public class OrdersController extends BaseController {
     @ResponseBody
 	public Map deliver(Orders orders, Model model, RedirectAttributes redirectAttributes) {
         Map map = new HashMap();
+        String msg = "发货";
+        if("1".equals(orders.getStatus())){
+        	msg = "修改";
+		}
         try {
 			orders.setExpressCompany(orders.getExpressCompany());
 			orders.setExpressNum(orders.getExpressNum());
@@ -184,10 +188,10 @@ public class OrdersController extends BaseController {
 			orders.setStatus("1");
             ordersService.save(orders);
             map.put("result",true);
-            map.put("msg","发货成功！");
+            map.put("msg",msg+"成功！");
         }catch (Exception e){
             map.put("result",false);
-            map.put("msg","发货失败！");
+            map.put("msg",msg+"失败！");
         }
 		return map;
 	}
