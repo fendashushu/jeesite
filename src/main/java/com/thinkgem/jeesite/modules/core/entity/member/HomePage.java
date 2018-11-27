@@ -15,7 +15,7 @@ public class HomePage {
 
     private BigDecimal dayBonus;//日新增收入
     private BigDecimal monthBonus;//月新增收入
-    private BigDecimal yearBonus;//你那新增收入
+    private BigDecimal yearBonus;//年新增收入
 
     public Integer getDayMembers() {
         return dayMembers;
