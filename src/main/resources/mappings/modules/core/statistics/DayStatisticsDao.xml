@@ -34,6 +34,41 @@
 		WHERE a.id = #{id}
 	</select>
 
+	<select id="getNewDataDay" resultType="map">
+		SELECT
+			a.new_members newMembers ,a.new_bonus newBonus
+		FROM day_statistics a
+		WHERE DATE_FORMAT(a.data_date,'%Y-%m-%d') = #{value} and a.del_flag = '0'
+	</select>
+
+	<select id="getNewDataMember" resultType="map">
+        select sum(case when activate = '0' then 1 else 0 end) noMember,
+               sum(case when activate = '0' then 0 else 1 end) yesMember
+        from sys_member a
+        where a.del_flag = '0'
+	</select>
+
+	<select id="getNewDataOrder" resultType="map">
+        select sum(orders) orders,sum(recharges) recharges from (
+        select count(1) orders ,0 recharges from orders where status = '0' and del_flag = '0'
+        union all
+        select 0 orders ,count(1) recharges from pv_recharge where status = '0' and del_flag = '0')a
+    </select>
+
+	<select id="getNewDataMonth" resultType="map">
+		SELECT
+			sum(a.new_members) monthMembers ,sum(a.new_bonus) monthBonus
+		FROM day_statistics a
+		WHERE DATE_FORMAT(a.data_date,'%Y-%m-%d') BETWEEN #{frist} and #{last} and a.del_flag = '0'
+	</select>
+
+	<select id="getNewDataYear" resultType="map">
+		SELECT
+			sum(a.new_members) yearMembers ,sum(a.new_bonus) yearBonus
+		FROM day_statistics a
+		WHERE DATE_FORMAT(a.data_date,'%Y-%m-%d') BETWEEN #{frist} and #{last} and a.del_flag = '0'
+	</select>
+
 	<select id="getByDate" resultType="DayStatistics">
 		SELECT
 			<include refid="dayStatisticsColumns"/>

@@ -22,6 +22,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.statistics.DayStatistics;
 import com.thinkgem.jeesite.modules.core.service.statistics.DayStatisticsService;
 
+import java.util.Map;
+
 /**
  * 统计Controller
  * @author li
@@ -80,4 +82,19 @@ public class DayStatisticsController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/core/statistics/dayStatistics/?repage";
 	}
 
+    @RequiresPermissions("core:statistics:dayStatistics:view")
+    @RequestMapping(value = "home")
+    public String home(DayStatistics dayStatistics, Model model) {
+        Map map = dayStatisticsService.getNewDataDay();
+        Map monthMap = dayStatisticsService.getNewDataMonth();
+        Map yearMap = dayStatisticsService.getNewDataYear();
+        Map memberMap = dayStatisticsService.getNewDataMember();
+        Map orderAndRechargeMap = dayStatisticsService.getNewDataOrder();
+        map.putAll(monthMap);
+        map.putAll(yearMap);
+        map.putAll(memberMap);
+        map.putAll(orderAndRechargeMap);
+        model.addAttribute("map", map);
+        return "modules/core/statistics/homePage";
+    }
 }
