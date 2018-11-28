@@ -6,6 +6,11 @@ package com.thinkgem.jeesite.modules.core.web.statistics;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
+import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
+import com.thinkgem.jeesite.modules.core.service.member.MemberService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +40,10 @@ public class DayStatisticsController extends BaseController {
 
 	@Autowired
 	private DayStatisticsService dayStatisticsService;
+	@Autowired
+    private MemberService memberService;
+	@Autowired
+    private BonusTotalService bonusTotalService;
 	
 	@ModelAttribute
 	public DayStatistics get(@RequestParam(required=false) String id) {
@@ -96,5 +105,26 @@ public class DayStatisticsController extends BaseController {
         map.putAll(orderAndRechargeMap);
         model.addAttribute("map", map);
         return "modules/core/statistics/homePage";
+    }
+
+    @RequiresPermissions("core:statistics:dayStatistics:view")
+    @RequestMapping(value = "memberHome")
+    public String memberHome(DayStatistics dayStatistics, Model model) {
+        Map map = dayStatisticsService.getNewDataDay();
+        Map monthMap = dayStatisticsService.getNewDataMonth();
+        Map yearMap = dayStatisticsService.getNewDataYear();
+        Map memberMap = dayStatisticsService.getNewDataMember();
+        Map orderAndRechargeMap = dayStatisticsService.getNewDataOrder();
+        String loginName = UserUtils.getUser().getLoginName();
+        Member member = memberService.getMemberByLoginName(loginName);
+        BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(loginName);
+        map.putAll(monthMap);
+        map.putAll(yearMap);
+        map.putAll(memberMap);
+        map.putAll(orderAndRechargeMap);
+        model.addAttribute("map", map);
+        model.addAttribute("member", member);
+        model.addAttribute("bonusTotal", bonusTotal);
+        return "modules/core/statistics/memberHomePage";
     }
 }
