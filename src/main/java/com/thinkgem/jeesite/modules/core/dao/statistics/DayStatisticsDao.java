@@ -31,4 +31,6 @@ public interface DayStatisticsDao extends CrudDao<DayStatistics> {
     public Map<String,Object> getNewDataMonth(Map map);
 
     public Map<String,Object> getNewDataYear(Map map);
+
+    public Map<String,Object> getTransfer(String loginName);
 }

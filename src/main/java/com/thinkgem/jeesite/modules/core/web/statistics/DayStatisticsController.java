@@ -110,18 +110,10 @@ public class DayStatisticsController extends BaseController {
     @RequiresPermissions("core:statistics:dayStatistics:view")
     @RequestMapping(value = "memberHome")
     public String memberHome(DayStatistics dayStatistics, Model model) {
-        Map map = dayStatisticsService.getNewDataDay();
-        Map monthMap = dayStatisticsService.getNewDataMonth();
-        Map yearMap = dayStatisticsService.getNewDataYear();
-        Map memberMap = dayStatisticsService.getNewDataMember();
-        Map orderAndRechargeMap = dayStatisticsService.getNewDataOrder();
+        Map map = dayStatisticsService.getTransfer();
         String loginName = UserUtils.getUser().getLoginName();
         Member member = memberService.getMemberByLoginName(loginName);
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(loginName);
-        map.putAll(monthMap);
-        map.putAll(yearMap);
-        map.putAll(memberMap);
-        map.putAll(orderAndRechargeMap);
         model.addAttribute("map", map);
         model.addAttribute("member", member);
         model.addAttribute("bonusTotal", bonusTotal);

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,10 @@ public class DayStatisticsService extends CrudService<DayStatisticsDao, DayStati
 
     public Map<String,Object> getNewDataOrder(){
 	    return statisticsDao.getNewDataOrder();
+    }
+
+    public Map<String,Object> getTransfer(){
+	    return statisticsDao.getTransfer(UserUtils.getUser().getLoginName());
     }
 
     public Map<String,Object> getNewDataMonth(){

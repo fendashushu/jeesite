@@ -41,6 +41,17 @@
 		WHERE DATE_FORMAT(a.data_date,'%Y-%m-%d') = #{value} and a.del_flag = '0'
 	</select>
 
+	<select id="getTransfer" resultType="map">
+        select sum(outAmout) outAmount,sum(inAmount) inAmount,sum(rechargeAmount) rechargeAmount from(
+            select sum(amount) outAmout,0 inAmount,0 rechargeAmount from pv_transfer where login_name = #{value}
+            union all
+            select 0 outAmout,sum(amount) inAmount,0 rechargeAmount from pv_transfer where to_login_name = #{value}
+            union all
+            select 0 outAmout,0 inAmount,sum(amount) rechargeAmount from pv_recharge where login_name = #{value}
+        )a
+
+    </select>
+
 	<select id="getNewDataMember" resultType="map">
         select sum(case when activate = '0' then 1 else 0 end) noMember,
                sum(case when activate = '0' then 0 else 1 end) yesMember
