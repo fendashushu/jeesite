@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.core.service.zhou;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,8 @@ import com.thinkgem.jeesite.modules.core.dao.zhou.ZhouBonusDao;
 @Service
 @Transactional(readOnly = true)
 public class ZhouBonusService extends CrudService<ZhouBonusDao, ZhouBonus> {
+    @Autowired
+    private ZhouBonusDao zhouBonusDao;
 
 	public ZhouBonus get(String id) {
 		return super.get(id);
@@ -43,5 +46,8 @@ public class ZhouBonusService extends CrudService<ZhouBonusDao, ZhouBonus> {
 	public void delete(ZhouBonus zhouBonus) {
 		super.delete(zhouBonus);
 	}
-	
+
+	public ZhouBonus getByLoginNameAndDate(ZhouBonus zhouBonus){
+	    return zhouBonusDao.getByLoginNameAndDate(zhouBonus);
+    }
 }

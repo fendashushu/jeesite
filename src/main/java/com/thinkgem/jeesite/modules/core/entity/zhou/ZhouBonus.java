@@ -26,6 +26,7 @@ public class ZhouBonus extends DataEntity<ZhouBonus> {
 	private BigDecimal bonus;		// 累计奖金
 	private String ext1;		// 扩展1
 	private String ext2;		// 扩展2
+    private String date;
 	
 	public ZhouBonus() {
 		super();
@@ -89,5 +90,12 @@ public class ZhouBonus extends DataEntity<ZhouBonus> {
 	public void setExt2(String ext2) {
 		this.ext2 = ext2;
 	}
-	
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

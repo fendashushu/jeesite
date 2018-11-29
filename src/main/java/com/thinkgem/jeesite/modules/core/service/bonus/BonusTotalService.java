@@ -4,24 +4,29 @@
 package com.thinkgem.jeesite.modules.core.service.bonus;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.core.dao.member.MemberDao;
 import com.thinkgem.jeesite.modules.core.dao.statistics.DayStatisticsDao;
+import com.thinkgem.jeesite.modules.core.dao.zhou.ZhouBonusDao;
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
 import com.thinkgem.jeesite.modules.core.entity.pv.PvTotal;
 import com.thinkgem.jeesite.modules.core.entity.pvdetail.PvDetail;
 import com.thinkgem.jeesite.modules.core.entity.setting.MemberSetting;
 import com.thinkgem.jeesite.modules.core.entity.statistics.DayStatistics;
+import com.thinkgem.jeesite.modules.core.entity.zhou.ZhouBonus;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
 import com.thinkgem.jeesite.modules.core.service.pv.PvTotalService;
 import com.thinkgem.jeesite.modules.core.service.pvdetail.PvDetailService;
 import com.thinkgem.jeesite.modules.core.service.setting.MemberSettingService;
 import com.thinkgem.jeesite.modules.core.service.statistics.DayStatisticsService;
+import com.thinkgem.jeesite.modules.core.service.zhou.ZhouBonusService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +55,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
     private DayStatisticsService statisticsService;
     @Autowired
     private MemberSettingService memberSettingService;
+    @Autowired
+    private ZhouBonusService zhouBonusService;
 
 	public BonusTotal get(String id) {
 		return super.get(id);
@@ -81,6 +88,52 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
     public void updateBouns(BonusTotal bonusTotal) {
         bonusTotalDao.updateBouns(bonusTotal);
     }
+
+    public ZhouBonus getZhouBonus(String loginName){
+	    ZhouBonus zhou = new ZhouBonus();
+        zhou.setLoginName(loginName);
+        zhou.setDate(DateUtils.getDate());
+	    ZhouBonus zhouBonus = zhouBonusService.getByLoginNameAndDate(zhou);
+	    if(zhouBonus == null){
+            zhouBonus = new ZhouBonus();
+            zhouBonus.setLoginName(loginName);
+            zhouBonus.setBonus(BigDecimal.ZERO);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                zhouBonus.setBeginDate(simpleDateFormat.parse(DateUtils.getBeginDateOfWeek()));
+                zhouBonus.setEndDate(simpleDateFormat.parse(DateUtils.getEndDateOfWeek()));
+            }catch (Exception e){
+
+            }
+            zhouBonusService.save(zhouBonus);
+        }
+        return zhouBonus;
+    }
+
+    private boolean getZhou(Member member){
+        BigDecimal zhou = BigDecimal.ZERO;
+        MemberSetting memberSetting = memberSettingService.get("1");
+        Integer zhou1 = memberSetting.getZhou1();
+        Integer zhou2 = memberSetting.getZhou2();
+        Integer zhou3 = memberSetting.getZhou3();
+        String level = member.getMemberlevel();
+        String loginName = member.getLoginName();
+        ZhouBonus zhouBonus = getZhouBonus(loginName);
+        if("1".equals(level)){
+            zhou = new BigDecimal(zhou1);
+        }else if("2".equals(level)){
+            zhou = new BigDecimal(zhou2);
+        }else if("3".equals(level)){
+            zhou = new BigDecimal(zhou3);
+        }
+        BigDecimal bonus = zhouBonus.getBonus();
+        if(bonus.compareTo(zhou)<0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
     //进货，累计1000小区碰对，直推三代10%，5%，3%
     @Transactional(readOnly = false)
@@ -125,31 +178,37 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
             }else{
                 hezuo = bonus.multiply(BigDecimal.valueOf(hezuo3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
             }
-            PvDetail pvDetail = new PvDetail();
-            pvDetail.setLoginName(member.getLoginName());
-            pvDetail.setNote("进货");
-            pvDetail.setPvTotal(hezuo);
-            pvDetail.setPvSheng(hezuo.multiply(new BigDecimal(0.95)));
-            pvDetail.setPvDues(hezuo.multiply(new BigDecimal(0.05)));
-            pvDetail.setPvtype("5");
-            pvDetail.setFromName(member.getLoginName());
-            pvDetail.setZhuceName(member.getLoginName());
-            pvDetailService.save(pvDetail);
 
-            hezuo = hezuo.multiply(new BigDecimal(0.95));
-            bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(hezuo));
-            bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(hezuo));
-            bonusTotal.setJinhuopv(bonusTotal.getJinhuopv().subtract(bonus));
-            bonusTotal.setApv(bonusTotal.getApv().subtract(bonus));
-            bonusTotal.setBpv(bonusTotal.getBpv().subtract(bonus));
+            if(getZhou(member)){
+                PvDetail pvDetail = new PvDetail();
+                pvDetail.setLoginName(member.getLoginName());
+                pvDetail.setNote("进货");
+                pvDetail.setPvTotal(hezuo);
+                pvDetail.setPvSheng(hezuo.multiply(new BigDecimal(0.95)));
+                pvDetail.setPvDues(hezuo.multiply(new BigDecimal(0.05)));
+                pvDetail.setPvtype("5");
+                pvDetail.setFromName(member.getLoginName());
+                pvDetail.setZhuceName(member.getLoginName());
+                pvDetailService.save(pvDetail);
 
-            DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
-            statistics.setOutAllBonus(statistics.getOutAllBonus().add(hezuo));
-            statistics.setOutBonus(statistics.getOutBonus().add(hezuo));
-            statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-            statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
-            statisticsService.save(statistics);
-            bonusTotalDao.updateBouns(bonusTotal);
+                hezuo = hezuo.multiply(new BigDecimal(0.95));
+                bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(hezuo));
+                bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(hezuo));
+                bonusTotal.setJinhuopv(bonusTotal.getJinhuopv().subtract(bonus));
+                bonusTotal.setApv(bonusTotal.getApv().subtract(bonus));
+                bonusTotal.setBpv(bonusTotal.getBpv().subtract(bonus));
+
+                DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
+                statistics.setOutAllBonus(statistics.getOutAllBonus().add(hezuo));
+                statistics.setOutBonus(statistics.getOutBonus().add(hezuo));
+                statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+                statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+                statisticsService.save(statistics);
+                bonusTotalDao.updateBouns(bonusTotal);
+                ZhouBonus zhouBonus = getZhouBonus(member.getLoginName());
+                zhouBonus.setBonus(zhouBonus.getBonus().add(hezuo));
+                zhouBonusService.save(zhouBonus);
+            }
         }
         //管理奖，推荐人拿合作奖的n%
         String referee = member.getReferee();
@@ -166,28 +225,33 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 }else{
                     guanli = hezuo.multiply(BigDecimal.valueOf(guanli3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
                 }
-                PvDetail pvDetail = new PvDetail();
-                pvDetail.setLoginName(referee);
-                pvDetail.setNote("管理奖");
-                pvDetail.setPvTotal(guanli);
-                pvDetail.setPvSheng(guanli.multiply(new BigDecimal(0.95)));
-                pvDetail.setPvDues(guanli.multiply(new BigDecimal(0.05)));
-                pvDetail.setPvtype("3");
-                pvDetail.setFromName(member.getLoginName());
-                pvDetail.setZhuceName(member.getLoginName());
-                pvDetailService.save(pvDetail);
+                if(getZhou(memberR)){
+                    PvDetail pvDetail = new PvDetail();
+                    pvDetail.setLoginName(referee);
+                    pvDetail.setNote("管理奖");
+                    pvDetail.setPvTotal(guanli);
+                    pvDetail.setPvSheng(guanli.multiply(new BigDecimal(0.95)));
+                    pvDetail.setPvDues(guanli.multiply(new BigDecimal(0.05)));
+                    pvDetail.setPvtype("3");
+                    pvDetail.setFromName(member.getLoginName());
+                    pvDetail.setZhuceName(member.getLoginName());
+                    pvDetailService.save(pvDetail);
 
-                guanli = guanli.multiply(new BigDecimal(0.95));
-                bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
-                bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
-                bonusTotalDao.updateBouns(bonusTotalR);
+                    guanli = guanli.multiply(new BigDecimal(0.95));
+                    bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
+                    bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
+                    bonusTotalDao.updateBouns(bonusTotalR);
 
-                DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
-                statistics.setOutAllBonus(statistics.getOutAllBonus().add(guanli));
-                statistics.setOutBonus(statistics.getOutBonus().add(guanli));
-                statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-                statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
-                statisticsService.save(statistics);
+                    DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
+                    statistics.setOutAllBonus(statistics.getOutAllBonus().add(guanli));
+                    statistics.setOutBonus(statistics.getOutBonus().add(guanli));
+                    statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+                    statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+                    statisticsService.save(statistics);
+                    ZhouBonus zhouBonus = getZhouBonus(memberR.getLoginName());
+                    zhouBonus.setBonus(zhouBonus.getBonus().add(guanli));
+                    zhouBonusService.save(zhouBonus);
+                }
             }
 
         }
@@ -500,29 +564,34 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 }else{
                     hezuo = small.multiply(BigDecimal.valueOf(hezuo3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
                 }
-                PvDetail pvDetail = new PvDetail();
-                pvDetail.setLoginName(contact);
-                pvDetail.setNote("合作奖");
-                pvDetail.setPvTotal(hezuo);
-                pvDetail.setPvSheng(hezuo.multiply(new BigDecimal(0.95)));
-                pvDetail.setPvDues(hezuo.multiply(new BigDecimal(0.05)));
-                pvDetail.setPvtype("2");
-                pvDetail.setFromName(fromName);
-                pvDetail.setZhuceName(zhuceName);
-                pvDetailService.save(pvDetail);
+                if(getZhou(member)){
+                    PvDetail pvDetail = new PvDetail();
+                    pvDetail.setLoginName(contact);
+                    pvDetail.setNote("合作奖");
+                    pvDetail.setPvTotal(hezuo);
+                    pvDetail.setPvSheng(hezuo.multiply(new BigDecimal(0.95)));
+                    pvDetail.setPvDues(hezuo.multiply(new BigDecimal(0.05)));
+                    pvDetail.setPvtype("2");
+                    pvDetail.setFromName(fromName);
+                    pvDetail.setZhuceName(zhuceName);
+                    pvDetailService.save(pvDetail);
 
-                hezuo = hezuo.multiply(new BigDecimal(0.95));
-                bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(hezuo));
-                bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(hezuo));
-                bonusTotal.setApv(bonusTotal.getApv().subtract(small));
-                bonusTotal.setBpv(bonusTotal.getBpv().subtract(small));
+                    hezuo = hezuo.multiply(new BigDecimal(0.95));
+                    bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(hezuo));
+                    bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(hezuo));
+                    bonusTotal.setApv(bonusTotal.getApv().subtract(small));
+                    bonusTotal.setBpv(bonusTotal.getBpv().subtract(small));
 
-                DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
-                statistics.setOutAllBonus(statistics.getOutAllBonus().add(hezuo));
-                statistics.setOutBonus(statistics.getOutBonus().add(hezuo));
-                statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-                statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
-                statisticsService.save(statistics);
+                    DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
+                    statistics.setOutAllBonus(statistics.getOutAllBonus().add(hezuo));
+                    statistics.setOutBonus(statistics.getOutBonus().add(hezuo));
+                    statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+                    statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+                    statisticsService.save(statistics);
+                    ZhouBonus zhouBonus = getZhouBonus(member.getLoginName());
+                    zhouBonus.setBonus(zhouBonus.getBonus().add(hezuo));
+                    zhouBonusService.save(zhouBonus);
+                }
             }
             //管理奖，推荐人拿合作奖的n%
             String referee = member.getReferee();
@@ -539,28 +608,34 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                     }else{
                         guanli = hezuo.multiply(BigDecimal.valueOf(guanli3)).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
                     }
-                    PvDetail pvDetail = new PvDetail();
-                    pvDetail.setLoginName(referee);
-                    pvDetail.setNote("管理奖");
-                    pvDetail.setPvTotal(guanli);
-                    pvDetail.setPvSheng(guanli.multiply(new BigDecimal(0.95)));
-                    pvDetail.setPvDues(guanli.multiply(new BigDecimal(0.05)));
-                    pvDetail.setPvtype("3");
-                    pvDetail.setFromName(contact);
-                    pvDetail.setZhuceName(zhuceName);
-                    pvDetailService.save(pvDetail);
+                    if(getZhou(memberR)){
 
-                    guanli = guanli.multiply(new BigDecimal(0.95));
-                    bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
-                    bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
-                    bonusTotalDao.updateBouns(bonusTotalR);
+                        PvDetail pvDetail = new PvDetail();
+                        pvDetail.setLoginName(referee);
+                        pvDetail.setNote("管理奖");
+                        pvDetail.setPvTotal(guanli);
+                        pvDetail.setPvSheng(guanli.multiply(new BigDecimal(0.95)));
+                        pvDetail.setPvDues(guanli.multiply(new BigDecimal(0.05)));
+                        pvDetail.setPvtype("3");
+                        pvDetail.setFromName(contact);
+                        pvDetail.setZhuceName(zhuceName);
+                        pvDetailService.save(pvDetail);
 
-                    DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
-                    statistics.setOutAllBonus(statistics.getOutAllBonus().add(guanli));
-                    statistics.setOutBonus(statistics.getOutBonus().add(guanli));
-                    statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-                    statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
-                    statisticsService.save(statistics);
+                        guanli = guanli.multiply(new BigDecimal(0.95));
+                        bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
+                        bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
+                        bonusTotalDao.updateBouns(bonusTotalR);
+
+                        DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
+                        statistics.setOutAllBonus(statistics.getOutAllBonus().add(guanli));
+                        statistics.setOutBonus(statistics.getOutBonus().add(guanli));
+                        statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+                        statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+                        statisticsService.save(statistics);
+                        ZhouBonus zhouBonus = getZhouBonus(memberR.getLoginName());
+                        zhouBonus.setBonus(zhouBonus.getBonus().add(guanli));
+                        zhouBonusService.save(zhouBonus);
+                    }
                 }
 
             }
@@ -609,29 +684,34 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                     bonus = BigDecimal.valueOf(pv3*zhitui3).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
                 }
             }
-            PvDetail pvDetail = new PvDetail();
-            pvDetail.setLoginName(refree);
-            pvDetail.setNote("直推奖");
-            pvDetail.setPvTotal(bonus);
-            pvDetail.setPvSheng(bonus.multiply(new BigDecimal(0.95)));
-            pvDetail.setPvDues(bonus.multiply(new BigDecimal(0.05)));
-            pvDetail.setPvtype("1");
-            pvDetail.setFromName(member.getLoginName());
-            pvDetail.setZhuceName(member.getLoginName());
-            pvDetailService.save(pvDetail);
+            if(getZhou(refreeM)){
+                PvDetail pvDetail = new PvDetail();
+                pvDetail.setLoginName(refree);
+                pvDetail.setNote("直推奖");
+                pvDetail.setPvTotal(bonus);
+                pvDetail.setPvSheng(bonus.multiply(new BigDecimal(0.95)));
+                pvDetail.setPvDues(bonus.multiply(new BigDecimal(0.05)));
+                pvDetail.setPvtype("1");
+                pvDetail.setFromName(member.getLoginName());
+                pvDetail.setZhuceName(member.getLoginName());
+                pvDetailService.save(pvDetail);
 
-            bonus = bonus.multiply(new BigDecimal(0.95));
-            BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(refree);//推荐人奖金表
-            bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(bonus));
-            bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(bonus));
-            bonusTotalDao.updateBouns(bonusTotal);
+                bonus = bonus.multiply(new BigDecimal(0.95));
+                BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(refree);//推荐人奖金表
+                bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(bonus));
+                bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(bonus));
+                bonusTotalDao.updateBouns(bonusTotal);
 
-            DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
-            statistics.setOutAllBonus(statistics.getOutAllBonus().add(bonus));
-            statistics.setOutBonus(statistics.getOutBonus().add(bonus));
-            statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
-            statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
-            statisticsService.save(statistics);
+                DayStatistics statistics = statisticsService.getByDate(DateUtils.getDate());
+                statistics.setOutAllBonus(statistics.getOutAllBonus().add(bonus));
+                statistics.setOutBonus(statistics.getOutBonus().add(bonus));
+                statistics.setBobi(statistics.getOutBonus().multiply(new BigDecimal("100")).divide(statistics.getNewBonus(),2,BigDecimal.ROUND_HALF_UP));
+                statistics.setAllBobi(statistics.getOutAllBonus().multiply(new BigDecimal("100")).divide(statistics.getAllBonus(),2,BigDecimal.ROUND_HALF_UP));
+                statisticsService.save(statistics);
+                ZhouBonus zhouBonus = getZhouBonus(refreeM.getLoginName());
+                zhouBonus.setBonus(zhouBonus.getBonus().add(bonus));
+                zhouBonusService.save(zhouBonus);
+            }
         }
     }
 }

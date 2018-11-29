@@ -7,6 +7,8 @@ import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.core.entity.zhou.ZhouBonus;
 
+import java.util.Map;
+
 /**
  * 周封顶DAO接口
  * @author li
@@ -14,5 +16,5 @@ import com.thinkgem.jeesite.modules.core.entity.zhou.ZhouBonus;
  */
 @MyBatisDao
 public interface ZhouBonusDao extends CrudDao<ZhouBonus> {
-	
+	public ZhouBonus getByLoginNameAndDate(ZhouBonus zhouBonus);
 }
