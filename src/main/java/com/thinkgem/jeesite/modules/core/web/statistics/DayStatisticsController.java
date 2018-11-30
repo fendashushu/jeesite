@@ -27,6 +27,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.statistics.DayStatistics;
 import com.thinkgem.jeesite.modules.core.service.statistics.DayStatisticsService;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -99,6 +100,9 @@ public class DayStatisticsController extends BaseController {
         Map yearMap = dayStatisticsService.getNewDataYear();
         Map memberMap = dayStatisticsService.getNewDataMember();
         Map orderAndRechargeMap = dayStatisticsService.getNewDataOrder();
+        if(map == null){
+            map = new HashMap();
+        }
         map.putAll(monthMap);
         map.putAll(yearMap);
         map.putAll(memberMap);
