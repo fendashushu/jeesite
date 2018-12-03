@@ -103,10 +103,10 @@ public class DayStatisticsController extends BaseController {
         if(map == null){
             map = new HashMap();
         }
-        map.putAll(monthMap);
-        map.putAll(yearMap);
-        map.putAll(memberMap);
-        map.putAll(orderAndRechargeMap);
+        map.putAll(monthMap==null?new HashMap():monthMap);
+        map.putAll(yearMap==null?new HashMap():yearMap);
+        map.putAll(memberMap==null?new HashMap():memberMap);
+        map.putAll(orderAndRechargeMap==null?new HashMap():orderAndRechargeMap);
         model.addAttribute("map", map);
         return "modules/core/statistics/homePage";
     }
