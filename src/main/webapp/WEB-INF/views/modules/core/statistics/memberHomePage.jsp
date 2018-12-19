@@ -37,7 +37,7 @@
 				<th style="width: 30%;text-align: left">
                     <c:choose>
                         <c:when test="${member.isstore=='0'}">否</c:when>
-                        <c:when test="${member.memberlevel=='1'}">是</c:when>
+                        <c:when test="${member.isstore=='1'}">是</c:when>
                     </c:choose>
                 </th>
 			</tr>

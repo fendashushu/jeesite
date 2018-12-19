@@ -106,7 +106,7 @@
         </c:otherwise>
         </c:choose>
         <c:choose>
-        <c:when test="${m1.status eq '0'}">
+        <c:when test="${m1.activate eq '0'}">
             .status{
                 background-color: #FFFF00 !important;
             }
@@ -185,7 +185,7 @@
                 </c:otherwise>
                 </c:choose>
                 <c:choose>
-                <c:when test="${ma.status eq '0'}">
+                <c:when test="${ma.activate eq '0'}">
                 .statusa{
                     background-color: #FFFF00 !important;
                 }
@@ -337,7 +337,7 @@
                         </c:otherwise>
                         </c:choose>
                         <c:choose>
-                        <c:when test="${mb.status eq '0'}">
+                        <c:when test="${mb.activate eq '0'}">
                         .statusb{
                             background-color: #FFFF00 !important;
                         }
@@ -463,7 +463,7 @@
                         </c:otherwise>
                         </c:choose>
                         <c:choose>
-                        <c:when test="${maa.status eq '0'}">
+                        <c:when test="${maa.activate eq '0'}">
                         .statusaa{
                             background-color: #FFFF00 !important;
                         }
@@ -579,7 +579,7 @@
                         </c:otherwise>
                         </c:choose>
                         <c:choose>
-                        <c:when test="${mab.status eq '0'}">
+                        <c:when test="${mab.activate eq '0'}">
                         .statusab{
                             background-color: #FFFF00 !important;
                         }
@@ -687,7 +687,7 @@
                         </c:otherwise>
                         </c:choose>
                         <c:choose>
-                        <c:when test="${mba.status eq '0'}">
+                        <c:when test="${mba.activate eq '0'}">
                         .statusba{
                             background-color: #FFFF00 !important;
                         }
@@ -802,7 +802,7 @@
                         </c:otherwise>
                         </c:choose>
                         <c:choose>
-                        <c:when test="${mbb.status eq '0'}">
+                        <c:when test="${mbb.activate eq '0'}">
                         .statusbb{
                             background-color: #FFFF00 !important;
                         }

@@ -91,7 +91,7 @@
             <label class="control-label">加盟资格:</label>
             <div class="controls">
                 <form:select path="memberlevel" class="input-xlarge">
-                    <form:option value="0" label="会员[￥500]"/>
+                   <%-- <form:option value="0" label="会员[￥500]"/>--%>
                     <form:option value="1" label="一级[￥1200]"/>
                     <form:option value="2" label="二级[￥3600]"/>
                     <form:option value="3" label="三级[￥7200]"/>
@@ -128,7 +128,7 @@
 		<div class="control-group">
 			<label class="control-label">密码:</label>
 			<div class="controls">
-				<input id="newPassword" name="newPassword" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}"/>
+				<input id="newPassword" name="newPassword" type="password" value="123456" maxlength="50" minlength="3"  class="${empty user.id?'required':''}"/>
 				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
 				<c:if test="${not empty user.id}"><span class="help-inline">若不修改密码，请留空。</span></c:if>
 			</div>
@@ -136,7 +136,7 @@
 		<div class="control-group">
 			<label class="control-label">确认密码:</label>
 			<div class="controls">
-				<input id="confirmNewPassword" name="confirmNewPassword" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword"/>
+				<input id="confirmNewPassword" name="confirmNewPassword" type="password" value="123456" maxlength="50" minlength="3" equalTo="#newPassword"/>
 				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
 			</div>
 		</div>

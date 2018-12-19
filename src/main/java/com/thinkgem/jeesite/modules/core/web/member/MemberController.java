@@ -217,7 +217,7 @@ public class MemberController extends BaseController {
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
         BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
         try {
-            if(need.compareTo(bonusCurrent)<0){
+            if(need.compareTo(bonusCurrent)<=0){
                 member.setMemberlevel(level);
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
                 memberService.updateMember(member,bonusTotal,null,null,null,null);
@@ -290,7 +290,7 @@ public class MemberController extends BaseController {
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
         BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
         try {
-            if(need.compareTo(bonusCurrent)<0){
+            if(need.compareTo(bonusCurrent)<=0){
                 member.setMemberlevel(level);
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
                 memberService.updateMember(member,bonusTotal,null,memberSetting,memberlevel,level);
@@ -371,7 +371,7 @@ public class MemberController extends BaseController {
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
         BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
         try{
-            if(need.compareTo(bonusCurrent)<0){
+            if(need.compareTo(bonusCurrent)<=0){
                 member.setActivate("1");
                 member.setActivateDate(new Date());
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
