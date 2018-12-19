@@ -164,9 +164,7 @@
     <select id="getUpMember" resultType="Member">
         select m.*,u.name,u.mobile ,u.status from sys_member m,sys_user u where m.del_flag = '0'  and m.activate = '1' and m.userid = u.id
             and m.create_date >= date_sub(now(),interval 3 month) and m.memberlevel != '3'
-            <if test="store !=null and store != '' and store != 'admin'">
-                and m.store = #{store}
-            </if>
+
             <if test="loginName !=null and loginName != '' ">
                 and m.login_name like CONCAT('%', #{loginName}, '%')
             </if>
