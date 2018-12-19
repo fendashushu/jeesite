@@ -53,12 +53,6 @@
 				<th style="width: 20%;text-align: right">转账收入：</th>
 				<th style="width: 30%;text-align: left">${map.inAmount}</th>
 			</tr>
-			<tr>
-				<th style="width: 20%;text-align: right">充值总额：</th>
-				<th style="width: 30%;text-align: left">${map.rechargeAmount}</th>
-				<th style="width: 20%;text-align: right"></th>
-				<th style="width: 30%;text-align: left"></th>
-			</tr>
 		</thead>
 		<tbody>
 		</tbody>

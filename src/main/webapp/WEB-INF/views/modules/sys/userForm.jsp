@@ -182,7 +182,7 @@
 		<div class="control-group">
 			<label class="control-label">联系电话:</label>
 			<div class="controls">
-				<form:input path="phone" htmlEscape="false" maxlength="100"/>
+				<form:input path="phone" htmlEscape="false" maxlength="100" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">

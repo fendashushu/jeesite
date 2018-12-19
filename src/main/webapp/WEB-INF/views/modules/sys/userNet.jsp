@@ -207,6 +207,9 @@
                                     <c:when test="${m1.memberlevel=='0' || isstore=='0'}">
                                         注册
                                     </c:when>
+                                    <c:when test="${m1.activate=='0'}">
+                                        注册
+                                    </c:when>
                                     <c:otherwise>
                                         <a href="${ctx}/sys/user/form?store=${m1.loginName}&contact=${m1.loginName}&area=A">注册</a>
                                     </c:otherwise>
@@ -275,6 +278,9 @@
                             <td style="background: #d8d1d1;" colspan="4" align="center">
                                 <c:choose>
                                     <c:when test="${m1.memberlevel=='0' || isstore=='0'}">
+                                        注册
+                                    </c:when>
+                                    <c:when test="${m1.activate=='0'}">
                                         注册
                                     </c:when>
                                     <c:otherwise>
@@ -404,6 +410,9 @@
                                     <c:when test="${empty ma  || isstore=='0'}">
                                        注册
                                     </c:when>
+                                    <c:when test="${ma.activate=='0'}">
+                                        注册
+                                    </c:when>
                                     <c:otherwise>
                                         <a href="${ctx}/sys/user/form?store=${m1.loginName}&contact=${ma.loginName}&area=A">注册</a>
                                     </c:otherwise>
@@ -511,6 +520,9 @@
                             <td style="background: #d8d1d1;" colspan="4" align="center">
                                 <c:choose>
                                     <c:when test="${empty ma  || isstore=='0'}">
+                                        注册
+                                    </c:when>
+                                    <c:when test="${ma.activate=='0'}">
                                         注册
                                     </c:when>
                                     <c:otherwise>
@@ -628,6 +640,9 @@
                                     <c:when test="${empty mb  || isstore=='0'}">
                                         注册
                                     </c:when>
+                                    <c:when test="${mb.activate=='0'}">
+                                        注册
+                                    </c:when>
                                     <c:otherwise>
                                         <a href="${ctx}/sys/user/form?store=${m1.loginName}&contact=${mb.loginName}&area=A">注册</a>
                                     </c:otherwise>
@@ -734,6 +749,9 @@
                             <td style="background: #d8d1d1;" colspan="4" align="center">
                                 <c:choose>
                                     <c:when test="${empty mb  || isstore=='0'}">
+                                        注册
+                                    </c:when>
+                                    <c:when test="${mb.activate=='0'}">
                                         注册
                                     </c:when>
                                     <c:otherwise>

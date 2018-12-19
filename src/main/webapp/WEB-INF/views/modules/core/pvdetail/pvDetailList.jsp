@@ -35,13 +35,13 @@
 			<tr>
 				<th>日期</th>
 				<th>直推奖</th>
-				<th>互助基金</th>
+				<th>代扣税</th>
                 <th>可提现金额</th>
 				<th>合作奖</th>
-                <th>互助基金</th>
+                <th>代扣税</th>
                 <th>可提现金额</th>
 				<th>管理奖</th>
-                <th>互助基金</th>
+                <th>代扣税</th>
                 <th>可提现金额</th>
                 <th>奖金总额</th>
 				<shiro:hasPermission name="core:pvdetail:pvDetail:edit"><th>操作</th></shiro:hasPermission>

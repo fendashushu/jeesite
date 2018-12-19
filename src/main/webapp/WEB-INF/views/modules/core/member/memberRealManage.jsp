@@ -26,6 +26,20 @@
                 }
             })
         }
+
+        function resetPassword(loginName) {
+            if(confirm("是否要重置"+loginName+"的密码？")){
+                $.post("${ctx}/core/member/member/resetPassword",{"loginName":loginName},function (data) {
+                    var result = data.result;
+                    var msg = data.msg;
+                    if(result){
+                        alert(msg);
+                    }else{
+                        alert(msg);
+                    }
+                })
+            }
+        }
 	</script>
 </head>
 <body>
@@ -131,6 +145,7 @@
                     </c:choose>
                     </a>
                     <a href="${ctx}/core/member/member/realMemberManager?name=${member.loginName}">我的推荐</a>
+                    <a href="javaScript:void(0)" onclick="resetPassword('${member.loginName}')">重置密码</a>
                 </td>
                 </c:if>
 			</tr>

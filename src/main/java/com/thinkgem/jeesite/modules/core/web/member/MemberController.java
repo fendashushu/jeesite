@@ -50,6 +50,8 @@ public class MemberController extends BaseController {
 	private BonusTotalService bonusTotalService;
 	@Autowired
     private MemberSettingService memberSettingService;
+    @Autowired
+    private SystemService systemService;
 
 	@ModelAttribute
 	public Member get(@RequestParam(required=false) String id) {
@@ -426,8 +428,38 @@ public class MemberController extends BaseController {
             map.put("result",false);
             map.put("msg",msg+"失败！");
         }
+		return map;
+	}
 
 
+    /**
+     * 重置密码
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     */
+    @RequiresPermissions("core:member:member:edit")
+	@RequestMapping(value = {"resetPassword"})
+    @ResponseBody
+	public Map resetPassword(HttpServletRequest request, HttpServletResponse response, Model model) {
+	    Map map = new HashMap();
+        String loginName = request.getParameter("loginName");
+        User user = UserUtils.getByLoginName(loginName);
+        try {
+            if (user != null){
+                user.setPassword(SystemService.entryptPassword("123456"));
+                systemService.saveUser(user);
+                map.put("result",true);
+                map.put("msg","密码重置成功！");
+            }else{
+                map.put("result",false);
+                map.put("msg","密码重置失败，会员不存在！");
+            }
+        }catch (Exception e){
+            map.put("result",false);
+            map.put("msg","密码重置失败！");
+        }
 		return map;
 	}
 
