@@ -37,6 +37,11 @@ public class PvDetail extends DataEntity<PvDetail> {
     private BigDecimal pvTotal3;
     private BigDecimal pvSheng3;
     private BigDecimal pvDues3;
+
+    private BigDecimal pvTotal4;
+    private BigDecimal pvSheng4;
+    private BigDecimal pvDues4;
+
     private BigDecimal pvZong; //可提现和
 
     private String pvDate;
@@ -204,5 +209,29 @@ public class PvDetail extends DataEntity<PvDetail> {
 
     public void setPvZong(BigDecimal pvZong) {
         this.pvZong = pvZong;
+    }
+
+    public BigDecimal getPvTotal4() {
+        return pvTotal4;
+    }
+
+    public void setPvTotal4(BigDecimal pvTotal4) {
+        this.pvTotal4 = pvTotal4;
+    }
+
+    public BigDecimal getPvSheng4() {
+        return pvSheng4;
+    }
+
+    public void setPvSheng4(BigDecimal pvSheng4) {
+        this.pvSheng4 = pvSheng4;
+    }
+
+    public BigDecimal getPvDues4() {
+        return pvDues4;
+    }
+
+    public void setPvDues4(BigDecimal pvDues4) {
+        this.pvDues4 = pvDues4;
     }
 }

@@ -8,8 +8,10 @@ import java.util.List;
 
 import com.thinkgem.jeesite.modules.core.dao.bonus.BonusTotalDao;
 import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
+import com.thinkgem.jeesite.modules.core.entity.orders.Orders;
 import com.thinkgem.jeesite.modules.core.entity.setting.MemberSetting;
 import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
+import com.thinkgem.jeesite.modules.core.service.orders.OrdersService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ public class MemberService extends CrudService<MemberDao, Member> {
     private MemberDao memberDao;
     @Autowired
     private BonusTotalService bonusTotalService;
+    @Autowired
+    private OrdersService ordersService;
 
 	public Member get(String id) {
 		return super.get(id);
@@ -127,8 +131,9 @@ public class MemberService extends CrudService<MemberDao, Member> {
 	}
 
     @Transactional(readOnly = false)
-    public void updateMember(Member member, BonusTotal bonusTotal, User user, MemberSetting memberSetting,String before,String after) {
+    public void updateMember(Member member, BonusTotal bonusTotal, User user, MemberSetting memberSetting,String before,String after,BigDecimal need,String text) {
         memberDao.updateMember(member);
+
         if(bonusTotal != null){
             bonusTotalService.updateBouns(bonusTotal);
         }
@@ -142,5 +147,23 @@ public class MemberService extends CrudService<MemberDao, Member> {
         if(before != null && after != null){
             bonusTotalService.upBonus(member,memberSetting,before,after);
         }
+
+        //产生订单
+        Orders orders = new Orders();
+        orders.setGoodsId("0");
+        orders.setLoginName(member.getLoginName());
+        orders.setTakeName(member.getLoginName());
+        orders.setTakeAddress(member.getAddress());
+        orders.setTakePhone(member.getPhone());
+        orders.setGoodsCount(1);
+        orders.setGoodsName(text + "：" + member.getLoginName()+"("+need+")");
+        orders.setGoodsPrice(need);
+        orders.setVipPrice(need);
+        orders.setTotal(need);
+        orders.setVipTotal(need);
+        orders.setOrderId(System.currentTimeMillis());
+        orders.setStatus("0");
+        orders.setOrderType("0");
+        ordersService.save(orders);
     }
 }

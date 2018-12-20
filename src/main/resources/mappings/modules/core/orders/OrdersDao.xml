@@ -83,11 +83,11 @@
 
 	<select id="deliverGoodsList" resultType="Orders">
 		SELECT
-			<include refid="ordersColumns"/>,g.goods_name goodsName
+			<include refid="ordersColumns"/>, coalesce(a.goods_name,g.goods_name)  goodsName
 		FROM orders a,goods g
 		<include refid="ordersJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}  and a.goods_id = g.id
+			a.del_flag = #{DEL_FLAG_NORMAL}  and  a.goods_id = g.id
 			<if test="orderId != null and orderId != ''">
 				AND a.order_id = #{orderId}
 			</if>
@@ -97,7 +97,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.status aSC
+				ORDER BY a.status aSC,a.create_date desc
 			</otherwise>
 		</choose>
 	</select>
@@ -126,6 +126,7 @@
 			order_id,
 			goods_id,
 			login_name,
+            goods_name,
 			take_name,
 			take_address,
 			take_phone,
@@ -150,6 +151,7 @@
 			#{orderId},
 			#{goodsId},
 			#{loginName},
+			#{goodsName},
 			#{takeName},
 			#{takeAddress},
 			#{takePhone},
@@ -177,6 +179,7 @@
 			order_id = #{orderId},
 			goods_id = #{goodsId},
 			login_name = #{loginName},
+            goods_name = #{goodsName},
 			take_name = #{takeName},
 			take_address = #{takeAddress},
 			take_phone = #{takePhone},

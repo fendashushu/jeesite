@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.core.service.orders;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.core.dao.member.MemberDao;
 import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
 import com.thinkgem.jeesite.modules.core.entity.goods.Goods;
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
@@ -34,7 +35,7 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
     @Autowired
     private GoodsService goodsService;
     @Autowired
-    private MemberService memberService;
+    private MemberDao memberDao;
     @Autowired
     private BonusTotalService bonusTotalService;
 
@@ -74,7 +75,7 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
         Goods goods = goodsService.get(orders.getGoodsId());
         goods.setSaleNum((goods.getSaleNum()==null?0:goods.getSaleNum())+orders.getGoodsCount());
         goodsService.save(goods);
-        Member member = memberService.getMemberByLoginName(orders.getLoginName());
+        Member member = memberDao.getMemberByLoginName(orders.getLoginName());
         String isStore = member.getIsstore();
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(orders.getLoginName());
         BigDecimal normal = orders.getGoodsPrice().multiply(new BigDecimal(orders.getGoodsCount()));

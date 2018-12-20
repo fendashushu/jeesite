@@ -49,6 +49,7 @@ public class Member extends DataEntity<Member> {
 	private Date storeDate;
 	private BigDecimal bonusTotal;
 	private BigDecimal bonusCurrent;
+	private String phone;
 
 	public Member() {
 		super();
@@ -314,5 +315,13 @@ public class Member extends DataEntity<Member> {
 
     public void setBaodan(String baodan) {
         this.baodan = baodan;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

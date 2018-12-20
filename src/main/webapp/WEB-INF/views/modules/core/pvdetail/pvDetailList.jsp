@@ -43,6 +43,9 @@
 				<th>管理奖</th>
                 <th>代扣税</th>
                 <th>可提现金额</th>
+				<th>报单奖</th>
+                <th>代扣税</th>
+                <th>可提现金额</th>
                 <th>奖金总额</th>
 				<shiro:hasPermission name="core:pvdetail:pvDetail:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -79,6 +82,15 @@
 				</td>
 				<td>
 					${pvDetail.pvSheng3}
+				</td>
+				<td>
+					${pvDetail.pvTotal4}
+				</td>
+				<td>
+					${pvDetail.pvDues4}
+				</td>
+				<td>
+					${pvDetail.pvSheng4}
 				</td>
 				<td>
 					${pvDetail.pvZong}

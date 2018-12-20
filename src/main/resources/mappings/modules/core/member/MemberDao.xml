@@ -89,7 +89,7 @@
     </select>
 
     <select id="getMemberByLoginName" resultType="Member">
-        select m.*,u.name,u.status from sys_member m,sys_user u where m.login_name = #{value} and m.del_flag='0' and m.userId = u.id
+        select m.*,u.name,u.status,u.phone from sys_member m,sys_user u where m.login_name = #{value} and m.del_flag='0' and m.userId = u.id
     </select>
 
     <select id="getMemberA" resultType="Member">

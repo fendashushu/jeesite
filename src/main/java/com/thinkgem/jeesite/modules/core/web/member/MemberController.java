@@ -222,7 +222,7 @@ public class MemberController extends BaseController {
             if(need.compareTo(bonusCurrent)<=0){
                 member.setMemberlevel(level);
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
-                memberService.updateMember(member,bonusTotal,null,null,null,null);
+                memberService.updateMember(member,bonusTotal,null,null,null,null,need,"会员活动升级");
                 map.put("result",true);
                 map.put("msg","升级成功！");
             }else {
@@ -295,7 +295,7 @@ public class MemberController extends BaseController {
             if(need.compareTo(bonusCurrent)<=0){
                 member.setMemberlevel(level);
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
-                memberService.updateMember(member,bonusTotal,null,memberSetting,memberlevel,level);
+                memberService.updateMember(member,bonusTotal,null,memberSetting,memberlevel,level,need,"会员升级");
                 map.put("result",true);
                 map.put("msg","升级成功！");
             }else {
@@ -337,7 +337,7 @@ public class MemberController extends BaseController {
                 bonusTotal.setBonusCurrent(bonusCurrent.add(new BigDecimal("150")));
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(money));
                 User user = UserUtils.getByLoginName(member.getLoginName());
-                memberService.updateMember(member,bonusTotal,user,null,null,null);
+                memberService.updateMember(member,bonusTotal,user,null,null,null,money,"申请服务中心");
                 addMessage(redirectAttributes, "申请服务中心成功");
             }
         }catch (Exception e){
@@ -377,7 +377,7 @@ public class MemberController extends BaseController {
                 member.setActivate("1");
                 member.setActivateDate(new Date());
                 bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
-                memberService.updateMember(member,bonusTotal,null,memberSetting,null,null);
+                memberService.updateMember(member,bonusTotal,null,memberSetting,null,null,need,"激活会员");
                 map.put("result",true);
                 map.put("msg","激活成功！");
             }else {
