@@ -128,7 +128,13 @@
                     <td class="back" colspan="4" align="center">${m1.name}</td>
                 </tr>
                 <tr>
-                    <td class="back" colspan="4" align="center">${m1.referee}</td>
+                    <td class="back" colspan="4" align="center">
+                        <c:choose>
+                            <c:when test="${m1.referee == '0'}">顶层会员</c:when>
+                            <c:otherwise>${m1.referee}</c:otherwise>
+                        </c:choose>
+
+                    </td>
                 </tr>
                 <tr>
                     <td class="back" colspan="4" align="center">总计</td>

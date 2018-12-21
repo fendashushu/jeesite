@@ -191,8 +191,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 pvDetail.setZhuceName(member.getLoginName());
                 pvDetailService.save(pvDetail);
 
-                hezuo = hezuo.multiply(new BigDecimal(0.95));
                 bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(hezuo));
+                hezuo = hezuo.multiply(new BigDecimal(0.95));
                 bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(hezuo));
                 bonusTotal.setJinhuopv(bonusTotal.getJinhuopv().subtract(bonus));
                 bonusTotal.setApv(bonusTotal.getApv().subtract(bonus));
@@ -237,8 +237,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                     pvDetail.setZhuceName(member.getLoginName());
                     pvDetailService.save(pvDetail);
 
-                    guanli = guanli.multiply(new BigDecimal(0.95));
                     bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
+                    guanli = guanli.multiply(new BigDecimal(0.95));
                     bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
                     bonusTotalDao.updateBouns(bonusTotalR);
 
@@ -276,7 +276,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
             }
         }
         bonusTotal1.setBonusTotal(bonusTotal1.getBonusTotal().add(bonus));
-        bonusTotal1.setBonusCurrent(bonusTotal1.getBonusCurrent().add(bonus));
+        bonusTotal1.setBonusCurrent(bonusTotal1.getBonusCurrent().add(bonus.multiply(new BigDecimal(0.95))));
         bonusTotalDao.updateBouns(bonusTotal1);
         /*PvDetail pvDetail = new PvDetail();
         pvDetail.setLoginName(referee1);
@@ -299,7 +299,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 bonus = new BigDecimal("150");
             }
             BonusTotal bonusTotal2 = bonusTotalDao.getBonusTotalByLoginName(referee2);
-            bonusTotal2.setBonusCurrent(bonusTotal2.getBonusCurrent().add(bonus));
+            bonusTotal2.setBonusCurrent(bonusTotal2.getBonusCurrent().add(bonus.multiply(new BigDecimal(0.95))));
             bonusTotal2.setBonusTotal(bonusTotal2.getBonusTotal().add(bonus));
             bonusTotalDao.updateBouns(bonusTotal2);
 
@@ -313,7 +313,7 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 }
                 BonusTotal bonusTotal3 = bonusTotalDao.getBonusTotalByLoginName(referee3);
                 bonusTotal3.setBonusTotal(bonusTotal3.getBonusTotal().add(bonus));
-                bonusTotal3.setBonusCurrent(bonusTotal3.getBonusCurrent().add(bonus));
+                bonusTotal3.setBonusCurrent(bonusTotal3.getBonusCurrent().add(bonus.multiply(new BigDecimal(0.95))));
                 bonusTotalDao.updateBouns(bonusTotal3);
             }
         }
@@ -478,8 +478,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
         pvDetail.setZhuceName(member.getLoginName());
         pvDetailService.save(pvDetail);
 
-        bonus = bonus.multiply(new BigDecimal(0.95));
         bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(bonus));
+        bonus = bonus.multiply(new BigDecimal(0.95));
         bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(bonus));
         bonusTotalDao.updateBouns(bonusTotal);
 
@@ -576,8 +576,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                     pvDetail.setZhuceName(zhuceName);
                     pvDetailService.save(pvDetail);
 
-                    hezuo = hezuo.multiply(new BigDecimal(0.95));
                     bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(hezuo));
+                    hezuo = hezuo.multiply(new BigDecimal(0.95));
                     bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(hezuo));
                     bonusTotal.setApv(bonusTotal.getApv().subtract(small));
                     bonusTotal.setBpv(bonusTotal.getBpv().subtract(small));
@@ -621,8 +621,8 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                         pvDetail.setZhuceName(zhuceName);
                         pvDetailService.save(pvDetail);
 
-                        guanli = guanli.multiply(new BigDecimal(0.95));
                         bonusTotalR.setBonusTotal(bonusTotalR.getBonusTotal().add(guanli));
+                        guanli = guanli.multiply(new BigDecimal(0.95));
                         bonusTotalR.setBonusCurrent(bonusTotalR.getBonusCurrent().add(guanli));
                         bonusTotalDao.updateBouns(bonusTotalR);
 
@@ -696,9 +696,9 @@ public class BonusTotalService extends CrudService<BonusTotalDao, BonusTotal> {
                 pvDetail.setZhuceName(member.getLoginName());
                 pvDetailService.save(pvDetail);
 
-                bonus = bonus.multiply(new BigDecimal(0.95));
                 BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(refree);//推荐人奖金表
                 bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(bonus));
+                bonus = bonus.multiply(new BigDecimal(0.95));
                 bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(bonus));
                 bonusTotalDao.updateBouns(bonusTotal);
 

@@ -116,6 +116,8 @@ public class MemberService extends CrudService<MemberDao, Member> {
         bonusTotal.setBpvTotal(BigDecimal.ZERO);
         bonusTotal.setBonusCurrent(BigDecimal.ZERO);
         bonusTotal.setBonusTotal(BigDecimal.ZERO);
+        bonusTotal.setMoneyCurrent(BigDecimal.ZERO);
+        bonusTotal.setMoneyTotal(BigDecimal.ZERO);
         bonusTotal.setJinhuopv(BigDecimal.ZERO);
         bonusTotalService.save(bonusTotal);
 	}

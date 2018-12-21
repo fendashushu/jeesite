@@ -50,12 +50,6 @@ public class PvRechargeService extends CrudService<PvRechargeDao, PvRecharge> {
 	@Transactional(readOnly = false)
 	public void save(PvRecharge pvRecharge) {
 		super.save(pvRecharge);
-        /*BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(pvRecharge.getLoginName());
-        if (bonusTotal != null){
-            bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(pvRecharge.getAmount()));
-            bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(pvRecharge.getAmount()));
-            bonusTotalDao.updateBouns(bonusTotal);
-        }*/
 	}
 
 	@Transactional(readOnly = false)
@@ -63,8 +57,8 @@ public class PvRechargeService extends CrudService<PvRechargeDao, PvRecharge> {
 		pvRechargeDao.confirmRecharge(pvRecharge);
         BonusTotal bonusTotal = bonusTotalDao.getBonusTotalByLoginName(pvRecharge.getLoginName());
         if (bonusTotal != null){
-            bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(pvRecharge.getAmount()));
-            bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(pvRecharge.getAmount()));
+            bonusTotal.setMoneyTotal(bonusTotal.getMoneyTotal().add(pvRecharge.getAmount()));
+            bonusTotal.setMoneyCurrent(bonusTotal.getMoneyCurrent().add(pvRecharge.getAmount()));
             bonusTotalDao.updateBouns(bonusTotal);
         }
 	}

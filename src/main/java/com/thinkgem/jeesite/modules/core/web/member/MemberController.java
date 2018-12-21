@@ -160,7 +160,7 @@ public class MemberController extends BaseController {
 		if(bonusTotal == null){
 			msg += "0";
 		}else {
-			BigDecimal current = bonusTotal.getBonusCurrent();
+			BigDecimal current = bonusTotal.getMoneyCurrent();
 			msg += current;
 		}
 		Page<Member> page = memberService.getActivateMember(new Page<Member>(request, response), member);
@@ -179,7 +179,7 @@ public class MemberController extends BaseController {
 		if(bonusTotal == null){
 			msg += "0";
 		}else {
-			BigDecimal current = bonusTotal.getBonusCurrent();
+			BigDecimal current = bonusTotal.getMoneyCurrent();
 			msg += current;
 		}
 		Page<Member> page = memberService.getUpMember(new Page<Member>(request, response), member);
@@ -217,11 +217,11 @@ public class MemberController extends BaseController {
         }
         User user = UserUtils.getUser();
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
-        BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
+        BigDecimal moneyCurrent = bonusTotal.getMoneyCurrent();
         try {
-            if(need.compareTo(bonusCurrent)<=0){
+            if(need.compareTo(moneyCurrent)<=0){
                 member.setMemberlevel(level);
-                bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
+                bonusTotal.setMoneyCurrent(moneyCurrent.subtract(need));
                 memberService.updateMember(member,bonusTotal,null,null,null,null,need,"会员活动升级");
                 map.put("result",true);
                 map.put("msg","升级成功！");
@@ -246,7 +246,7 @@ public class MemberController extends BaseController {
 		if(bonusTotal == null){
 			msg += "0";
 		}else {
-			BigDecimal current = bonusTotal.getBonusCurrent();
+			BigDecimal current = bonusTotal.getMoneyCurrent();
 			msg += current;
 		}
 		Page<Member> page = memberService.getUpMember(new Page<Member>(request, response), member);
@@ -290,11 +290,11 @@ public class MemberController extends BaseController {
         }
         User user = UserUtils.getUser();
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
-        BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
+        BigDecimal moneyCurrent = bonusTotal.getMoneyCurrent();
         try {
-            if(need.compareTo(bonusCurrent)<=0){
+            if(need.compareTo(moneyCurrent)<=0){
                 member.setMemberlevel(level);
-                bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
+                bonusTotal.setMoneyCurrent(moneyCurrent.subtract(need));
                 memberService.updateMember(member,bonusTotal,null,memberSetting,memberlevel,level,need,"会员升级");
                 map.put("result",true);
                 map.put("msg","升级成功！");
@@ -326,16 +326,16 @@ public class MemberController extends BaseController {
         try {
             BigDecimal money = new BigDecimal(8400);
             BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(member.getLoginName());
-            BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
-            if(money.compareTo(bonusCurrent)>0){
-                addMessage(redirectAttributes, "申请服务中心失败，当前可用积分为"+bonusCurrent+"，请先充值");
+            BigDecimal moneyCurrent = bonusTotal.getMoneyCurrent();
+            if(money.compareTo(moneyCurrent)>0){
+                addMessage(redirectAttributes, "申请服务中心失败，当前可用余额为"+moneyCurrent+"，请先充值");
             }else{
                 member = memberService.getMemberByLoginName(member.getLoginName());
                 member.setIsstore("1");
                 member.setStoreDate(new Date());
                 bonusTotal.setBonusTotal(bonusTotal.getBonusTotal().add(new BigDecimal("150")));
-                bonusTotal.setBonusCurrent(bonusCurrent.add(new BigDecimal("150")));
-                bonusTotal.setBonusCurrent(bonusCurrent.subtract(money));
+                bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().add(new BigDecimal("150").multiply(new BigDecimal(0.95))));
+                bonusTotal.setMoneyCurrent(moneyCurrent.subtract(money));
                 User user = UserUtils.getByLoginName(member.getLoginName());
                 memberService.updateMember(member,bonusTotal,user,null,null,null,money,"申请服务中心");
                 addMessage(redirectAttributes, "申请服务中心成功");
@@ -371,12 +371,12 @@ public class MemberController extends BaseController {
         }
         User user = UserUtils.getUser();
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(user.getLoginName());
-        BigDecimal bonusCurrent = bonusTotal.getBonusCurrent();
+        BigDecimal moneyCurrent = bonusTotal.getMoneyCurrent();
         try{
-            if(need.compareTo(bonusCurrent)<=0){
+            if(need.compareTo(moneyCurrent)<=0){
                 member.setActivate("1");
                 member.setActivateDate(new Date());
-                bonusTotal.setBonusCurrent(bonusCurrent.subtract(need));
+                bonusTotal.setMoneyCurrent(moneyCurrent.subtract(need));
                 memberService.updateMember(member,bonusTotal,null,memberSetting,null,null,need,"激活会员");
                 map.put("result",true);
                 map.put("msg","激活成功！");

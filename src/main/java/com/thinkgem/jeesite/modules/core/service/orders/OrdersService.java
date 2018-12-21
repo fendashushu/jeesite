@@ -85,9 +85,9 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
             if(total.compareTo(BigDecimal.ZERO)>0){
                 bonusTotalService.jinhuo(member,total);
             }
-            bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().subtract(vip));
+            bonusTotal.setMoneyCurrent(bonusTotal.getMoneyCurrent().subtract(vip));
         }else{
-            bonusTotal.setBonusCurrent(bonusTotal.getBonusCurrent().subtract(normal));
+            bonusTotal.setMoneyCurrent(bonusTotal.getMoneyCurrent().subtract(normal));
         }
         bonusTotalService.updateBouns(bonusTotal);
 	}

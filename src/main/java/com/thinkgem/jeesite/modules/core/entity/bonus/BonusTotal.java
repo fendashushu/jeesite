@@ -25,6 +25,8 @@ public class BonusTotal extends DataEntity<BonusTotal> {
 	private BigDecimal bonusTotal;		// 奖金累计
 	private BigDecimal bonusCurrent;		// 奖金剩余
 	private BigDecimal jinhuopv;		// 店铺进货一盒12.5积分，积分累计
+    private BigDecimal moneyTotal;		// 充值激活等累计
+    private BigDecimal moneyCurrent;		// 充值激活等剩余
 	
 	public BonusTotal() {
 		super();
@@ -97,5 +99,21 @@ public class BonusTotal extends DataEntity<BonusTotal> {
 
     public void setJinhuopv(BigDecimal jinhuopv) {
         this.jinhuopv = jinhuopv;
+    }
+
+    public BigDecimal getMoneyTotal() {
+        return moneyTotal;
+    }
+
+    public void setMoneyTotal(BigDecimal moneyTotal) {
+        this.moneyTotal = moneyTotal;
+    }
+
+    public BigDecimal getMoneyCurrent() {
+        return moneyCurrent;
+    }
+
+    public void setMoneyCurrent(BigDecimal moneyCurrent) {
+        this.moneyCurrent = moneyCurrent;
     }
 }

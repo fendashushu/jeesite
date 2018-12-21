@@ -182,7 +182,7 @@
 		<div class="control-group">
 			<label class="control-label">联系电话:</label>
 			<div class="controls">
-				<form:input path="phone" htmlEscape="false" maxlength="100" class="required"/>
+				<form:input path="phone" htmlEscape="false" maxlength="100" class="required"/><font color="red">*</font>
 			</div>
 		</div>
 		<div class="control-group">
@@ -204,14 +204,14 @@
         <div class="control-group">
             <label class="control-label">开户账号:</label>
             <div class="controls">
-                <form:input path="bankno" htmlEscape="false" maxlength="100"/>
+                <form:input path="bankno" htmlEscape="false" maxlength="100" class="required"/>
                 <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">开户姓名:</label>
             <div class="controls">
-                <form:input path="bankname" htmlEscape="false" maxlength="100"/>
+                <form:input path="bankname" htmlEscape="false" maxlength="100" class="required"/>
                 <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>

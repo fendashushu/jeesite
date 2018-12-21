@@ -42,9 +42,9 @@
                 </th>
 			</tr>
 			<tr>
-				<th style="width: 20%;text-align: right">奖金总额：</th>
+				<th style="width: 20%;text-align: right">奖金累计：</th>
 				<th style="width: 30%;text-align: left">${bonusTotal.bonusTotal}</th>
-				<th style="width: 20%;text-align: right">奖金余额：</th>
+				<th style="width: 20%;text-align: right">奖金总额：</th>
 				<th style="width: 30%;text-align: left">${bonusTotal.bonusCurrent}</th>
 			</tr>
 			<tr>

@@ -144,7 +144,7 @@ public class OrdersController extends BaseController {
             BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(loginName);
             BigDecimal total = orders.getGoodsPrice().multiply(new BigDecimal(orders.getGoodsCount()));
             BigDecimal vipTotal = orders.getVipPrice().multiply(new BigDecimal(orders.getGoodsCount()));
-            BigDecimal bonus = bonusTotal.getBonusCurrent();
+            BigDecimal bonus = bonusTotal.getMoneyCurrent();
             if("1".equals(member.getIsstore())){
                 if(bonus.compareTo(vipTotal)<0){
                     map.put("result",false);
