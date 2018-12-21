@@ -223,24 +223,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
                             <td style="background-color: #d8d1d1;" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
                         </tr>
                         <tr>
                             <td style="background-color:#d8d1d1;" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color:#d8d1d1; " align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color:#d8d1d1; width: 50%;" align="center">0</td>
                         </tr>
                         </tbody></table></td>
             </c:when>
@@ -262,15 +262,15 @@
                             <td class="backa" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backa" align="center">${ma.apvTotal}</td>
-                            <td class="backa" align="center">${ma.bpvTotal}</td>
+                            <td class="backa" align="center" style="width: 50%;">${ma.apvTotal}</td>
+                            <td class="backa" align="center" style="width: 50%;">${ma.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backa" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backa" align="center">${ma.apv}</td>
-                            <td class="backa" align="center">${ma.bpv}</td>
+                            <td class="backa" align="center" style="width: 50%;">${ma.apv}</td>
+                            <td class="backa" align="center" style="width: 50%;">${ma.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -297,24 +297,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
                             <td style="background-color: #d8d1d1;" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
                         </tr>
                         <tr>
                             <td style="background-color:#d8d1d1;" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color:#d8d1d1; " align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color:#d8d1d1; width: 50%;" align="center">0</td>
                         </tr>
                         </tbody></table></td>
             </c:when>
@@ -375,15 +375,15 @@
                             <td class="backb" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backb" align="center">${mb.apvTotal}</td>
-                            <td class="backb" align="center">${mb.bpvTotal}</td>
+                            <td class="backb" align="center" style="width: 50%;">${mb.apvTotal}</td>
+                            <td class="backb" align="center" style="width: 50%;">${mb.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backb" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backb" align="center">${mb.apv}</td>
-                            <td class="backb" align="center">${mb.bpv}</td>
+                            <td class="backb" align="center" style="width: 50%;">${mb.apv}</td>
+                            <td class="backb" align="center" style="width: 50%;">${mb.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -426,24 +426,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
                             <td style="background-color: #d8d1d1;" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
                         </tr>
                         <tr>
                             <td style="background-color:#d8d1d1;" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color:#d8d1d1; " align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color:#d8d1d1; width: 50%;" align="center">0</td>
                         </tr>
                         </tbody></table></td>
             </c:when>
@@ -505,15 +505,15 @@
                             <td class="backaa" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backaa" align="center">${maa.apvTotal}</td>
-                            <td class="backaa" align="center">${maa.bpvTotal}</td>
+                            <td class="backaa" align="center" style="width: 50%;">${maa.apvTotal}</td>
+                            <td class="backaa" align="center" style="width: 50%;">${maa.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backaa" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backaa" align="center">${maa.apv}</td>
-                            <td class="backaa" align="center">${maa.bpv}</td>
+                            <td class="backaa" align="center" style="width: 50%;">${maa.apv}</td>
+                            <td class="backaa" align="center" style="width: 50%;">${maa.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -545,24 +545,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
                             <td style="background-color: #d8d1d1;" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
                         </tr>
                         <tr>
                             <td style="background-color:#d8d1d1;" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color:#d8d1d1; " align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color:#d8d1d1; width: 50%;" align="center">0</td>
                         </tr>
                         </tbody></table></td>
             </c:when>
@@ -623,15 +623,15 @@
                             <td class="backab" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backab" align="center">${mab.apvTotal}</td>
-                            <td class="backab" align="center">${mab.bpvTotal}</td>
+                            <td class="backab" align="center" style="width: 50%;">${mab.apvTotal}</td>
+                            <td class="backab" align="center" style="width: 50%;">${mab.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backab" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backbb" align="center">${mab.apv}</td>
-                            <td class="backbb" align="center">${mab.bpv}</td>
+                            <td class="backbb" align="center" style="width: 50%;">${mab.apv}</td>
+                            <td class="backbb" align="center" style="width: 50%;">${mab.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -656,24 +656,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
                             <td style="background-color: #d8d1d1;" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
                         </tr>
                         <tr>
                             <td style="background-color:#d8d1d1;" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color:#d8d1d1; " align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color:#d8d1d1; width: 50%;" align="center">0</td>
                         </tr>
                         </tbody></table></td>
             </c:when>
@@ -734,15 +734,15 @@
                             <td class="backba" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backba" align="center">${mba.apvTotal}</td>
-                            <td class="backba" align="center">${mba.bpvTotal}</td>
+                            <td class="backba" align="center" style="width: 50%;">${mba.apvTotal}</td>
+                            <td class="backba" align="center" style="width: 50%;">${mba.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backba"colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backba" align="center">${mba.apv}</td>
-                            <td class="backba" align="center">${mba.bpv}</td>
+                            <td class="backba" align="center" style="width: 50%;">${mba.apv}</td>
+                            <td class="backba" align="center" style="width: 50%;">${mba.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
@@ -774,24 +774,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" colspan="4" align="center"></td>
+                            <td style="background-color: #d8d1d1;" colspan="4" align="center">&#12288;</td>
                         </tr>
                         <tr>
                             <td style="background-color: #d8d1d1;" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
                         </tr>
                         <tr>
                             <td style="background-color:#d8d1d1;" colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td style="background-color: #d8d1d1;" align="center">0</td>
-                            <td style="background-color:#d8d1d1; " align="center">0</td>
+                            <td style="background-color: #d8d1d1;width: 50%;" align="center">0</td>
+                            <td style="background-color:#d8d1d1;width: 50%; " align="center">0</td>
                         </tr>
                         </tbody></table></td>
             </c:when>
@@ -852,15 +852,15 @@
                             <td class="backbb" colspan="4" align="center">总计</td>
                         </tr>
                         <tr>
-                            <td class="backbb" align="center">${mbb.apvTotal}</td>
-                            <td class="backbb" align="center">${mbb.bpvTotal}</td>
+                            <td class="backbb" align="center" style="width: 50%;">${mbb.apvTotal}</td>
+                            <td class="backbb" align="center" style="width: 50%;">${mbb.bpvTotal}</td>
                         </tr>
                         <tr>
                             <td class="backbb"colspan="4" align="center">结余</td>
                         </tr>
                         <tr>
-                            <td class="backbb" align="center">${mbb.apv}</td>
-                            <td class="backbb" align="center">${mbb.bpv}</td>
+                            <td class="backbb" align="center" style="width: 50%;">${mbb.apv}</td>
+                            <td class="backbb" align="center" style="width: 50%;">${mbb.bpv}</td>
                         </tr>
                         </tbody></table></td>
             </c:otherwise>
