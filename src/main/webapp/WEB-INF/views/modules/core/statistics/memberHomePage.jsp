@@ -53,6 +53,18 @@
 				<th style="width: 20%;text-align: right">转账收入：</th>
 				<th style="width: 30%;text-align: left">${map.inAmount}</th>
 			</tr>
+			<tr>
+				<th style="width: 20%;text-align: right">本周奖金：</th>
+				<th style="width: 30%;text-align: left">${zhouBonus.bonus}</th>
+				<th style="width: 20%;text-align: right">上周奖金：</th>
+				<th style="width: 30%;text-align: left">
+                    ${empty preZhouBonus ? "0.00" : preZhouBonus.bonus}
+                    <%--<c:choose>
+                        <c:when test=" ${preZhouBonus is null}">0</c:when>
+                        <c:otherwise>${preZhouBonus.bonus}</c:otherwise>
+                    </c:choose>--%>
+                </th>
+			</tr>
 		</thead>
 		<tbody>
 		</tbody>

@@ -35,7 +35,7 @@
 		FROM zhou_bonus a
 		WHERE a.login_name = #{loginName} and #{date} BETWEEN a.begin_date and a.end_date
 	</select>
-	
+
 	<select id="findList" resultType="ZhouBonus">
 		SELECT 
 			<include refid="zhouBonusColumns"/>

@@ -6,10 +6,13 @@ package com.thinkgem.jeesite.modules.core.web.statistics;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.core.entity.bonus.BonusTotal;
 import com.thinkgem.jeesite.modules.core.entity.member.Member;
+import com.thinkgem.jeesite.modules.core.entity.zhou.ZhouBonus;
 import com.thinkgem.jeesite.modules.core.service.bonus.BonusTotalService;
 import com.thinkgem.jeesite.modules.core.service.member.MemberService;
+import com.thinkgem.jeesite.modules.core.service.zhou.ZhouBonusService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.core.entity.statistics.DayStatistics;
 import com.thinkgem.jeesite.modules.core.service.statistics.DayStatisticsService;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +49,8 @@ public class DayStatisticsController extends BaseController {
     private MemberService memberService;
 	@Autowired
     private BonusTotalService bonusTotalService;
+	@Autowired
+    private ZhouBonusService zhouBonusService;
 	
 	@ModelAttribute
 	public DayStatistics get(@RequestParam(required=false) String id) {
@@ -118,9 +124,17 @@ public class DayStatisticsController extends BaseController {
         String loginName = UserUtils.getUser().getLoginName();
         Member member = memberService.getMemberByLoginName(loginName);
         BonusTotal bonusTotal = bonusTotalService.getBonusByLoginName(loginName);
+        ZhouBonus zhou = new ZhouBonus();
+        zhou.setDate(DateUtils.getDate());
+        zhou.setLoginName(loginName);
+        ZhouBonus zhouBonus = zhouBonusService.getByLoginNameAndDate(zhou);
+        zhou.setDate(DateUtils.nextDays(-7,"yyyy-MM-dd"));
+        ZhouBonus preZhouBonus = zhouBonusService.getByLoginNameAndDate(zhou);
         model.addAttribute("map", map);
         model.addAttribute("member", member);
         model.addAttribute("bonusTotal", bonusTotal);
+        model.addAttribute("zhouBonus", zhouBonus);
+        model.addAttribute("preZhouBonus", preZhouBonus);
         return "modules/core/statistics/memberHomePage";
     }
 }
