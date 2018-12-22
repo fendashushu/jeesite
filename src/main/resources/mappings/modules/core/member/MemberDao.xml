@@ -177,10 +177,10 @@
         select m.*,u.name,u.mobile  from sys_member m,sys_user u where m.del_flag = '0'  and m.activate = '1' and m.userid = u.id and m.login_name != 'admin'
             and m.baodan = #{baodan}
             <if test="loginName !=null and loginName != '' ">
-                and m.login_name like CONCAT('%', #{loginName}, '%')
+                and m.login_name = #{loginName}
             </if>
             <if test="referee !=null and referee != '' ">
-                and m.referee  like CONCAT('%', #{referee}, '%')
+                and m.referee  = #{referee}
             </if>
     </select>
 

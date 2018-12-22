@@ -144,6 +144,9 @@ public class MemberController extends BaseController {
     @RequiresPermissions("core:member:member:view")
 	@RequestMapping(value = {"baodan"})
 	public String baodan(Member member, HttpServletRequest request, HttpServletResponse response, Model model) {
+		if(member == null  || member.getBaodan()==null){
+            member.setBaodan(UserUtils.getUser().getLoginName());
+        }
 		Page<Member> page = memberService.baodan(new Page<Member>(request, response), member);
 		model.addAttribute("page", page);
 		model.addAttribute("baodan", member.getBaodan());

@@ -42,7 +42,7 @@
                         <div id="messageBox" class="alert alert-success hide" style="display: block;">只有三级代理才能申请服务中心，请先升级。</div>
                     </c:when>
                     <c:otherwise>
-                        <div id="messageBox" class="alert alert-success hide" style="display: block;">当前可用积分为${bonusTotal.bonusCurrent}。</div>
+                        <div id="messageBox" class="alert alert-success hide" style="display: block;">当前可用积分为${bonusTotal.moneyCurrent}。</div>
                         <div class="control-group">
                             <label class="control-label">申请会员编码：</label>
                             <div class="controls">
