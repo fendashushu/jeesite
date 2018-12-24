@@ -118,6 +118,7 @@
         group by DATE_FORMAT(create_date,'%Y-%m-%d')
         )a
         group by DATE_FORMAT(create_date,'%Y%u')
+        order by DATE_FORMAT(create_date,'%Y%u') desc
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
