@@ -53,10 +53,27 @@ public class PvDetailController extends BaseController {
 	@RequiresPermissions("core:pvdetail:pvDetail:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(PvDetail pvDetail, HttpServletRequest request, HttpServletResponse response, Model model) {
-        pvDetail.setLoginName(UserUtils.getUser().getLoginName());
+        //pvDetail.setLoginName(UserUtils.getUser().getLoginName());
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
+        if(beginDate != null && !"".equals(beginDate)){
+            pvDetail.setBeginDate(beginDate);
+        }
+        if(endDate != null && !"".equals(endDate)){
+            pvDetail.setEndDate(endDate);
+        }
 		Page<PvDetail> page = pvDetailService.findPage(new Page<PvDetail>(request, response), pvDetail); 
 		model.addAttribute("page", page);
 		return "modules/core/pvdetail/pvDetailList";
+	}
+
+	@RequiresPermissions("core:pvdetail:pvDetail:view")
+	@RequestMapping(value = {"seven"})
+	public String seven(PvDetail pvDetail, HttpServletRequest request, HttpServletResponse response, Model model) {
+        //pvDetail.setLoginName(UserUtils.getUser().getLoginName());
+		Page<PvDetail> page = pvDetailService.sevenPage(new Page<PvDetail>(request, response), pvDetail);
+		model.addAttribute("page", page);
+		return "modules/core/pvdetail/pvDetailSeven";
 	}
 
 	@RequiresPermissions("core:pvdetail:pvDetail:view")

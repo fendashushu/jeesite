@@ -55,18 +55,18 @@
         sum(pvSheng1)+ sum(pvsheng2)+sum(pvsheng3)+sum(pvsheng4) pvZong
         from(
         select DATE_FORMAT(create_date,'%Y-%m-%d') create_date,
-        case when pvType='1' then pvTotal else 0 end pvTotal1,
-        case when pvType='1' then pvSheng else 0 end pvSheng1,
-        case when pvType='1' then pvDues else 0 end pvDues1,
-        case when pvType='2' then pvTotal else 0 end pvTotal2,
-        case when pvType='2' then pvSheng else 0 end pvSheng2,
-        case when pvType='2' then pvDues else 0 end pvDues2,
-        case when pvType='3' then pvTotal else 0 end pvTotal3,
-        case when pvType='3' then pvSheng else 0 end pvSheng3,
-        case when pvType='3' then pvDues else 0 end pvDues3,
-        case when pvType='4' then pvTotal else 0 end pvTotal4,
-        case when pvType='4' then pvSheng else 0 end pvSheng4,
-        case when pvType='4' then pvDues else 0 end pvDues4
+        sum(case when pvType='1' then pvTotal else 0 end) pvTotal1,
+        sum(case when pvType='1' then pvSheng else 0 end) pvSheng1,
+        sum(case when pvType='1' then pvDues else 0 end) pvDues1,
+        sum(case when pvType='2' then pvTotal else 0 end) pvTotal2,
+        sum(case when pvType='2' then pvSheng else 0 end) pvSheng2,
+        sum(case when pvType='2' then pvDues else 0 end) pvDues2,
+        sum(case when pvType='3' then pvTotal else 0 end) pvTotal3,
+        sum(case when pvType='3' then pvSheng else 0 end) pvSheng3,
+        sum(case when pvType='3' then pvDues else 0 end) pvDues3,
+        sum(case when pvType='4' then pvTotal else 0 end) pvTotal4,
+        sum(case when pvType='4' then pvSheng else 0 end) pvSheng4,
+        sum(case when pvType='4' then pvDues else 0 end) pvDues4
         from pv_detail
         where pvType != '5'
         <choose>
@@ -74,7 +74,9 @@
                 and login_name = #{loginName}
             </when>
         </choose>
-
+        <if test="beginDate != null and beginDate !=''">
+            and DATE_FORMAT(create_date,'%Y-%m-%d') BETWEEN #{beginDate} and #{endDate}
+        </if>
         group by DATE_FORMAT(create_date,'%Y-%m-%d'),pvType
         )a
         group by create_date
@@ -87,7 +89,45 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
+
+	<select id="sevenPage" resultType="PvDetail">
+        select DATE_FORMAT(create_date,'%Y%u') weeks ,
+        subdate(DATE_FORMAT(create_date,'%Y-%m-%d'),date_format(DATE_FORMAT(create_date,'%Y-%m-%d'),'%w')-1) beginDate,
+        subdate(DATE_FORMAT(create_date,'%Y-%m-%d'),date_format(DATE_FORMAT(create_date,'%Y-%m-%d'),'%w')-7) endDate,
+        sum(pvTotal1) pvTotal1,sum(pvTotal2) pvTotal2,sum(pvTotal3) pvTotal3,sum(pvTotal4) pvTotal4,
+        sum(pvSheng1) pvSheng1,sum(pvSheng2) pvSheng2,sum(pvSheng3) pvSheng3,sum(pvSheng4) pvSheng4,
+        sum(pvDues1) pvDues1,sum(pvDues2) pvDues2,sum(pvDues3) pvDues3,sum(pvDues4) pvDues4,
+        sum(pvSheng1)+ sum(pvsheng2)+sum(pvsheng3)+sum(pvsheng4) pvZong
+        from(
+        select DATE_FORMAT(create_date,'%Y-%m-%d') create_date,
+        sum(case when pvType='1' then pvTotal else 0 end) pvTotal1,
+        sum(case when pvType='1' then pvSheng else 0 end) pvSheng1,
+        sum(case when pvType='1' then pvDues else 0 end) pvDues1,
+        sum(case when pvType='2' then pvTotal else 0 end) pvTotal2,
+        sum(case when pvType='2' then pvSheng else 0 end) pvSheng2,
+        sum(case when pvType='2' then pvDues else 0 end) pvDues2,
+        sum(case when pvType='3' then pvTotal else 0 end) pvTotal3,
+        sum(case when pvType='3' then pvSheng else 0 end) pvSheng3,
+        sum(case when pvType='3' then pvDues else 0 end) pvDues3,
+        sum(case when pvType='4' then pvTotal else 0 end) pvTotal4,
+        sum(case when pvType='4' then pvSheng else 0 end) pvSheng4,
+        sum(case when pvType='4' then pvDues else 0 end) pvDues4
+        from pv_detail
+        where pvType != '5'
+        group by DATE_FORMAT(create_date,'%Y-%m-%d')
+        )a
+        group by DATE_FORMAT(create_date,'%Y%u')
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
 	<select id="findAllList" resultType="PvDetail">
 		SELECT 
 			<include refid="pvDetailColumns"/>

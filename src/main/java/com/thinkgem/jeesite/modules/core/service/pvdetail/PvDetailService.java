@@ -38,6 +38,12 @@ public class PvDetailService extends CrudService<PvDetailDao, PvDetail> {
         page.setList(pvDetailDao.getDetails(pvDetail));
         return page;
     }
+
+    public Page<PvDetail> sevenPage(Page<PvDetail> page,PvDetail pvDetail) {
+        pvDetail.setPage(page);
+        page.setList(pvDetailDao.sevenPage(pvDetail));
+        return page;
+    }
 	
 	public Page<PvDetail> findPage(Page<PvDetail> page, PvDetail pvDetail) {
 		return super.findPage(page, pvDetail);

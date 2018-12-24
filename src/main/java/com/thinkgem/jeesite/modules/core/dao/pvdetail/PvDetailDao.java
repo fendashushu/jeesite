@@ -18,4 +18,6 @@ import java.util.List;
 @MyBatisDao
 public interface PvDetailDao extends CrudDao<PvDetail> {
     public List<PvDetail> getDetails(PvDetail pvDetail);
+
+    public List<PvDetail> sevenPage(PvDetail pvDetail);
 }

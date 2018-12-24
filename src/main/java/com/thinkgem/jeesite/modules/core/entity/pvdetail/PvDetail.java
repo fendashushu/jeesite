@@ -45,6 +45,10 @@ public class PvDetail extends DataEntity<PvDetail> {
     private BigDecimal pvZong; //可提现和
 
     private String pvDate;
+
+    private String beginDate;
+    private String endDate;
+    private String weeks;
 	
 	public PvDetail() {
 		super();
@@ -233,5 +237,29 @@ public class PvDetail extends DataEntity<PvDetail> {
 
     public void setPvDues4(BigDecimal pvDues4) {
         this.pvDues4 = pvDues4;
+    }
+
+    public String getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getWeeks() {
+        return weeks;
+    }
+
+    public void setWeeks(String weeks) {
+        this.weeks = weeks;
     }
 }
