@@ -121,10 +121,10 @@
         order by DATE_FORMAT(create_date,'%Y%u') desc
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				, ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.create_date DESC
+				, a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
